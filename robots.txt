@@ -1,0 +1,2 @@
+Sitemap: http://johntfoster.github.io/sitemapindex.xml
+

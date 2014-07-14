@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>from the shoulders of giants</title><link>http://johntfoster.github.io/</link><description>mechanics and the mechanics of coding</description><language>en</language><lastBuildDate>Sun, 13 Jul 2014 23:56:12 GMT</lastBuildDate><generator>http://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Trying out Nikola</title><link>http://johntfoster.github.io/posts/trying-out-nikola.html</link><dc:creator>John T. Foster</dc:creator><description>&lt;div tabindex="-1" id="notebook" class="border-box-sizing"&gt;
+    &lt;div class="container" id="notebook-container"&gt;
+
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;So this is my first post.  I will not write too much, only a test of this cool static blog generator Nikola&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+</description><guid>http://johntfoster.github.io/posts/trying-out-nikola.html</guid><pubDate>Mon, 14 Jul 2014 04:28:50 GMT</pubDate></item></channel></rss>

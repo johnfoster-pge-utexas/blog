@@ -1,2 +1,0 @@
-Sitemap: http://johntfoster.github.com/blog/sitemapindex.xml
-

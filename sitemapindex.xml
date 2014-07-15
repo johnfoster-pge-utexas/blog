@@ -5,15 +5,11 @@
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
-  <loc>http://johntfoster.github.io/galleries/rss.xml</loc>
-  <lastmod>2014-07-13</lastmod>
- </sitemap>
- <sitemap>
   <loc>http://johntfoster.github.io/rss.xml</loc>
-  <lastmod>2014-07-13</lastmod>
+  <lastmod>2014-07-14</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/sitemap.xml</loc>
-  <lastmod>2014-07-13</lastmod>
+  <lastmod>2014-07-14</lastmod>
  </sitemap>
 </sitemapindex>

@@ -239,7 +239,7 @@ section {
 .social {
   float: left;
   min-height: 100%;
-  background: url('../images/blue-mocha-grunge.jpg') #192029;
+  background: #BF5700;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -2080,19 +2080,19 @@ body {
   font-size: 16px;
   font-size: 15px;
   line-height: 24px;
-  color: #333333;
+  color: #666E75;
 }
 a {
-  color: #0088cc;
+  color: #BF5700;
   text-decoration: none;
 }
 a:hover,
 a:focus {
-  color: #005580;
+  color: #BF5700;
   text-decoration: underline;
 }
 .social a {
-  color: #ffffff;
+  color: #D6D2C4;
   line-height: 44.400000000000006px;
   -webkit-transition: text-shadow 0.5s;
   -moz-transition: text-shadow 0.5s;
@@ -2173,7 +2173,7 @@ a:focus {
   font-family: inherit;
   font-weight: bold;
   line-height: 24px;
-  color: #2e2e2e;
+  color: #666E75 ;
   text-rendering: optimizelegibility;
 }
 .page-content > .content h1 small,
@@ -2190,7 +2190,7 @@ a:focus {
 .page-content > .content .h6 small {
   font-weight: normal;
   line-height: 1;
-  color: #999999;
+  color: #666E75;
 }
 .page-content > .content h1,
 .page-content > .content .h1,
@@ -2443,7 +2443,7 @@ pre.code {
 }
 .post .meta {
   *zoom: 1;
-  color: #999999;
+  color: #666E75;
   margin-bottom: 12px;
   margin-top: -6px;
 }
@@ -2473,9 +2473,10 @@ pre.code {
   *margin-right: .3em;
   content: "\f017";
   margin-left: 5px;
+  color: #666E75;
 }
 .post .meta .authordate:hover {
-  color: #333333;
+  color: #333F48;
 }
 .post .meta .stats {
   float: right;
@@ -2576,6 +2577,7 @@ pre.code {
 }
 .post + .post {
   margin-top: 48px;
+
 }
 
 /*

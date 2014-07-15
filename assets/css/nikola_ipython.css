@@ -10,13 +10,13 @@ pre {
 }
 
 .page-content > .content h1, .page-content > .content .h1 {
-  text-align: center;
+  text-align: left;
 }
 
 div.prompt {
   padding: 0.6em;
   font-size: 13px;
-  background: url('../images/blue-mocha-grunge-reversed.jpg');
+  background: #D6D2C4;
   margin-right: 1em;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -34,7 +34,7 @@ div.output_area pre {
 
 div.text_cell_render {
   padding: 0px;
-  color: #333333;
+  color: #666E75;
 }
 
 .rendered_html p {

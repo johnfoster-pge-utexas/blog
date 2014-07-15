@@ -713,7 +713,7 @@ UNSLUGIFY_TITLES = True
 # }
 
 # If webassets is installed, bundle JS and CSS to make site loading faster
-# USE_BUNDLES = True
+USE_BUNDLES = True
 
 # Plugins you don't want to use. Be careful :-)
 # DISABLED_PLUGINS = ["render_galleries"]
@@ -765,7 +765,7 @@ NAVIGATION_LINKS = {
             ('/categories/index.html', 'Tags', 'icon-tags'),
             ('/rss.xml', 'RSS', 'icon-rss'),
             ('http://getnikola.com', 'About me', 'icon-user'),
-            ('https://twitter.com/johntfoster', 'My Twitter', 'icon-twitter'),
+            #('https://twitter.com/johntfoster', 'My Twitter', 'icon-twitter'),
             ('https://github.com/johntfoster', 'My Github', 'icon-github'),
         )
 }

@@ -2152,7 +2152,8 @@ a:focus {
   font-size: 26.25px;
 }
 .page-content {
-  font-family: "Bitter", "Georgia", "Times New Roman", serif;
+  font-family: "Open Sans", sans-serif;
+  /*font-family: "Bitter", "Georgia", "Times New Roman", serif;*/
 }
 .page-content > .content {
   text-rendering: optimizeLegibility;

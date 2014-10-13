@@ -64,7 +64,9 @@ div.text_cell_render {
 }
 
 .page-content > .content p {
-  margin: 0 0 0px;
+  margin: 10px 0 0px;
+  margin-bottom: 10px;
+  text-align: justify;
 }
 
 .highlight .hll { background-color: #ffffcc }

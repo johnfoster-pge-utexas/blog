@@ -5,11 +5,27 @@
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
+  <loc>http://johntfoster.github.io/categories/github.xml</loc>
+  <lastmod>2014-10-10</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://johntfoster.github.io/categories/latex.xml</loc>
+  <lastmod>2014-10-10</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://johntfoster.github.io/categories/nikola.xml</loc>
+  <lastmod>2014-10-10</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://johntfoster.github.io/categories/travis-ci.xml</loc>
+  <lastmod>2014-10-10</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>http://johntfoster.github.io/rss.xml</loc>
-  <lastmod>2014-07-15</lastmod>
+  <lastmod>2014-10-10</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/sitemap.xml</loc>
-  <lastmod>2014-07-15</lastmod>
+  <lastmod>2014-10-10</lastmod>
  </sitemap>
 </sitemapindex>

@@ -5,20 +5,19 @@ article: http://ogp.me/ns/article#
 " lang="en">
     <head>
     <meta charset="utf-8">
-    <meta name="description" content="mechanics and the mechanics of coding">
     <meta name="viewport" content="width=device-width">
-    <title>from the shoulders of giants | from the shoulders of giants</title>
+    <title>Managing a professional website with Nikola, LaTeX, Github and Travis CI | from the shoulders of giants</title>
 
-                <link href="assets/css/bitter.css" rel="stylesheet" type="text/css">
-        <link href="assets/css/main.css" rel="stylesheet" type="text/css">
-        <link href="assets/css/rst.css" rel="stylesheet" type="text/css">
-        <link href="assets/css/code.css" rel="stylesheet" type="text/css">
-        <link href="assets/css/ipython.min.css" rel="stylesheet" type="text/css">
-        <link href="assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+                <link href="../assets/css/bitter.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/main.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
 
-                <link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
+                <link rel="alternate" type="application/rss+xml" title="RSS" href="../rss.xml">
 
-      <link rel="canonical" href="http://johntfoster.github.io/index.html">
+      <link rel="canonical" href="http://johntfoster.github.io/posts/managing-a-professional-website.html">
 
 
 
@@ -28,20 +27,24 @@ article: http://ogp.me/ns/article#
     
 
     
-    <style>
-    div.input_prompt {
-      display: none;
-    }
-    </style>
+    <meta name="author" content="John T. Foster">
+            <meta name="og:title" content="Managing a professional website with Nikola, LaTeX, Github and Travis ">
+        <meta name="og:url" content="http://johntfoster.github.io/posts/managing-a-professional-website.html">
+            <meta name="og:description" content='As an academic, ensuring that others are aware of and can easily access recent research results, papers, and other professional communications is an important part of the "branding" we are tasked with'>
+        <meta name="og:site_name" content="from the shoulders of giants">
+        <meta name="og:type" content="article">
+
+    
+    
 
 </head>
 <body>
     <section class="social">
         <ul>
-                    <li><a href="#" title="Home"><i class="icon-home"></i></a></li>
-            <li><a href="archive.html" title="Archives"><i class="icon-folder-open-alt"></i></a></li>
-            <li><a href="categories/index.html" title="Tags"><i class="icon-tags"></i></a></li>
-            <li><a href="rss.xml" title="RSS"><i class="icon-rss"></i></a></li>
+                    <li><a href="../index.html" title="Home"><i class="icon-home"></i></a></li>
+            <li><a href="../archive.html" title="Archives"><i class="icon-folder-open-alt"></i></a></li>
+            <li><a href="../categories/index.html" title="Tags"><i class="icon-tags"></i></a></li>
+            <li><a href="../rss.xml" title="RSS"><i class="icon-rss"></i></a></li>
             <li><a href="http://johntfoster.github.io/johntfoster-professional-website/" title="About me"><i class="icon-user"></i></a></li>
             <li><a href="https://github.com/johntfoster" title="My Github"><i class="icon-github"></i></a></li>
             <li><a href="https://twitter.com/johntfoster" title="My Twitter"><i class="icon-twitter"></i></a></li>
@@ -50,30 +53,30 @@ article: http://ogp.me/ns/article#
     </section>
     <section class="page-content">
         <div class="content" rel="main">
-        <div class="post">
-            <h1 class="title"><a href="posts/managing-a-professional-website.html">Managing a professional website with Nikola, LaTeX, Github and Travis CI</a></h1>
-            <div class="meta">
-                <div class="authordate">
-                    <time class="timeago" datetime="2014-10-09T22:34:25-05:00">2014-10-09 22:34</time>
-                </div>
-                <div class="stats">
-                                <a href="posts/managing-a-professional-website.html#disqus_thread" data-disqus-identifier="cache/posts/managing-a-profesional-website.html">Comments</a>
+    <div class="post">
+        <h1 class="p-name entry-title" itemprop="headline name">Managing a professional website with Nikola, LaTeX, Github and Travis CI</h1>
 
+        <div class="meta">
+            <div class="authordate">
+                <time class="timeago" datetime="2014-10-09T22:34:25-05:00">2014-10-09 22:34</time>
+            
+                      |  
+        <a href="managing-a-professional-website.md" id="sourcelink">Source</a>
 
-                </div>
-                        <div itemprop="keywords" class="tags">
+            </div>
+                    <div itemprop="keywords" class="tags">
         <ul>
         Tags : 
-           <li><a class="tag p-category" href="categories/github.html" rel="tag">Github</a></li>
-           <li><a class="tag p-category" href="categories/latex.html" rel="tag">LaTeX</a></li>
-           <li><a class="tag p-category" href="categories/nikola.html" rel="tag">Nikola</a></li>
-           <li><a class="tag p-category" href="categories/travis-ci.html" rel="tag">Travis CI</a></li>
+           <li><a class="tag p-category" href="../categories/github.html" rel="tag">Github</a></li>
+           <li><a class="tag p-category" href="../categories/latex.html" rel="tag">LaTeX</a></li>
+           <li><a class="tag p-category" href="../categories/nikola.html" rel="tag">Nikola</a></li>
+           <li><a class="tag p-category" href="../categories/travis-ci.html" rel="tag">Travis CI</a></li>
         </ul>
         </div>
 
-            </div>
-            <div class="body">
-                <!--
+        </div>
+        <div class="body">
+            <!--
 .. title: Managing a professional website with Nikola, LaTeX, Github and Travis CI
 .. slug: managing-a-professional-website
 .. date: 2014-10-09 22:34:25 UTC-05:00
@@ -114,9 +117,9 @@ article: http://ogp.me/ns/article#
 <span class="kw">git</span> push origin master</code></pre>
 <h3 id="travis-builds-cv-in-pdf-and-html-versions">Travis builds CV in PDF and HTML versions</h3>
 <p>You will need to enable Travis CI for your repository. After signing into Travis via your GitHub username, you can add any public GitHub repository for free continuous integration services. You can add a repository by clicking on the <code>+</code> arrow in the left-hand panel of Travis as shown</p>
-<p><img src="files/add-repo.png"></p>
+<p><img src="../files/add-repo.png"></p>
 <p>Then click the <code>ON</code> button to enable Travis.</p>
-<p><img src="files/enable-travis.png"></p>
+<p><img src="../files/enable-travis.png"></p>
 <p>Upon committing, Travis reads the <code>travis.yml</code> file in the repository and performs a set of actions. In this case, we want to build a LaTeX file which there is not a preinstalled Travis Ubuntu instance for LaTeX so we need to use <code>apt-get</code> to install all of the LaTeX dependencies and proper fonts for building the CV. The other commands just some basic Travis configuration, full details for Travis configuration can be found <a href="http://docs.travis-ci.com/">here</a></p>
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=0:16&amp;footer=minimal"></script>
 
@@ -127,13 +130,13 @@ article: http://ogp.me/ns/article#
 <pre><code>GIT_NAME="Travis CI"
 GIT_EMAIL=travis-ci@travis.org</code></pre>
 <p>The environment variables can be set on the Travis setting page as shown</p>
-<p><img src="files/settings.png"></p>
+<p><img src="../files/settings.png"></p>
 <p>then click on the environment variables tab and select "Add a new variable"</p>
-<p><img src="files/env-variables.png"></p>
+<p><img src="../files/env-variables.png"></p>
 <p>while on the settings page, it is also useful to select "Build only if .travis.yml is present" this will prevent Travis from automatically attempting to build on repository branches that do not have a <code>.travis.yml</code> file, as is the case with the <code>travis-build</code> branch we created earlier. These environment variables are stored encrypted on the Travis servers.</p>
-<p><img src="files/build-only.png"></p>
+<p><img src="../files/build-only.png"></p>
 <p>The other two environment variables, <code>GH_TOKEN</code> and <code>TRAVIS_TOKEN</code> are more critical as they allow the Travis the proper credentials to commit back to Github and to issue a new build of the website for which the CV will be included. The get a GitHub token, go to your GitHub settings page, click on Applications on the left-hand panel and then "Generate new token", give the token a name and copy or write down the token somewhere safely.</p>
-<p><img src="files/github-settings.png"></p>
+<p><img src="../files/github-settings.png"></p>
 <p><strong>This will be the only time you can actually see the token</strong> so make sure you have it copied somewhere. You can use the same token form multiple Travis jobs, but you have to know what it is and cannot reveal it again later. Use this token to set the <code>GH_TOKEN</code> environment variable back on the Travis site. Finally, you can get a <code>TRAVIS_TOKEN</code> through the Ruby <a href="http://blog.travis-ci.com/2013-01-14-new-client/">Travis command line interface</a>. If you have Ruby installed you can install Travis like any Ruby <code>gem</code> with</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">gem</span> install travis</code></pre>
 <p>Then you can find your Travis access token with</p>
@@ -170,13 +173,30 @@ GIT_EMAIL=travis-ci@travis.org</code></pre>
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/johntfoster-professional-website/blob/master/.travis.yml?footer=minimal"></script>
 
 <p>After this file is run sucesfully by Travis, the website will be served on GitHub. My site can be seen <a href="http://johntfoster.github.io/johntfoster-professional-website/">here</a>. The entire process from pushing a change on the CV, to the professional website being completely rebuilt and updated usually takes around 10-15 minutes. Again, if there were ever a need to have an instant update, there is always the option to push the changes by hand. Please feel free to use any or all of the tips/code presented in your own workflow.</p>
-            </div>
         </div>
-    
-                   <script>var disqus_shortname="johntfoster";(function(){var a=document.createElement("script");a.async=true;a.src="//"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script>
+        
+                            <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="johntfoster",
+            disqus_url="http://johntfoster.github.io/posts/managing-a-professional-website.html",
+        disqus_title="Managing a professional website with Nikola, LaTeX, Github and Travis CI",
+        disqus_identifier="cache/posts/managing-a-profesional-website.html",
+        disqus_config = function () {
+            this.language = "";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="//disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
-    
+        
+    </div>
                     <footer id="footer" role="contentinfo">
             <p>Contents © 2014         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
             
@@ -196,8 +216,8 @@ GIT_EMAIL=travis-ci@travis.org</code></pre>
 </script>
 
     
-                <script src="assets/js/jquery-1.10.2.min.js" type="text/javascript"></script>
-            <script src="assets/js/jquery.timeago.js" type="text/javascript"></script>
+                <script src="../assets/js/jquery-1.10.2.min.js" type="text/javascript"></script>
+            <script src="../assets/js/jquery.timeago.js" type="text/javascript"></script>
     
 <!-- Social buttons -->
 <div id="addthisbox" class="addthis_toolbox addthis_peekaboo_style addthis_default_style addthis_label_style addthis_32x32_style">

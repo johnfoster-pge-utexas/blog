@@ -6,42 +6,38 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>http://johntfoster.github.io/2014/index.html</loc>
-  <lastmod>2014-10-10</lastmod>
+  <lastmod>2014-11-10</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/archive.html</loc>
-  <lastmod>2014-10-10</lastmod>
+  <lastmod>2014-11-10</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/github.html</loc>
-  <lastmod>2014-10-10</lastmod>
+  <lastmod>2014-11-10</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/index.html</loc>
-  <lastmod>2014-10-10</lastmod>
+  <lastmod>2014-11-10</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/latex.html</loc>
-  <lastmod>2014-10-10</lastmod>
+  <lastmod>2014-11-10</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/nikola.html</loc>
-  <lastmod>2014-10-10</lastmod>
+  <lastmod>2014-11-10</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/travis-ci.html</loc>
-  <lastmod>2014-10-10</lastmod>
+  <lastmod>2014-11-10</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/index.html</loc>
-  <lastmod>2014-10-10</lastmod>
+  <lastmod>2014-11-10</lastmod>
  </url>
  <url>
-  <loc>http://johntfoster.github.io/posts/managing-a-professional-website-with-github-and-travis-ci.html</loc>
-  <lastmod>2014-10-10</lastmod>
- </url>
- <url>
-  <loc>http://johntfoster.github.io/posts/trying-out-nikola.html</loc>
-  <lastmod>2014-07-16</lastmod>
+  <loc>http://johntfoster.github.io/posts/managing-a-professional-website.html</loc>
+  <lastmod>2014-11-10</lastmod>
  </url>
 </urlset>

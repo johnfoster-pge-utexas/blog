@@ -172,7 +172,7 @@ PAGES = (
 # One or more folders containing files to be copied as-is into the output.
 # The format is a dictionary of "source" "relative destination".
 # Default is:
-# FILES_FOLDERS = {'files': '' }
+FILES_FOLDERS = {'files': 'files' }
 # Which means copy 'files' into 'output'
 
 # A mapping of languages to file-extensions that represent that language.
@@ -184,7 +184,7 @@ PAGES = (
 # 'html' assumes the file is html and just copies it
 COMPILERS = {
     "rest": ('.rst', '.txt'),
-    "markdown": ('.md', '.mdown', '.markdown'),
+    #"markdown": ('.md', '.mdown', '.markdown'),
     "textile": ('.textile',),
     "txt2tags": ('.t2t',),
     "bbcode": ('.bb',),
@@ -198,7 +198,7 @@ COMPILERS = {
     # Pandoc detects the input from the source filename
     # but is disabled by default as it would conflict
     # with many of the others.
-    # "pandoc": ('.rst', '.md', '.txt'),
+    "pandoc": ('.md',),
 }
 
 # Create by default posts in one file format?
@@ -424,7 +424,7 @@ RSS_READ_MORE_LINK = '<p><a href="{link}">{read_more}…</a> ({min_remaining_rea
 
 # A HTML fragment describing the license, for the sidebar.
 # (translatable)
-LICENSE = ""
+LICENSE = """<a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />"""
 # I recommend using the Creative Commons' wizard:
 # http://creativecommons.org/choose/
 # LICENSE = """
@@ -435,7 +435,7 @@ LICENSE = ""
 
 # A small copyright notice for the page footer (in HTML).
 # (translatable)
-CONTENT_FOOTER = 'Contents &copy; {date}         <a href="mailto:{email}">{author}</a> - Powered by         <a href="http://getnikola.com" rel="nofollow">Nikola</a>         {license}'
+CONTENT_FOOTER = 'Contents &copy; {date}         <a href="mailto:{email}">{author}</a>      {license}'
 
 # Things that will be passed to CONTENT_FOOTER.format().  This is done
 # for translatability, as dicts are not formattable.  Nikola will
@@ -469,7 +469,7 @@ COMMENT_SYSTEM = "disqus"
 # depends on what comment system you use. The default is
 # "nikolademo" which is a test account for Disqus. More information
 # is in the manual.
-COMMENT_SYSTEM_ID = ""
+COMMENT_SYSTEM_ID = "johntfoster"
 
 # Enable annotations using annotateit.org?
 # If set to False, you can still enable them for individual posts and pages
@@ -661,7 +661,17 @@ COMMENT_SYSTEM_ID = ""
 # Google Analytics or whatever else you use. Added to the bottom of <body>
 # in the default template (base.tmpl).
 # (translatable)
-# BODY_END = ""
+BODY_END = """
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+   ga('create', 'UA-25324596-7', 'auto');
+   ga('send', 'pageview');
+</script>
+"""
 
 # The possibility to extract metadata from the filename by using a
 # regular expression.
@@ -713,7 +723,7 @@ UNSLUGIFY_TITLES = True
 # }
 
 # If webassets is installed, bundle JS and CSS to make site loading faster
-USE_BUNDLES = True
+USE_BUNDLES = False
 
 # Plugins you don't want to use. Be careful :-)
 # DISABLED_PLUGINS = ["render_galleries"]
@@ -761,12 +771,12 @@ LOGGING_HANDLERS = {
 NAVIGATION_LINKS = {
         DEFAULT_LANG: (
             ('/index.html', 'Home', 'icon-home'),
+            ('http://johnfoster.pge.utexas.edu', 'About me', 'icon-user'),
+            ('https://github.com/johntfoster', 'My Github', 'icon-github'),
+            ('https://twitter.com/johntfoster', 'My Twitter', 'icon-twitter'),
             ('/archive.html', 'Archives', 'icon-folder-open-alt'),
             ('/categories/index.html', 'Tags', 'icon-tags'),
             ('/rss.xml', 'RSS', 'icon-rss'),
-            ('http://getnikola.com', 'About me', 'icon-user'),
-            #('https://twitter.com/johntfoster', 'My Twitter', 'icon-twitter'),
-            ('https://github.com/johntfoster', 'My Github', 'icon-github'),
         )
 }
 

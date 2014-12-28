@@ -20,16 +20,17 @@ For several years, I have maintained my CV using the [LaTeX](http://www.latex-pr
  Because I update my CV much more frequently than I would need to update the website in general, and have for sometime utilized `git` as a version control tool, I decided to push the [CV repository](https://github.com/johntfoster/CV) to [GitHub](https://github.com) and see if I could devise a scheme to automate the workflow of keeping not only my CV up-to-date, but also regenerating my professional website automatically upon a `git push` to the CV repository.  I found this to be pretty straightforward with the help of [Travis CI](https://travis-ci.org/).  If your not familiar with Travis, it is a *continuous integration* system, typically used in software testing.  It integrates seamlessly with GitHub, such that upon any `git push` to GitHub, Travis will `pull` a current version of the repository and run a set of commands specified in a `travis.yml` file.  In summary, here is my workflow for keeping everything updated:
 
 
-  1. Edit CV
-  1. Commit changes to local repository and push to GitHub
-  1. Travis builds CV in PDF and HTML versions
-  1. Upon a successful build, Travis pushes new PDF and HTML versions to a branch on the CV repo
-  1. Travis then triggers a rebuild of the professional website which is stored in it's own repo
-  1. Travis then rebuilds the professional website with Nikola and includes the new HTML CV as a page
+  1. <a href="#editcv">Edit CV</a>
+  1. <a href="#commit">Commit changes to local repository and push to GitHub</a>
+  1. <a href="#builds">Travis builds CV in PDF and HTML versions</a>
+  1. <a href="#push">Upon a successful build, Travis pushes new PDF and HTML versions to a branch on the CV repo</a>
+  1. <a href="#trigger">Travis then triggers a rebuild of the professional website which is stored in it's own repo</a>
+  1. <a href="#rebuilds">Travis then rebuilds the professional website with Nikola and includes the new HTML CV as a page</a>
 
 I'll now walk through the key parts of each step of the workflow:
 
 ### Edit CV
+<a name="editcv"></a>
 
 I am assuming you have a LaTeX CV to edit or a template your working from.  Feel free to use [my own](https://github.com/johntfoster/CV) and modify it in anyway you like to suit your own needs/preferences.  It's a good idea to ensure the CV builds locally first, I prefer to use `latexmk` for this.  The following `.latexmkrc` works for me both locally on Mac OS X as well as on the Linux Ubuntu machines that Travis CI utilizes.
 
@@ -38,6 +39,7 @@ I am assuming you have a LaTeX CV to edit or a template your working from.  Feel
 The `\\\def\\\ispdf{1}` part is because my `cv.tex` file has a definition statement in it that modifies the output slightly (regarding fonts) depending on whether you are requesting a PDF output or the HTML output.  The extra backslash characters are to escape correctly in the `bash` shell.  A default run of `latexmk` with this `.latexmkrc` file should create a PDF version of the CV.  While counter-intuitive, a run of `latexmk -pdf` will actually produce an HTML version of the CV, this is because the `pdflatex` command has actually been redefined to `htlatex` on the second line of the `.latexmkrc` file.  Even if the desire is to build an HTML version, `latexmk` must be run first to produce the correct cross-references and `.aux` file.
 
 ### Commit changes to local repository and push to GitHub
+<a name="commit"></a>
 
 There are so many great `git` and [GitHub](https://github.com) resources out there, I'm going to assume you know or can find out about basic `git` usage.  There is one important think to note for the *first* commit to GitHub.  You may run into problems if there is not an alternate branch of the repository for Travis to push the build results to.  You can create a branch with the following command:
 
@@ -62,6 +64,7 @@ git push origin master
 ````
 
 ### Travis builds CV in PDF and HTML versions
+<a name="builds"></a>
 
 You will need to enable Travis CI for your repository.  After signing into Travis via your GitHub username, you can add any public GitHub repository for free continuous integration services.  You can add a repository by clicking on the `+` arrow in the left-hand panel of Travis as shown
 
@@ -118,6 +121,7 @@ copy the result and add the final environment variable into your Travis settings
 
 
 ### Upon a successful build, Travis pushes new PDF and HTML versions to a branch on the CV repo
+<a name="push"></a>
 
 Now with the environment variables set, the last part of the `.travis.yml` file can be executed to publish the built PDF and HTML files to the `travis-build` branch.  
 
@@ -127,8 +131,9 @@ This issues a `git commit` with a message that includes the current Travis build
 
 
 ### Travis then triggers a rebuild of the professional website which is stored in it's own repo
+<a name="trigger"></a>
 
-The trigger is what occurs in the last two lines of the `.travis.yml` file.  First we have to install the Travis command line client on Travis via Ruby `gem`.  We are ensured that Ruby is installed by specifying `language: ruby` in the first line of `.travis.yml`.  Then we excute the trigger.  The entry following the `-r` option specifies the GitHub repository to trigger a Travis rebuild on, in this case `johntfoster/johntfoster-professional-website`.
+The trigger is what occurs in the last two lines of the `.travis.yml` file.  First we have to install the Travis command line client on Travis via Ruby `gem`.  We are ensured that Ruby is installed by specifying `language: ruby` in the first line of `.travis.yml`.  Then we excute the trigger.  The entry following the `-r` option specifies the GitHub repository to trigger a Travis rebuild on, in this case `johnfoster-pge-utexas/johnfoster-pge-utexas.github.io`.
 
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=30:32&footer=minimal"></script>
 
@@ -139,18 +144,19 @@ This completes the process of automatically having Travis build the CV and publi
 Because of the need to install all of the large LaTeX dependencies into the Travis Ubuntu image before compiling, this whole process takes about 10 minute on Travis, a little long to just compile a simple LaTeX file, but if one needs a speedy deployment the steps can always be completed manually.  Hopefully, one day Travis will consider adding a LaTeX image to their pre-installed language images.  This would likely cut down the compile time to only a minute or two at most.
 
 ### Travis then rebuilds the professional website with Nikola and includes the new HTML CV as a page
+<a name="rebuilds"></a>
 
-As mentioned earlier, I recently moved to the static site generator [Nikola](http://getnikola.com).  After many years using [Wordpress](http://www.wordpress.com),  I got tired of unnecessary database configurations (unnecessary because I mostly just had static pages) and the inability to edit posts in plain text.  After a little searching, and having a preference for a static blog site that was extendable through my favorite programming language Python, I narrowed it down to [Pelican](http://docs.getpelican.com/) and [Nikola](http://getnikola.com).  I experimented with each of them and decided on Nikola because I felt like the codebase was a little easier to understand in the case I would want to extend it in some way, and did not have the [Sphinx](http://sphinx-doc.org/) dependence that Pelican has.  There are several good tutorials on Nikola use, so I will not address this here; however, one nice feature of Nikola is that is has the ability to use the nascent [pandoc](http://johnmacfarlane.net/pandoc/) as a document compiler.  Pandoc's Markdown is a superset of standard markdown and is quite a bit more flexible than standard Markdown allowing you to mix standard Markdown, LaTeX math, and raw HTML markup.  Nikola doesn't require pandoc, but I would like the ability to use it, so we first need to install it as a dependency.  Pandoc is written in Haskell, so it would require several steps and a lengthy install, thankfully the guys at [RStudio](http://www.rstudio.com/) have a set of compiled binaries that will work when installed into Travis, these are what the first few lines of `.travis.yml` in the [`johntfoster-professional-website`](https://github.com/johntfoster/johntfoster-professional-website/) repository are doing.
+As mentioned earlier, I recently moved to the static site generator [Nikola](http://getnikola.com).  After many years using [Wordpress](http://www.wordpress.com),  I got tired of unnecessary database configurations (unnecessary because I mostly just had static pages) and the inability to edit posts in plain text.  After a little searching, and having a preference for a static blog site that was extendable through my favorite programming language Python, I narrowed it down to [Pelican](http://docs.getpelican.com/) and [Nikola](http://getnikola.com).  I experimented with each of them and decided on Nikola because I felt like the codebase was a little easier to understand in the case I would want to extend it in some way, and did not have the [Sphinx](http://sphinx-doc.org/) dependence that Pelican has.  There are several good tutorials on Nikola use, so I will not address this here; however, one nice feature of Nikola is that is has the ability to use the nascent [pandoc](http://johnmacfarlane.net/pandoc/) as a document compiler.  Pandoc's Markdown is a superset of standard markdown and is quite a bit more flexible than standard Markdown allowing you to mix standard Markdown, LaTeX math, and raw HTML markup.  Nikola doesn't require pandoc, but I would like the ability to use it, so we first need to install it as a dependency.  Pandoc is written in Haskell, so it would require several steps and a lengthy install, thankfully the guys at [RStudio](http://www.rstudio.com/) have a set of compiled binaries that will work when installed into Travis, these are what the first few lines of `.travis.yml` in the [`johnfoster-pge-utexas.github.io`](https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/) repository are doing.
 
-<script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/johntfoster-professional-website/blob/master/.travis.yml?slice=0:9&footer=minimal"></script>
+<script src="http://gist-it.sudarmuthu.com/https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/blob/master/.travis.yml?slice=0:9&footer=minimal"></script>
 
 Nikola can be installed via `pip` in Python.  Because I also want to keep the option open to blog in IPython, there are also IPython and all the scientific Python stack dependencies that need to be installed.  To install all of these dependencies we use a `requirements.txt` file.
 
-<script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/johntfoster-professional-website/blob/master/.travis.yml?slice=11:13&footer=minimal"></script>
+<script src="http://gist-it.sudarmuthu.com/https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/blob/master/.travis.yml?slice=11:13&footer=minimal"></script>
 
 Then we can build the website
 
-<script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/johntfoster-professional-website/blob/master/.travis.yml?slice=13&footer=minimal"></script>
+<script src="http://gist-it.sudarmuthu.com/https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/blob/master/.travis.yml?slice=13&footer=minimal"></script>
 
 In order to get the PDF and HTML versions of the CV that was built and posted earlier to show as a page in this website, I use a ReStructured Text format document which Nikola can compile, using the raw html directive
 
@@ -163,6 +169,6 @@ which produces [this page](http://johnfoster.pge.utexas.edu/cv/) when compiled b
 
 The last part of the `.travis.yml` is very similar to what was described previously for the CV, only now we push to a branch `gh-pages` because  we actually want GitHub to serve the website.  Details on using GitHub pages can be found [here](https://pages.github.com/).  The entire `.travis.yml` file is shown below.
 
-<script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/johntfoster-professional-website/blob/master/.travis.yml?footer=minimal"></script>
+<script src="http://gist-it.sudarmuthu.com/https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/blob/master/.travis.yml?footer=minimal"></script>
 
 After this file is run sucesfully by Travis, the website will be served on GitHub.  My site can be seen [here](http://johnfoster.pge.utexas.edu/).  The entire process from pushing a change on the CV, to the professional website being completely rebuilt and updated usually takes around 10-15 minutes.  Again, if there were ever a need to have an instant update, there is always the option to push the changes by hand.  Please feel free to use any or all of the tips/code presented in your own workflow.

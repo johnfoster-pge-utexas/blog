@@ -6,26 +6,26 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
   <loc>http://johntfoster.github.io/categories/github.xml</loc>
-  <lastmod>2014-12-27</lastmod>
+  <lastmod>2015-02-10</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/categories/latex.xml</loc>
-  <lastmod>2014-12-27</lastmod>
+  <lastmod>2015-02-10</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/categories/nikola.xml</loc>
-  <lastmod>2014-12-27</lastmod>
+  <lastmod>2015-02-10</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/categories/travis-ci.xml</loc>
-  <lastmod>2014-12-27</lastmod>
+  <lastmod>2015-02-10</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/rss.xml</loc>
-  <lastmod>2014-12-27</lastmod>
+  <lastmod>2015-02-10</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/sitemap.xml</loc>
-  <lastmod>2014-12-27</lastmod>
+  <lastmod>2015-02-10</lastmod>
  </sitemap>
 </sitemapindex>

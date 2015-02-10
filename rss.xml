@@ -1,5 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>from the shoulders of giants</title><link>http://johntfoster.github.io/</link><description>mechanics and the mechanics of coding</description><atom:link href="http://johntfoster.github.io/rss.xml" type="application/rss+xml" rel="self"></atom:link><language>en</language><lastBuildDate>Sat, 27 Dec 2014 21:38:05 GMT</lastBuildDate><generator>http://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Managing a professional website with Nikola, LaTeX, Github and Travis CI</title><link>http://johntfoster.github.io/posts/managing-a-professional-website.html</link><dc:creator>John T. Foster</dc:creator><description>&lt;!--
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>from the shoulders of giants</title><link>http://johntfoster.github.io/</link><description>mechanics and the mechanics of coding</description><atom:link href="http://johntfoster.github.io/rss.xml" type="application/rss+xml" rel="self"></atom:link><language>en</language><lastBuildDate>Tue, 10 Feb 2015 15:36:11 GMT</lastBuildDate><generator>http://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Discrete error and convergence</title><link>http://johntfoster.github.io/posts/discrete-error-and-convergence.html</link><dc:creator>John T. Foster</dc:creator><description>&lt;div tabindex="-1" id="notebook" class="border-box-sizing"&gt;
+    &lt;div class="container" id="notebook-container"&gt;
+
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;I was asked a question today about a typical way to present the error between a numerical scheme and an exact solution, and the convergence of the method.  I will demonstate one method that is typically used based on the $L_2$-norm of the error.&lt;/p&gt;
+&lt;p&gt;Consider the ODE&lt;/p&gt;
+&lt;p&gt;\begin{equation}
+\frac{\rm{d}x}{\rm{d}t} = x(t) \quad x(0) = 1
+\end{equation}&lt;/p&gt;
+&lt;p&gt;which has the analytic solution&lt;/p&gt;
+&lt;p&gt;\begin{equation}
+x(t) = {\rm e}^t
+\end{equation}&lt;/p&gt;
+&lt;p&gt;I'm too lazy to code up anything much more sophisticated, so let's use an backward-Euler explicit finite difference solution for $0 &amp;lt; t &amp;lt; 100$.  We'll write a function that computes the $L_2$ norm of the error between the discrete solution and the exact solution.  The formula for the norm is&lt;/p&gt;
+&lt;p&gt;$$
+\Vert error \Vert_{2} = \frac{1}{N} \sqrt{ \sum_{i=1}^N(discrete(x_i) - exact(x_i))^2}
+$$&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [2]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;finite_diff_solution_err&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;"""&lt;/span&gt;
+&lt;span class="sd"&gt;       Compute explicit finite difference solution and L2 error norm&lt;/span&gt;
+&lt;span class="sd"&gt;       &lt;/span&gt;
+&lt;span class="sd"&gt;       input: N - number of time steps&lt;/span&gt;
+&lt;span class="sd"&gt;       output: normed error&lt;/span&gt;
+&lt;span class="sd"&gt;    """&lt;/span&gt;
+    
+    &lt;span class="n"&gt;t&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linspace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;100.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    
+    &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros_like&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    
+    &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;arange&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    
+    &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mf"&gt;1.0&lt;/span&gt;
+    
+    &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;1.0&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:]&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    
+    &lt;span class="n"&gt;exact&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    
+    &lt;span class="n"&gt;err&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linalg&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;norm&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;exact&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;ord&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;N&lt;/span&gt;
+    
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;err&lt;/span&gt;     
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Now let's solve our problem for increasing degrees-of-freedom&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [3]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;dofs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;10000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;100000&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+
+&lt;span class="n"&gt;errs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;finite_diff_solution_err&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;dofs&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Finally, we plot the results as a function of step size $h$&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [4]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="k"&gt;matplotlib&lt;/span&gt; &lt;span class="n"&gt;inline&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;If we fit a straight line to the data, we get an estimate of the convergence rate of the method.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [24]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;coefs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;polyfit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log10&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;dofs&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log10&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;errs&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;coefs&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log10&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;dofs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;coefs&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loglog&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dofs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'b-'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loglog&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dofs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;errs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'b^'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xlabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"$\log_{10} h$"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ylabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"$\log_{10} \Vert error \Vert_{2}$"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[24]:&lt;/div&gt;
+
+
+&lt;div class="output_text output_subarea output_pyout"&gt;
+&lt;pre&gt;
+&amp;lt;matplotlib.text.Text at 0x10e3890b8&amp;gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+
+
+&lt;div class="output_png output_subarea "&gt;
+&lt;img src="data:image/png;base64,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"&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;The first term below is the slope of the least-square fit staight line.  So this method is roughly first order convergent.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [22]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;coefs&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[22]:&lt;/div&gt;
+
+
+&lt;div class="output_text output_subarea output_pyout"&gt;
+&lt;pre&gt;
+array([  0.95413387,  43.4637998 ])
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+</description><guid>http://johntfoster.github.io/posts/discrete-error-and-convergence.html</guid><pubDate>Tue, 10 Feb 2015 21:09:54 GMT</pubDate></item><item><title>Managing a professional website with Nikola, LaTeX, Github and Travis CI</title><link>http://johntfoster.github.io/posts/managing-a-professional-website.html</link><dc:creator>John T. Foster</dc:creator><description>&lt;!--
 .. title: Managing a professional website with Nikola, LaTeX, Github and Travis CI
 .. slug: managing-a-professional-website
 .. date: 2014-10-09 22:34:25 UTC-05:00

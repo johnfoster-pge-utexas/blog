@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns#
+article: http://ogp.me/ns/article#
+" lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Using Exodus.py to extract data from FEA database | from the shoulders of giants</title>
+
+                <link href="../assets/css/bitter.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/main.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+
+                <link rel="alternate" type="application/rss+xml" title="RSS" href="../rss.xml">
+
+      <link rel="canonical" href="http://johntfoster.github.io/posts/using-exoduspy-to-extract-data-from-fea-database.html">
+
+
+
+    
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+ tex2jax: {
+     inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+     displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
+ },
+ displayAlign: 'left', // Change this to 'center' to center equations.
+ "HTML-CSS": {
+     styles: {'.MathJax_Display': {"margin": 0}}
+ }
+});
+</script>
+
+        <!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]-->
+
+    
+
+    
+    <meta name="author" content="John T. Foster">
+        <meta property="og:site_name" content="from the shoulders of giants">
+    <meta property="og:title" content="Using Exodus.py to extract data from FEA database">
+    <meta property="og:url" content="http://johntfoster.github.io/posts/using-exoduspy-to-extract-data-from-fea-database.html">
+    <meta property="og:description" content="This post will briefly show how you can use the exodus.py script distributed with Trilinos to extract data directly from an Exodus database.  Exodus is a wrapper API on NetCDF that is specifically sui">
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2015-02-16T10:41:59-06:00">
+
+    
+    
+
+</head>
+<body>
+    <section class="social">
+        <ul>
+                    <li><a href="../index.html" title="Home"><i class="icon-home"></i></a></li>
+            <li><a href="http://johnfoster.pge.utexas.edu" title="About me"><i class="icon-user"></i></a></li>
+            <li><a href="https://github.com/johntfoster" title="My Github"><i class="icon-github"></i></a></li>
+            <li><a href="https://twitter.com/johntfoster" title="My Twitter"><i class="icon-twitter"></i></a></li>
+            <li><a href="../archive.html" title="Archives"><i class="icon-folder-open-alt"></i></a></li>
+            <li><a href="../categories/index.html" title="Tags"><i class="icon-tags"></i></a></li>
+            <li><a href="../rss.xml" title="RSS"><i class="icon-rss"></i></a></li>
+
+        </ul>
+    </section>
+    <section class="page-content">
+        <div class="content" rel="main">
+    <div class="post">
+        <h1 class="p-name entry-title" itemprop="headline name">Using Exodus.py to extract data from FEA database</h1>
+
+        <div class="meta">
+            <div class="authordate">
+                <time class="timeago" datetime="2015-02-16T10:41:59-06:00">2015-02-16 10:41</time>
+            
+                      |  
+        <a href="using-exoduspy-to-extract-data-from-fea-database.ipynb" id="sourcelink">Source</a>
+
+            </div>
+            
+        </div>
+        <div class="body">
+            <div tabindex="-1" id="notebook" class="border-box-sizing">
+    <div class="container" id="notebook-container">
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This post will briefly show how you can use the <code>exodus.py</code> script distributed with <a href="http://trilinos.org">Trilinos</a> to extract data directly from an Exodus database.  Exodus is a wrapper API on NetCDF that is specifically suited for finite element data.  That is, it defines variables on nodes, elements, blocks of elements, sets of nodes, etc.  The Exodus API is provided in both C and Fortran, <code>exodus.py</code> uses <code>ctypes</code> to call into the compiled Exodus C library. </p>
+<p>First, I need to rearrange my install environment a little because <code>exodus.py</code> expects the NetCDF and Exodus compiled dynamic libraries to be in the same directory. On my machine they are not, so I will just create some symbolic links.  It also expects the Exodus include file to be in a folder labeled <code>inc</code>, but on my machine it is labeled <code>include</code> so again, I will just create some symbolic links.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre>%%bash
+ln -sf /usr/local/netcdf/lib/libnetcdf.dylib /usr/local/trilinos/lib/.
+ln -sf /usr/local/trilinos/include /usr/local/trilinos/inc
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If your /usr/local is not writable, you may need to use <code>sudo</code> to create the links.  Also, I am on Mac OSX where dynamic libraries have a <code>.dylib</code> file extension.  If you use Linux, you will need to change <code>.dylib</code> above to <code>.so</code>.</p>
+<p>We also need to add the path of <code>exodus.py</code> to the active <code>PYTHONPATH</code>.  We can do this from within the IPython session.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">'/usr/local/trilinos/bin'</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we can load the <code>exodus</code> class from <code>exodus.py</code> and instantiate a file object with a given filename.  I will use the <code>ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h</code> Exodus history database that is output from the <a href="http://peridigm.sandia.gov"><em>Peridigm</em></a> verification test of the same name.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">exodus</span> <span class="kn">import</span> <span class="n">exodus</span>
+
+<span class="n">e</span> <span class="o">=</span> <span class="n">exodus</span><span class="p">(</span><span class="s">'ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h'</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">array_type</span><span class="o">=</span><span class="s">'numpy'</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+You are using exodus.py v 1.02 (beta), a python wrapper of some of the exodus II library.
+Copyright (c) 2013,2014 Sandia Corporation. Under the terms of Contract DE-AC04-94AL85000
+with Sandia Corporation, the U.S. Government retains certain rights in this software.
+
+Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we'll use the API calls to extract the data.  First we'll get the time step values.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="n">time_steps</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">get_times</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we can print the global variable names.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">get_global_variable_names</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[5]:</div>
+
+
+<div class="output_text output_subarea output_pyout">
+<pre>
+['Max_Von_Mises_Stress', 'Min_Von_Mises_Stress']
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And use the global variable names to extract the data from the database.  Since we used <code>array_type='numpy'</code> when we instantiated the file object above.  The data is stored in numpy arrays.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="n">vm_max</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">get_global_variable_values</span><span class="p">(</span><span class="s">'Max_Von_Mises_Stress'</span><span class="p">)</span>
+<span class="n">vm_min</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">get_global_variable_values</span><span class="p">(</span><span class="s">'Min_Von_Mises_Stress'</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Because in this example test we load at a constant strain-rate, we can easily convert the time-steps to engineering strain.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="n">eng_strain_Y</span> <span class="o">=</span> <span class="n">time_steps</span> <span class="o">*</span> <span class="mf">0.001</span> <span class="o">/</span> <span class="mf">1.0e-8</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we can create a stress-strain curve</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="o">%</span><span class="k">matplotlib</span> <span class="n">inline</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">eng_strain_Y</span><span class="p">,</span> <span class="n">vm_max</span><span class="p">,</span> <span class="n">eng_strain_Y</span><span class="p">,</span> <span class="n">vm_min</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">"Max/Min von Mises Stress"</span><span class="p">);</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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">
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I don't want the symbolic links I created earlier to cause any unexpected trouble for me later, so I will remove them.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre>%%bash
+rm /usr/local/trilinos/lib/libnetcdf.dylib
+rm /usr/local/trilinos/inc
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+    </div>
+  </div>
+
+        </div>
+                <ul class="pager">
+            <li class="previous">
+                <a href="discrete-error-and-convergence.html" rel="prev" title="Discrete error and convergence">Previous post</a>
+            </li>
+        </ul>
+
+                            <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="johntfoster",
+            disqus_url="http://johntfoster.github.io/posts/using-exoduspy-to-extract-data-from-fea-database.html",
+        disqus_title="Using Exodus.py to extract data from FEA database",
+        disqus_identifier="cache/posts/using-exoduspy-to-extract-data-from-fea-database.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="//disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+    </div>
+                    <footer id="footer" role="contentinfo">
+            <p>Contents © 2015         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
+            
+        </footer>
+
+        </div>
+    </section>
+    
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+   ga('create', 'UA-25324596-7', 'auto');
+   ga('send', 'pageview');
+</script>
+
+    
+                <script src="../assets/js/jquery-1.10.2.min.js" type="text/javascript"></script>
+            <script src="../assets/js/jquery.timeago.js" type="text/javascript"></script>
+        <script src="../assets/js/mathjax.js" type="text/javascript"></script>
+    
+<!-- Social buttons -->
+<div id="addthisbox" class="addthis_toolbox addthis_peekaboo_style addthis_default_style addthis_label_style addthis_32x32_style">
+<a class="addthis_button_more">Share</a>
+<ul>
+<li>
+<a class="addthis_button_facebook"></a>
+</li>
+<li>
+<a class="addthis_button_google_plusone_share"></a>
+</li>
+<li>
+<a class="addthis_button_linkedin"></a>
+</li>
+<li>
+<a class="addthis_button_twitter"></a>
+</li>
+</ul>
+</div>
+<script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f7088a56bb93798"></script>
+<!-- End of social buttons -->
+
+
+        <script type="text/javascript">
+            $(function(){
+                $('.timeago').timeago();
+            });
+        </script>
+</body>
+</html>

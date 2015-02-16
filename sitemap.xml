@@ -10,7 +10,7 @@
  </url>
  <url>
   <loc>http://johntfoster.github.io/2015/index.html</loc>
-  <lastmod>2015-02-10</lastmod>
+  <lastmod>2015-02-16</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/archive.html</loc>
@@ -38,14 +38,18 @@
  </url>
  <url>
   <loc>http://johntfoster.github.io/index.html</loc>
-  <lastmod>2015-02-11</lastmod>
+  <lastmod>2015-02-16</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/posts/discrete-error-and-convergence.html</loc>
-  <lastmod>2015-02-11</lastmod>
+  <lastmod>2015-02-16</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/posts/managing-a-professional-website.html</loc>
   <lastmod>2015-02-10</lastmod>
+ </url>
+ <url>
+  <loc>http://johntfoster.github.io/posts/using-exoduspy-to-extract-data-from-fea-database.html</loc>
+  <lastmod>2015-02-16</lastmod>
  </url>
 </urlset>

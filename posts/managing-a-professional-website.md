@@ -133,7 +133,7 @@ This issues a `git commit` with a message that includes the current Travis build
 ### Travis then triggers a rebuild of the professional website which is stored in it's own repo
 <a name="trigger"></a>
 
-The trigger is what occurs in the last two lines of the `.travis.yml` file.  First we have to install the Travis command line client on Travis via Ruby `gem`.  We are ensured that Ruby is installed by specifying `language: ruby` in the first line of `.travis.yml`.  Then we excute the trigger.  The entry following the `-r` option specifies the GitHub repository to trigger a Travis rebuild on, in this case `johnfoster-pge-utexas/johnfoster-pge-utexas.github.io`.
+The trigger is what occurs in the last two lines of the `.travis.yml` file.  First we have to install the Travis command line client on Travis via Ruby `gem`.  We are ensured that Ruby is installed by specifying `language: ruby` in the first line of `.travis.yml`.  Then we execute the trigger.  The entry following the `-r` option specifies the GitHub repository to trigger a Travis rebuild on, in this case `johnfoster-pge-utexas/johnfoster-pge-utexas.github.io`.
 
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=30:32&footer=minimal"></script>
 
@@ -171,4 +171,4 @@ The last part of the `.travis.yml` is very similar to what was described previou
 
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/blob/master/.travis.yml?footer=minimal"></script>
 
-After this file is run sucesfully by Travis, the website will be served on GitHub.  My site can be seen [here](http://johnfoster.pge.utexas.edu/).  The entire process from pushing a change on the CV, to the professional website being completely rebuilt and updated usually takes around 10-15 minutes.  Again, if there were ever a need to have an instant update, there is always the option to push the changes by hand.  Please feel free to use any or all of the tips/code presented in your own workflow.
+After this file is run successfully by Travis, the website will be served on GitHub.  My site can be seen [here](http://johnfoster.pge.utexas.edu/).  The entire process from pushing a change on the CV, to the professional website being completely rebuilt and updated usually takes around 10-15 minutes.  Again, if there were ever a need to have an instant update, there is always the option to push the changes by hand.  Please feel free to use any or all of the tips/code presented in your own workflow.

@@ -201,6 +201,7 @@ COMPILERS = {
     "pandoc": ('.md',),
 }
 
+
 # Create by default posts in one file format?
 # Set to False for two-file posts, with separate metadata.
 # ONE_FILE_POSTS = True
@@ -788,3 +789,4 @@ NAVIGATION_LINKS = {
 # Put in global_context things you want available on all your templates.
 # It can be anything, data, functions, modules, etc.
 GLOBAL_CONTEXT = {}
+WRITE_TAG_CLOUD = {}

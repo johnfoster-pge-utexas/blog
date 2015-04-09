@@ -80,7 +80,7 @@ Upon committing, Travis reads the `travis.yml` file in the repository and perfor
 
 Once all of the dependencies are installed, Travis will build both the PDF and HTML versions of the CV with
 
-<script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=17:20&footer=minimal"></script>
+<script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=17:19&footer=minimal"></script>
 
 After a successful build, Travis will clone the previously created `travis-build` branch, copy the newly created PDF and HTML files into this branch, commit them, and push them back to GitHub.  This requires setting up a few environment variables, that can be added to the Travis project page.  The variables are `GIT_EMAIL`, `GIT_NAME`, `GH_TOKEN`, and `TRAVIS_TOKEN`.  The first two just correspond to basic `git` configuration and are really just used to store the information of the person who make the commit in the `git` history.  Since it's actually Travis making the commit, I just define the variables as
 
@@ -125,7 +125,7 @@ copy the result and add the final environment variable into your Travis settings
 
 Now with the environment variables set, the last part of the `.travis.yml` file can be executed to publish the built PDF and HTML files to the `travis-build` branch.  
 
-<script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=22:30&footer=minimal"></script>
+<script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=22:29&footer=minimal"></script>
 
 This issues a `git commit` with a message that includes the current Travis build number via the default `${TRAVIS_BUILD_NUMBER}` environment variable. The `${GH_TOKEN}` environment variable establishes the ability to push back to `origin`, i.e. GitHub without an explicit login.
 

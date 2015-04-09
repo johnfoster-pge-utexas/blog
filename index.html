@@ -658,7 +658,7 @@ git push origin master
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=0:16&amp;footer=minimal"></script>
 
 <p>Once all of the dependencies are installed, Travis will build both the PDF and HTML versions of the CV with</p>
-<script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=17:20&amp;footer=minimal"></script>
+<script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=17:19&amp;footer=minimal"></script>
 
 <p>After a successful build, Travis will clone the previously created <code>travis-build</code> branch, copy the newly created PDF and HTML files into this branch, commit them, and push them back to GitHub.  This requires setting up a few environment variables, that can be added to the Travis project page.  The variables are <code>GIT_EMAIL</code>, <code>GIT_NAME</code>, <code>GH_TOKEN</code>, and <code>TRAVIS_TOKEN</code>.  The first two just correspond to basic <code>git</code> configuration and are really just used to store the information of the person who make the commit in the <code>git</code> history.  Since it's actually Travis making the commit, I just define the variables as</p>
 <pre class="code literal-block">GIT_NAME="Travis CI"
@@ -688,7 +688,7 @@ GIT_EMAIL=travis-ci@travis.org
 <h4>Upon a successful build, Travis pushes new PDF and HTML versions to a branch on the CV repo</h4>
 <p><a name="push"></a></p>
 <p>Now with the environment variables set, the last part of the <code>.travis.yml</code> file can be executed to publish the built PDF and HTML files to the <code>travis-build</code> branch.  </p>
-<script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=22:30&amp;footer=minimal"></script>
+<script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=22:29&amp;footer=minimal"></script>
 
 <p>This issues a <code>git commit</code> with a message that includes the current Travis build number via the default <code>${TRAVIS_BUILD_NUMBER}</code> environment variable. The <code>${GH_TOKEN}</code> environment variable establishes the ability to push back to <code>origin</code>, i.e. GitHub without an explicit login.</p>
 <h4>Travis then triggers a rebuild of the professional website which is stored in it's own repo</h4>

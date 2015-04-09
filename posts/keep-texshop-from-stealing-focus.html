@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns#
+article: http://ogp.me/ns/article#
+" lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Prevent TeXShop from stealing focus from an external editor | from the shoulders of giants</title>
+
+                <link href="../assets/css/bitter.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/main.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+
+                <link rel="alternate" type="application/rss+xml" title="RSS" href="../rss.xml">
+
+      <link rel="canonical" href="http://johntfoster.github.io/posts/keep-texshop-from-stealing-focus.html">
+
+
+
+    
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+ tex2jax: {
+     inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+     displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
+ },
+ displayAlign: 'left', // Change this to 'center' to center equations.
+ "HTML-CSS": {
+     styles: {'.MathJax_Display': {"margin": 0}}
+ }
+});
+</script>
+
+        <!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]-->
+
+    
+
+    
+    <meta name="author" content="John T. Foster">
+        <meta property="og:site_name" content="from the shoulders of giants">
+    <meta property="og:title" content="Prevent TeXShop from stealing focus from an external editor">
+    <meta property="og:url" content="http://johntfoster.github.io/posts/keep-texshop-from-stealing-focus.html">
+    <meta property="og:description" content="I use Vim as my editor of choice for nearly all text editing activities including writing LaTeX documents.  My usual workflow is to use a split window setup with tmux and run latexmk -pvc on my LaTeX ">
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2015-04-08T21:44:25-05:00">
+           <meta property="article:tag" content="LaTeX">
+           <meta property="article:tag" content="TeXShop">
+
+    
+    
+
+</head>
+<body>
+    <section class="social">
+        <ul>
+                    <li><a href="../index.html" title="Home"><i class="icon-home"></i></a></li>
+            <li><a href="http://johnfoster.pge.utexas.edu" title="About me"><i class="icon-user"></i></a></li>
+            <li><a href="https://github.com/johntfoster" title="My Github"><i class="icon-github"></i></a></li>
+            <li><a href="https://twitter.com/johntfoster" title="My Twitter"><i class="icon-twitter"></i></a></li>
+            <li><a href="../archive.html" title="Archives"><i class="icon-folder-open-alt"></i></a></li>
+            <li><a href="../categories/index.html" title="Tags"><i class="icon-tags"></i></a></li>
+            <li><a href="../rss.xml" title="RSS"><i class="icon-rss"></i></a></li>
+
+        </ul>
+    </section>
+    <section class="page-content">
+        <div class="content" rel="main">
+    <div class="post">
+        <h1 class="p-name entry-title" itemprop="headline name">Prevent TeXShop from stealing focus from an external editor</h1>
+
+        <div class="meta">
+            <div class="authordate">
+                <time class="timeago" datetime="2015-04-08T21:44:25-05:00">2015-04-08 21:44</time>
+            
+                      |  
+        <a href="keep-texshop-from-stealing-focus.md" id="sourcelink">Source</a>
+
+            </div>
+                    <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="../categories/latex.html" rel="tag">LaTeX</a></li>
+           <li><a class="tag p-category" href="../categories/texshop.html" rel="tag">TeXShop</a></li>
+        </ul>
+        </div>
+
+        </div>
+        <div class="body">
+            <div>
+<p>I use <a href="http://www.vim.org/">Vim</a> as my editor of choice for nearly all text editing activities including writing LaTeX documents.  My usual workflow is to use a split window setup with <code>tmux</code> and run <code>latexmk -pvc</code> on my LaTeX file in one split-pane while editing the source file in the other split-pane.  If your not familiar with <code>latexmk</code> it is a Perl script that, in a smart way, using minimal number of compile runs, keeps your LaTeX document output up-to-date with the correct cross-references, citations, etc.  The <code>-pvc</code> option keeps it running in the background and recompiles with a detected change in <em>any</em> of the project files.  I then use <a href="http://pages.uoregon.edu/koch/texshop/">TeXShop</a> as a PDF viewer because it has the nice ability to detect changes to the PDF output and autoupdate.  Mac OS X's built-in Preview will do this as well, but you must click the window to enable the refresh.  However, by default, TeXShop will steal focus from the editor window.  This is annoying causing me to click or Command-Tab back to the Terminal to continue typing.  I found a fix in a <a href="http://tex.stackexchange.com/questions/43057/macosx-pdf-viewer-automatic-reload-on-file-modification">comment on Stack Exchange</a>.  If you type</p>
+<pre class="code literal-block">defaults write TeXShop BringPdfFrontOnAutomaticUpdate NO
+</pre>
+
+
+<p>in the Terminal window this will disable the focus-stealing behavior and leave the window in the background so that it doesn't disrupt continuous editing.</p>
+</div>
+        </div>
+                <ul class="pager">
+            <li class="previous">
+                <a href="using-exoduspy-to-extract-data-from-fea-database.html" rel="prev" title="Using Exodus.py to extract data from FEA database">Previous post</a>
+            </li>
+        </ul>
+
+                            <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="johntfoster",
+            disqus_url="http://johntfoster.github.io/posts/keep-texshop-from-stealing-focus.html",
+        disqus_title="Prevent TeXShop from stealing focus from an external editor",
+        disqus_identifier="cache/posts/keep-texshop-from-stealing-focus.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="//disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+    </div>
+                    <footer id="footer" role="contentinfo">
+            <p>Contents © 2015         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
+            
+        </footer>
+
+        </div>
+    </section>
+    
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+   ga('create', 'UA-25324596-7', 'auto');
+   ga('send', 'pageview');
+</script>
+
+    
+                <script src="../assets/js/jquery-1.10.2.min.js" type="text/javascript"></script>
+            <script src="../assets/js/jquery.timeago.js" type="text/javascript"></script>
+        <script src="../assets/js/mathjax.js" type="text/javascript"></script>
+    
+<!-- Social buttons -->
+<div id="addthisbox" class="addthis_toolbox addthis_peekaboo_style addthis_default_style addthis_label_style addthis_32x32_style">
+<a class="addthis_button_more">Share</a>
+<ul>
+<li>
+<a class="addthis_button_facebook"></a>
+</li>
+<li>
+<a class="addthis_button_google_plusone_share"></a>
+</li>
+<li>
+<a class="addthis_button_linkedin"></a>
+</li>
+<li>
+<a class="addthis_button_twitter"></a>
+</li>
+</ul>
+</div>
+<script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f7088a56bb93798"></script>
+<!-- End of social buttons -->
+
+
+        <script type="text/javascript">
+            $(function(){
+                $('.timeago').timeago();
+            });
+        </script>
+</body>
+</html>

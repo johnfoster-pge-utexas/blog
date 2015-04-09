@@ -91,17 +91,16 @@ MathJax.Hub.Config({
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>I was asked a question today about a typical way to present the error between a numerical scheme and an exact solution, and the convergence of the method.  I will demonstate one method that is typically used based on the $L_2$-norm of the error.</p>
 <p>Consider the ODE</p>
-<p>\begin{equation}
+\begin{equation}
 \frac{\rm{d}x}{\rm{d}t} = x(t) \quad x(0) = 1
-\end{equation}</p>
-<p>which has the analytic solution</p>
-<p>\begin{equation}
+\end{equation}<p>which has the analytic solution</p>
+\begin{equation}
 x(t) = {\rm e}^t
-\end{equation}</p>
-<p>I'm too lazy to code up anything much more sophisticated, so let's use an Euler explicit finite difference solution for $0 &lt; t &lt; 100$.  We'll write a function that computes the $L_2$ norm of the error between the discrete solution and the exact solution.  The formula for the norm is</p>
-<p>$$
+\end{equation}<p>I'm too lazy to code up anything much more sophisticated, so let's use an Euler explicit finite difference solution for $0 
+$$
 \Vert error \Vert_{L_2} = \sqrt{ \frac{1}{N} \sum_{i=1}^N(discrete(x_i) - exact(x_i))^2}
-$$</p>
+$$
+</p>
 </div>
 </div>
 </div>
@@ -110,7 +109,7 @@ $$</p>
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="k">def</span> <span class="nf">finite_diff_solution_err</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
     <span class="sd">"""</span>
@@ -148,6 +147,7 @@ $$</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now let's solve our problem for increasing degrees-of-freedom</p>
+
 </div>
 </div>
 </div>
@@ -156,7 +156,7 @@ $$</p>
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight"><pre><span class="n">dofs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">100000</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">dofs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">100000</span><span class="p">])</span>
 
 <span class="n">errs</span> <span class="o">=</span> <span class="p">[</span><span class="n">finite_diff_solution_err</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dofs</span><span class="p">]</span>
 </pre></div>
@@ -172,6 +172,7 @@ $$</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, we plot the results as a function of step size $h$.  If we fit a straight line to the data, we get an estimate of the convergence rate of the method, so we'll do that as well.</p>
+
 </div>
 </div>
 </div>
@@ -180,8 +181,8 @@ $$</p>
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight"><pre><span class="o">%</span><span class="k">matplotlib</span> <span class="n">inline</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class=" highlight hl-ipython3"><pre><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="c">#Fit a straight line</span>
 <span class="n">coefs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">dofs</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">errs</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
@@ -221,6 +222,7 @@ $$</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The first term below is the slope of the least-square fit staight line which shows the convergence rate.</p>
+
 </div>
 </div>
 </div>
@@ -229,7 +231,7 @@ $$</p>
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight"><pre><span class="n">coefs</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">coefs</span>
 </pre></div>
 
 </div>
@@ -244,10 +246,8 @@ $$</p>
 <div class="prompt output_prompt">Out[4]:</div>
 
 
-<div class="output_text output_subarea output_pyout">
-<pre>
-array([  0.45172826,  43.45975537])
-</pre>
+<div class="output_text output_subarea output_execute_result">
+<pre>array([  0.45172826,  43.45975537])</pre>
 </div>
 
 </div>

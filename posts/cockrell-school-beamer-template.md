@@ -18,7 +18,7 @@ I have many reasons for disliking PowerPoint that I will not go into here, but I
 
 The repository can be found cloned with `git` with the following command:
 
-````
+````bash
 git clone git@github.com:johntfoster/cockrell-school-latex-beamer-template
 ````
 

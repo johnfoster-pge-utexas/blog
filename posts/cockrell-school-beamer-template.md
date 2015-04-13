@@ -26,7 +26,7 @@ it can also be found on [GitHub](https://github.com/johntfoster/cockrell-school-
 
 
 
-You can also download a zip archive of the files : [zip Archive](https://github.com/johntfoster/cockrell-school-latex-beamer-template/archive/master.zip)
+You can also download a zip archive of the files : [cockrell-school-latex-beamer-template-master.zip](https://github.com/johntfoster/cockrell-school-latex-beamer-template/archive/master.zip)
 
 
 

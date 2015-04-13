@@ -6,7 +6,7 @@ article: http://ogp.me/ns/article#
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>Prevent TeXShop from stealing focus from an external editor | from the shoulders of giants</title>
+    <title>A LaTeX Beamer template/theme for the Cockrell School of Engineering | from the shoulders of giants</title>
 
                 <link href="../assets/css/bitter.css" rel="stylesheet" type="text/css">
         <link href="../assets/css/main.css" rel="stylesheet" type="text/css">
@@ -17,7 +17,7 @@ article: http://ogp.me/ns/article#
 
                 <link rel="alternate" type="application/rss+xml" title="RSS" href="../rss.xml">
 
-      <link rel="canonical" href="http://johntfoster.github.io/posts/keep-texshop-from-stealing-focus.html">
+      <link rel="canonical" href="http://johntfoster.github.io/posts/cockrell-school-beamer-template.html">
 
 
 
@@ -42,13 +42,17 @@ MathJax.Hub.Config({
     
     <meta name="author" content="John T. Foster">
         <meta property="og:site_name" content="from the shoulders of giants">
-    <meta property="og:title" content="Prevent TeXShop from stealing focus from an external editor">
-    <meta property="og:url" content="http://johntfoster.github.io/posts/keep-texshop-from-stealing-focus.html">
-    <meta property="og:description" content="I use Vim as my editor of choice for nearly all text editing activities including writing LaTeX documents.  My usual workflow is to use a split window setup with tmux and run latexmk -pvc on my LaTeX ">
+    <meta property="og:title" content="A LaTeX Beamer template/theme for the Cockrell School of Engineering">
+    <meta property="og:url" content="http://johntfoster.github.io/posts/cockrell-school-beamer-template.html">
+    <meta property="og:description" content="This post is mainly aimed at my colleagues (and students) in the Cockrell School of Engineering at The University of Texas at Austin.  As you may have gathered from other posts on this blog, I am a hu">
     <meta property="og:type" content="article">
-    <meta property="article:published_time" content="2015-04-08T21:44:25-05:00">
+    <meta property="article:published_time" content="2015-04-12T21:44:25-05:00">
+           <meta property="article:tag" content="Beamer">
+           <meta property="article:tag" content="Cockrell School">
            <meta property="article:tag" content="LaTeX">
-           <meta property="article:tag" content="TeXShop">
+           <meta property="article:tag" content="PowerPoint">
+           <meta property="article:tag" content="theme">
+           <meta property="article:tag" content="UT">
 
     
     
@@ -70,50 +74,56 @@ MathJax.Hub.Config({
     <section class="page-content">
         <div class="content" rel="main">
     <div class="post">
-        <h1 class="p-name entry-title" itemprop="headline name">Prevent TeXShop from stealing focus from an external editor</h1>
+        <h1 class="p-name entry-title" itemprop="headline name">A LaTeX Beamer template/theme for the Cockrell School of Engineering</h1>
 
         <div class="meta">
             <div class="authordate">
-                <time class="timeago" datetime="2015-04-08T21:44:25-05:00">2015-04-08 21:44</time>
+                <time class="timeago" datetime="2015-04-12T21:44:25-05:00">2015-04-12 21:44</time>
             
                       |  
-        <a href="keep-texshop-from-stealing-focus.md" id="sourcelink">Source</a>
+        <a href="cockrell-school-beamer-template.md" id="sourcelink">Source</a>
 
             </div>
                     <div itemprop="keywords" class="tags">
         <ul>
         Tags : 
+           <li><a class="tag p-category" href="../categories/beamer.html" rel="tag">Beamer</a></li>
+           <li><a class="tag p-category" href="../categories/cockrell-school.html" rel="tag">Cockrell School</a></li>
            <li><a class="tag p-category" href="../categories/latex.html" rel="tag">LaTeX</a></li>
-           <li><a class="tag p-category" href="../categories/texshop.html" rel="tag">TeXShop</a></li>
+           <li><a class="tag p-category" href="../categories/powerpoint.html" rel="tag">PowerPoint</a></li>
+           <li><a class="tag p-category" href="../categories/theme.html" rel="tag">theme</a></li>
+           <li><a class="tag p-category" href="../categories/ut.html" rel="tag">UT</a></li>
         </ul>
         </div>
 
         </div>
         <div class="body">
             <div>
-<p>I use <a href="http://www.vim.org/">Vim</a> as my editor of choice for nearly all text editing activities including writing LaTeX documents.  My usual workflow is to use a split window setup with <code>tmux</code> and run <code>latexmk -pvc</code> on my LaTeX file in one split-pane while editing the source file in the other split-pane.  If your not familiar with <code>latexmk</code> it is a Perl script that, in a smart way, using minimal number of compile runs, keeps your LaTeX document output up-to-date with the correct cross-references, citations, etc.  The <code>-pvc</code> option keeps it running in the background and recompiles with a detected change in <em>any</em> of the project files.  I then use <a href="http://pages.uoregon.edu/koch/texshop/">TeXShop</a> as a PDF viewer because it has the nice ability to detect changes to the PDF output and autoupdate.  Mac OS X's built-in Preview will do this as well, but you must click the window to enable the refresh.  However, by default, TeXShop will steal focus from the editor window.  This is annoying causing me to click or Command-Tab back to the Terminal to continue typing.  I found a fix in a <a href="http://tex.stackexchange.com/questions/43057/macosx-pdf-viewer-automatic-reload-on-file-modification">comment on Stack Exchange</a>.  If you type</p>
-<pre class="code literal-block">defaults write TeXShop BringPdfFrontOnAutomaticUpdate NO
+<p>This post is mainly aimed at my colleagues (and students) in the Cockrell School of Engineering at <a href="http://www.utexas.edu">The University of Texas at Austin</a>.  As you may have gathered from other posts on this blog, I am a huge fan of <a href="http://www.latex-project.org/">LaTeX</a> for typesetting documents.  Recently, I had to give a talk within the <a href="http://pge.utexas.edu">Department</a> and was asked polietly by our Communications Coordinator to use a provided MS PowerPoint template that conforms to the <a href="http://www.engr.utexas.edu/communications/visualguidelines">Visual Style Guide</a> of the <a href="http://engr.utexas.edu">Cockrell School of Engineering</a>. </p>
+<p>I have many reasons for disliking PowerPoint that I will not go into here, but I have avoided using it at all costs for several years now, and did not want to start now.  I also have an appreciation for branding and respect the desire to project a uniform brand from the Departments/School.  My solution was to create my own LaTeX Beamer presentation style that replicates the Cockrell School PowerPoint as close as possible.  I hacked it together relatively quickly for my talk which I delivered last week, but decided over the weekend to put together something a little more robust to share with my colleagues in the Cockrell School.  The style file accepts arguments to input different department names and has some nice features for using BibTeX citations within the presentation.</p>
+<p>The repository can be found cloned with <code>git</code> with the following command:</p>
+<pre class="code literal-block">git@github.com:johntfoster/cockrell-school-latex-beamer-template.git
 </pre>
 
 
-<p>in the Terminal window this will disable the focus-stealing behavior and leave the window in the background so that it doesn't disrupt continuous editing.</p>
+<p>it can also be found on <a href="https://github.com/johntfoster/cockrell-school-latex-beamer-template">GitHub</a>. Feel free to fork it and extend it as you see fit.  If you find any errors or add useful extensions, please send pull-requests.</p>
+<p>You can also download a zip archive of the files : <a href="https://github.com/johntfoster/cockrell-school-latex-beamer-template/archive/master.zip">zip Archive</a></p>
+<p>An example of the PDF output results are shown below:</p>
+<p><img src="../files/presentation.gif" width="500"></p>
 </div>
         </div>
                 <ul class="pager">
             <li class="previous">
-                <a href="using-exoduspy-to-extract-data-from-fea-database.html" rel="prev" title="Using Exodus.py to extract data from FEA database">Previous post</a>
-            </li>
-            <li class="next">
-                <a href="cockrell-school-beamer-template.html" rel="next" title="A LaTeX Beamer template/theme for the Cockrell School of Engineering">Next post</a>
+                <a href="keep-texshop-from-stealing-focus.html" rel="prev" title="Prevent TeXShop from stealing focus from an external editor">Previous post</a>
             </li>
         </ul>
 
                             <div id="disqus_thread"></div>
         <script>
         var disqus_shortname ="johntfoster",
-            disqus_url="http://johntfoster.github.io/posts/keep-texshop-from-stealing-focus.html",
-        disqus_title="Prevent TeXShop from stealing focus from an external editor",
-        disqus_identifier="cache/posts/keep-texshop-from-stealing-focus.html",
+            disqus_url="http://johntfoster.github.io/posts/cockrell-school-beamer-template.html",
+        disqus_title="A LaTeX Beamer template/theme for the Cockrell School of Engineering",
+        disqus_identifier="cache/posts/cockrell-school-beamer-template.html",
         disqus_config = function () {
             this.language = "en";
         };

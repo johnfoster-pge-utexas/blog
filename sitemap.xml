@@ -6,58 +6,82 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>http://johntfoster.github.io/2014/index.html</loc>
-  <lastmod>2015-04-08</lastmod>
+  <lastmod>2015-04-13</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/2015/index.html</loc>
-  <lastmod>2015-04-08</lastmod>
+  <lastmod>2015-04-13</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/archive.html</loc>
-  <lastmod>2015-04-08</lastmod>
+  <lastmod>2015-04-13</lastmod>
+ </url>
+ <url>
+  <loc>http://johntfoster.github.io/categories/beamer.html</loc>
+  <lastmod>2015-04-13</lastmod>
+ </url>
+ <url>
+  <loc>http://johntfoster.github.io/categories/cockrell-school.html</loc>
+  <lastmod>2015-04-13</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/github.html</loc>
-  <lastmod>2015-04-09</lastmod>
+  <lastmod>2015-04-13</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/index.html</loc>
-  <lastmod>2015-04-08</lastmod>
+  <lastmod>2015-04-13</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/latex.html</loc>
-  <lastmod>2015-04-09</lastmod>
+  <lastmod>2015-04-13</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/nikola.html</loc>
-  <lastmod>2015-04-09</lastmod>
+  <lastmod>2015-04-13</lastmod>
+ </url>
+ <url>
+  <loc>http://johntfoster.github.io/categories/powerpoint.html</loc>
+  <lastmod>2015-04-13</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/texshop.html</loc>
-  <lastmod>2015-04-08</lastmod>
+  <lastmod>2015-04-13</lastmod>
+ </url>
+ <url>
+  <loc>http://johntfoster.github.io/categories/theme.html</loc>
+  <lastmod>2015-04-13</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/travis-ci.html</loc>
-  <lastmod>2015-04-09</lastmod>
+  <lastmod>2015-04-13</lastmod>
+ </url>
+ <url>
+  <loc>http://johntfoster.github.io/categories/ut.html</loc>
+  <lastmod>2015-04-13</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/index.html</loc>
-  <lastmod>2015-04-09</lastmod>
+  <lastmod>2015-04-13</lastmod>
+ </url>
+ <url>
+  <loc>http://johntfoster.github.io/posts/cockrell-school-beamer-template.html</loc>
+  <lastmod>2015-04-13</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/posts/discrete-error-and-convergence.html</loc>
-  <lastmod>2015-04-08</lastmod>
+  <lastmod>2015-04-13</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/posts/keep-texshop-from-stealing-focus.html</loc>
-  <lastmod>2015-04-08</lastmod>
+  <lastmod>2015-04-13</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/posts/managing-a-professional-website.html</loc>
-  <lastmod>2015-04-09</lastmod>
+  <lastmod>2015-04-13</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/posts/using-exoduspy-to-extract-data-from-fea-database.html</loc>
-  <lastmod>2015-04-08</lastmod>
+  <lastmod>2015-04-13</lastmod>
  </url>
 </urlset>

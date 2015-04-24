@@ -236,6 +236,11 @@ section {
   margin: 0;
   padding: 0;
 }
+p {
+  text-align: justify;
+  margin-top: 0.5em !important;
+  margin-bottom: 0.5em !important;
+}
 .social {
   float: left;
   min-height: 100%;

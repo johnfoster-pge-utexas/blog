@@ -47,7 +47,7 @@ Even if you have not pulled the images locally from the Docker Hub Registry, thi
 
 2. Place a *Peridigm* input file such as `fragmenting_cylinder.perdigm` in a directory.
 
-3. Run the `docker run ...` command above replacing `\`pwd\`` with the directory name where you placed the file in 2., if not running from the current working directory.
+3. Run the `docker run ...` command above replacing `pwd` with the directory name where you placed the file in 2., if not running from the current working directory.
 
 
 That's it.  No compiling, no dependencies.  Most of the performance studies I've seen report a very small, 1-2% hit from the Dockerized version of an application over a natively installed application stack.

@@ -14,7 +14,7 @@
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/categories/docker.xml</loc>
-  <lastmod>2015-04-23</lastmod>
+  <lastmod>2015-04-24</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/categories/github.xml</loc>
@@ -22,7 +22,7 @@
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/categories/hpc.xml</loc>
-  <lastmod>2015-04-23</lastmod>
+  <lastmod>2015-04-24</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/categories/latex.xml</loc>
@@ -30,7 +30,7 @@
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/categories/mpi.xml</loc>
-  <lastmod>2015-04-23</lastmod>
+  <lastmod>2015-04-24</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/categories/nikola.xml</loc>
@@ -38,7 +38,7 @@
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/categories/peridigm.xml</loc>
-  <lastmod>2015-04-23</lastmod>
+  <lastmod>2015-04-24</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/categories/powerpoint.xml</loc>
@@ -58,7 +58,7 @@
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/categories/trilinos.xml</loc>
-  <lastmod>2015-04-23</lastmod>
+  <lastmod>2015-04-24</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/categories/ut.xml</loc>
@@ -66,10 +66,10 @@
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/rss.xml</loc>
-  <lastmod>2015-04-23</lastmod>
+  <lastmod>2015-04-24</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/sitemap.xml</loc>
-  <lastmod>2015-04-23</lastmod>
+  <lastmod>2015-04-24</lastmod>
  </sitemap>
 </sitemapindex>

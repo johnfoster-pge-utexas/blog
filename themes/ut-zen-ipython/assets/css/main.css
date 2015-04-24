@@ -2368,7 +2368,7 @@ pre {
 }
 code {
   padding: 2px 4px;
-  background-color: #f7f7f9;
+  background-color: #D6D2C4 !important;
   border: 1px solid #e1e1e8;
   white-space: nowrap;
 }

@@ -236,6 +236,11 @@ section {
   margin: 0;
   padding: 0;
 }
+p {
+  text-align: justify;
+  margin-top: 0.5em !important;
+  margin-bottom: 0.5em !important;
+}
 .social {
   float: left;
   min-height: 100%;
@@ -2368,7 +2373,7 @@ pre {
 }
 code {
   padding: 2px 4px;
-  background-color: #f7f7f9;
+  background-color: #D6D2C4 !important;
   border: 1px solid #e1e1e8;
   white-space: nowrap;
 }

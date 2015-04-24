@@ -64,6 +64,117 @@ MathJax.Hub.Config({
     <section class="page-content">
         <div class="content" rel="main">
         <div class="post">
+            <h1 class="title"><a href="posts/peridigm-without-building-via-Docker.html">Run Peridigm (and other scientific HPC codes) without building via Docker</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2015-04-22T10:44:25-05:00">2015-04-22 10:44</time>
+                </div>
+                <div class="stats">
+                                <a href="posts/peridigm-without-building-via-Docker.html#disqus_thread" data-disqus-identifier="cache/posts/peridigm-witout-building-trilinos-with-docker.html">Comments</a>
+
+
+                </div>
+                        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/docker.html" rel="tag">Docker</a></li>
+           <li><a class="tag p-category" href="categories/hpc.html" rel="tag">HPC</a></li>
+           <li><a class="tag p-category" href="categories/mpi.html" rel="tag">MPI</a></li>
+           <li><a class="tag p-category" href="categories/peridigm.html" rel="tag">Peridigm</a></li>
+           <li><a class="tag p-category" href="categories/trilinos.html" rel="tag">Trilinos</a></li>
+        </ul>
+        </div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>If your a software engineer working in web development or cloud software deployment, you would have had to have your head in the sand for the last two years to have not heard of <a href="http://www.docker.com">Docker</a> by now.  Briefly, Docker is a light-weight application container deployment service (think super low-overhead virtual machine, usually meant to contain one application and its dependencies), based on Linux containers.  While there are <a href="https://www.google.com/search?q=docker&amp;oq=docker++&amp;aqs=chrome..69i57j69i60l2j0l3.2551j1j9&amp;sourceid=chrome&amp;es_sm=119&amp;ie=UTF-8">100s of articles</a> describing Docker, its uses, many services, and even companies springing up around it; my colleagues in the scientific computing/high-performance computing (HPC) world are either not aware of Docker or don't see the utility, because it's hard to find significant information for or uses of Docker in this field.  This post will hopefully demonstrate some of the utility of the service and promote its use in HPC and in academic settings.  Additionally, as a contributor to the open-source software <a href="http://peridigm.sandia.gov">Peridigm</a>, my hope it that the path demonstrated here might lower the courage required to try out the software and promote new users.</p>
+<p>To provide some background/context for my own interest in Docker, in my current role as an academic advisor to graduate students and in my previous career as a researcher at Sandia National Laboratories I have often been a user and/or developer of scientific software that has a fairly complex dependent application stack. To use <em>Peridigm</em>, a massively parallel computational peridynamic mechanics simulation code, as an example, we have a large dependency on <a href="http://trilinos.org">Trilinos</a>.  The packages we use from Trilinos have additional dependencies on a message passing interface (MPI) implementation (e.g. <a href="http://www.open-mpi.org">OpenMPI</a>), <a href="http://www.boost.org">Boost</a>, and <a href="http://www.unidata.ucar.edu/software/netcdf/">NetCDF</a>.  NetCDF has a dependency on <a href="https://hdfgroup.org/HDF5/">HDF5</a>, HDF5 on <a href="http://www.zlib.net/">zlib</a>, etc.  All of these need a C/C++ compiler for building, of course, and if we are using the Intel compilers we might as well go ahead and use <a href="https://software.intel.com/en-us/intel-mkl">MKL</a> libraries for efficiency.  Trilinos uses <a href="http://www.cmake.org">CMake</a> as a build system, so we need that around as well, at least during the build process. I'm sure there are others I am not thinking of at this moment.  Figuring out and understanding these dependencies and learning to debug build issues can take a really long time for a budding computational scientist to master.  Problems can be really compounded in a large multi-user HPC cluster where many different versions of compilers and libraries are present.  Using UNIX <a href="http://modules.sourceforge.net/">modules</a> goes a long way towards keeping things straight, but problems still arise that can be time consuming to troubleshoot.  I usually have new graduate students go through the process of building <em>Peridigm</em> and all the dependencies for their own learning experience when they first join my group, in every case they struggle considerably the first few times the have to build the entire suite of software on a new machine.  In some cases, particularly with MS level students, it can be a serious impediment to progress, as they are very short time lines to make meaningful research progress, and oftentimes they are only going to be end-users of the code, not developers.  Almost certainly they are not going to make changes to any of the packages in Trilinos or any of the other dependencies outside of <em>Peridigm</em>.  Enter Docker.</p>
+<p>Docker allows for the ability to run applications in prebuilt containers on any Linux machine with Docker installed (or even Mac OS X and Windows via <a href="http://boot2docker.io/">Boot2Docker</a>).  If your Linux distribution doesn't already have it installed, just use your package manager (e.g. <code>apt-get install docker</code> on Debian/Ubuntu based machines and <code>yum install docker</code> on Fedora/Redhat based machines).  Docker is so ubiquitous at this point there are even entire Linux distributions like <a href="https://coreos.com/">CoreOS</a> being built specifically to maximize its strengths.  Additionally, there is the <a href="https://registry.hub.docker.com/">Docker Hub Registry</a> which provides <a href="http://github.com">Github</a> like <code>push/pull</code> operations and cloud storage of prebuilt images.  Of course, you or your organization can host your own Docker image registry as well (note: think of a <em>Docker image</em> like a C++ class, and a <em>Docker container</em> as a C++ object, or an <em>instance</em> of the image that runs).  You can derive images from one another and this is what I have done in setting up an image of <em>Peridigm</em>.  First, I have an image that starts with a baseline Debian based Linux and installs NetCDF and its dependencies.  I have two tagged versions, a standard NetCDF build and a <em>largefiles</em> patched version which makes the <a href="https://peridigm.sandia.gov/content/netcdf">large file modifications</a> as suggested in the <em>Peridigm</em> build documentation. The NetCDF largefile image can be pulled to a Docker users local machine from my public Docker Hub Registry with</p>
+<pre class="code literal-block">docker pull johntfoster/netcdf:largefiles
+</pre>
+
+
+<p>the NetCDF image is built automatically via continuous integration with a <a href="https://github.com/johntfoster/docker-netcdf">Github repository</a> that contains a <a href="https://docs.docker.com/reference/builder/">Dockerfile</a> with instructions for the image build process.  I then derive a Trilinos image from the NetCDF largefiles image.  This image contains only the Trilinos packages enabled such that <em>Peridigm</em> can be built.  The Trilinos image can be pulled to a local machine with</p>
+<pre class="code literal-block">docker pull johntfoster/trilinos
+</pre>
+
+
+<p>this Trilinos image could be used to derive other images for other Trilinos based application codes which utilize the same dependent packages as <em>Peridigm</em>.  The <code>cmake</code> build script which shows the active Trilinos packages in this image can be viewed <a href="https://github.com/johntfoster/docker-trilinos/blob/master/trilinos-debian-cmake.sh">here</a>.  This image is also built via continuous integration with <a href="https://github.com/johntfoster/docker-trilinos">this Github repository</a> which can easily be modified to include more Trilinos packages.  Finally, the <em>Peridigm</em> image can be pulled to a local machine with</p>
+<pre class="code literal-block">docker pull johntfoster/peridigm
+</pre>
+
+
+<p>this image is built from the Dockerfile <a href="https://github.com/johntfoster/docker-peridigm">found here</a>, however it must be modified slightly to work with a local <em>Peridigm</em> source distribution if you want to build your own image because I do not want to distribute the <em>Peridigm</em> software source code as that is done by Sandia National Laboratories (see <a href="http://peridigm.sandia.gov">here</a> if interested in getting the source). To run <em>Peridigm</em> you simply have to run the command:</p>
+<pre class="code literal-block">docker run --name peridigm0 -d -v <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/output johntfoster/peridigm <span class="se">\ </span>
+       Peridigm fragmenting_cylinder.peridigm 
+</pre>
+
+
+<p>Even if you have not pulled the images locally from the Docker Hub Registry, this command will initiate the download process and  run the command after downloading.  Because the image contains all the necessary dependencies, it is around 2GB in size; therefore, it takes a while to download on the first execution.  I have not made any attempts to optimize the image size, but it's likely it could be made smaller to speed this process up.  Once you have the image locally, launching a container to run a simulation takes only milliseconds.  The <code>--name</code> option gives the container the name <code>peridigm0</code>, this could be any name you choose and naming the container is not required, but makes for an easy way to stop the execution if you wish.  If you need to stop the execution, simply run <code>Docker stop peridigm0</code>.  The <code>-d</code> option "detaches" the terminal so that the process runs in the background, you can reattach if needed with <code>Docker attach peridigm0</code>.  The <code>-v</code> option is critical for retrieving the data generated by the simulation.  Docker handles data a little strangely, so you have to mount a local volume, in this case the current working directory returned by <code>pwd</code>, but in general it could any <code>/path/to/data/storage</code>.  The local path is mounted to the volume <code>/output</code> that has been created in the <em>Peridigm</em> Docker image.  You must place your input file, in this case <code>fragmenting_cylinder.peridigm</code> from the examples distributed with <em>Peridigm</em>, in your local shared mount for the <em>Peridigm</em> executable located in the Docker image to access it. As the simulation runs, you will see an output file <code>fragmenting_cylinder.e</code> appear in the shared mount.  The other two arguments, <code>johntfoster/peridigm</code> and <code>Peridigm</code> are the image name in the Docker Hub Registry and the executable, respectively.</p>
+<h4>To quickly recap, if all you want to test out <em>Peridigm</em> quickly, follow these 3 steps:</h4>
+<ol>
+<li>
+<p>Install Docker via your package manager on Linux or utilize Boot2Docker on Mac OS X and Windows.</p>
+</li>
+<li>
+<p>Place a <em>Peridigm</em> input file such as <code>fragmenting_cylinder.perdigm</code> in a directory.</p>
+</li>
+<li>
+<p>Run the <code>docker run ...</code> command above replacing <code>\</code>pwd`` with the directory name where you placed the file in 2., if not running from the current working directory.</p>
+</li>
+</ol>
+<p>That's it.  No compiling, no dependencies.  Most of the performance studies I've seen report a very small, 1-2% hit from the Dockerized version of an application over a natively installed application stack.</p>
+<p>Of course, <em>Peridigm</em> is meant to be run in a massively parallel setting.  A Docker container can take advantage of some multithreading, therefore you can also just run an MPI job right inside a Docker container, for <em>Peridigm</em> we can simply run</p>
+<pre class="code literal-block">docker run --name peridigm0 -d -v <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/output johntfoster/peridigm <span class="se">\</span>
+       mpiexec -np <span class="m">2</span> Peridigm fragmenting_cylinder.peridigm 
+</pre>
+
+
+<p>for a possibly small performance gain.  If you run this command, you should now see the domain decomposed output files, e.g. <code>fragmenting_cylinder.e.0</code> and  <code>fragmenting_cylinder.e.1</code> appear in your mounted directory.  However, this alone will not give you the true gains you expect form multicore CPUs or close to what you would see in a massively parallel HPC cluster.  We can spawn a virtual cluster of Docker containers, from the <code>johntfoster/peridigm</code> image and use MPI to communicate between them.  To do this, we launch our virtual cluster with <code>docker run ...</code> but this time without any execution command.  The default is for these containers to be ssh servers, so they will sit there idle until we need them for an MPI task.  For example, if we want a 2 node job, we can run</p>
+<pre class="code literal-block">docker run --name peridigm0 -d -P -h node0 -v <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/output johntfoster/peridigm
+docker run --name peridigm1 -d -P -h node1 -v <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/output johntfoster/peridigm
+</pre>
+
+
+<p>this launches containers named <code>peridigm0</code> and <code>peridigm1</code> that will have local (to their containers) machine names <code>node0</code> and <code>node1</code>.  Now we can find the containers IP addresses with the following command</p>
+<pre class="code literal-block">docker inspect -f <span class="s2">"{{ .NetworkSettings.IPAddress }}"</span> peridigm0
+docker inspect -f <span class="s2">"{{ .NetworkSettings.IPAddress }}"</span> peridigm1
+</pre>
+
+
+<p>These commands will return the ip addresses, just for demonstration purposes, let's assume that they are <code>10.1.0.124</code> and <code>10.1.0.125</code> respectively.  Now we can launch <code>mpiexec</code> to run <em>Peridigm</em> on our virtual cluster.  This time the containers are already running, so all we have to is run</p>
+<pre class="code literal-block">docker <span class="nb">exec </span>peridigm0 mpiexec -np <span class="m">2</span> -host 10.1.0.124,10.1.0.125 <span class="se">\</span>
+       Peridigm fragmenting_cylinder.peridigm
+</pre>
+
+
+<p>which executes <code>mpirun</code> on the container named <code>peridigm0</code> and passes a host list to make MPI aware of where the nodes waiting for tasks are.  You can have fine grained control over <code>mpirun</code> as well, for example if you wanted to run 2 MPI tasks per Docker container, you could do something like</p>
+<pre class="code literal-block">docker <span class="nb">exec </span>peridigm0 mpiexec -np <span class="m">4</span> -num-proc <span class="m">2</span> -host 10.1.0.124,10.1.0.125 <span class="se">\</span>
+       Peridigm fragmenting_cylinder.peridigm
+</pre>
+
+
+<p>when your finished you can stop and remove the containers with</p>
+<pre class="code literal-block">docker stop peridigm0 peridigm1
+docker rm -v peridigm0 peridigm1
+</pre>
+
+
+<p>the <code>-v</code> option to <code>docker rm</code> ensures that the mounted volumes are removed as well and there not any orphaned file system volume shares. I have written a Python script (shown below) that automates the whole process for an arbitrary number of Docker containers in a virtual cluster.</p>
+<script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/docker-peridigm/blob/master/pdrun?footer=minimal"></script>
+
+<p>You can utilize this script to run <em>Peridigm</em> simulations on a virtual Docker cluster with the following command:</p>
+<pre class="code literal-block">./pdrun --np <span class="m">4</span> fragmenting_cylinder.peridigm --path<span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>
+</pre>
+
+
+<p>please consult the documentation of the script for more info about the options using <code>./pdrun -h</code>.  There are really only a few detials in between what I've done here and being able to deploy this on a production HPC cluster.  The main difference would be that you would use a resource manager, e.g. <a href="http://slurm.schedmd.com/">SLURM</a> to schedule running the Docker containers.  You would also want to have both your mounted volume and a copy of the Docker image on a shared filesystem across all nodes of the cluster.  Did I mention you can <a href="https://docs.Docker.com/registry/deploying/">deploy your own private registry server?</a></p>
+<p>The last point I would like to make about Docker is that, while I demonstrated that end users can benefit by eliminating the entire build process and move right to running the simulation code, also developers could greatly benefit from using a common development image and requiring only support for the Docker image, as it can be quickly deployed and tested against all platforms.  How many times have your heard, even from experienced developers, after a commit fails in continuous integration, "It worked on my machine...".  Docker offers a solution to those problems and many others.</p>
+</div>
+            </div>
+        </div>
+        <div class="post">
             <h1 class="title"><a href="posts/cockrell-school-beamer-template.html">A LaTeX Beamer template/theme for the Cockrell School of Engineering</a></h1>
             <div class="meta">
                 <div class="authordate">

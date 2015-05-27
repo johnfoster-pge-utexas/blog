@@ -44,7 +44,7 @@ MathJax.Hub.Config({
         <meta property="og:site_name" content="from the shoulders of giants">
     <meta property="og:title" content="Python/Numpy implementation of Bspline basis functions">
     <meta property="og:url" content="http://johntfoster.github.io/posts/pythonnumpy-implementation-of-bspline-basis-functions.html">
-    <meta property="og:description" content="I was recently helping a student with some preliminary concept in isogemetric analysis (IGA) and after taking a look at his pure Python implementation of the Cox - de Boor algorithm for computing B-Sp">
+    <meta property="og:description" content="I was recently helping a student with some preliminary concepts in isogemetric analysis (IGA) and after taking a look at his pure Python implementation of the Cox - de Boor algorithm for computing B-S">
     <meta property="og:type" content="article">
     <meta property="article:published_time" content="2015-05-27T08:08:17-05:00">
 
@@ -89,7 +89,7 @@ MathJax.Hub.Config({
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>I was recently helping a student with some preliminary concept in isogemetric analysis (IGA) and after taking a look at his pure Python implementation of the Cox - de Boor algorithm for computing B-Spline basis functions, I decided to look around for a Numpy implementation that could possibly be a little faster.  While I found a few <a href="https://github.com/scipy/scipy/blob/v0.15.1/scipy/signal/bsplines.py#L122">B-spline implementations</a> in Python, I thought I might be able to sqeeze out a little more performance through <a href="http://en.wikipedia.org/wiki/Array_programming">vectorization</a> and <a href="http://en.wikipedia.org/wiki/Memoization">memoization</a> while maintaining readablity of the code.  I think I have something that accomplishes that, in the context of how basis functions are needed and used in IGA.  The main portion of the code is here:</p>
+<p>I was recently helping a student with some preliminary concepts in isogemetric analysis (IGA) and after taking a look at his pure Python implementation of the Cox - de Boor algorithm for computing B-Spline basis functions, I decided to look around for a Numpy implementation that could possibly be a little faster.  While I found a few <a href="https://github.com/scipy/scipy/blob/v0.15.1/scipy/signal/bsplines.py#L122">B-spline implementations</a> in Python, I thought I might be able to sqeeze out a little more performance through <a href="http://en.wikipedia.org/wiki/Array_programming">vectorization</a> and <a href="http://en.wikipedia.org/wiki/Memoization">memoization</a> while maintaining readablity of the code.  I think I have something that accomplishes that, in the context of how basis functions are needed and used in IGA.  The main portion of the code is here:</p>
 
 </div>
 </div>

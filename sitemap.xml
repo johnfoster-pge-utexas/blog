@@ -18,71 +18,103 @@
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/beamer.html</loc>
-  <lastmod>2015-05-27</lastmod>
+  <lastmod>2015-06-01</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/cockrell-school.html</loc>
-  <lastmod>2015-05-27</lastmod>
+  <lastmod>2015-06-01</lastmod>
+ </url>
+ <url>
+  <loc>http://johntfoster.github.io/categories/cox-de-boor.html</loc>
+  <lastmod>2015-06-01</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/docker.html</loc>
-  <lastmod>2015-05-27</lastmod>
+  <lastmod>2015-06-01</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/github.html</loc>
-  <lastmod>2015-05-27</lastmod>
+  <lastmod>2015-06-01</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/hpc.html</loc>
-  <lastmod>2015-05-27</lastmod>
+  <lastmod>2015-06-01</lastmod>
+ </url>
+ <url>
+  <loc>http://johntfoster.github.io/categories/iga.html</loc>
+  <lastmod>2015-06-01</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/index.html</loc>
-  <lastmod>2015-05-27</lastmod>
+  <lastmod>2015-06-01</lastmod>
+ </url>
+ <url>
+  <loc>http://johntfoster.github.io/categories/isogeometric-analysis.html</loc>
+  <lastmod>2015-06-01</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/latex.html</loc>
   <lastmod>2015-05-27</lastmod>
  </url>
  <url>
+  <loc>http://johntfoster.github.io/categories/memoization.html</loc>
+  <lastmod>2015-06-01</lastmod>
+ </url>
+ <url>
+  <loc>http://johntfoster.github.io/categories/memoize.html</loc>
+  <lastmod>2015-06-01</lastmod>
+ </url>
+ <url>
   <loc>http://johntfoster.github.io/categories/mpi.html</loc>
-  <lastmod>2015-05-27</lastmod>
+  <lastmod>2015-06-01</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/nikola.html</loc>
   <lastmod>2015-05-27</lastmod>
  </url>
  <url>
+  <loc>http://johntfoster.github.io/categories/numpy.html</loc>
+  <lastmod>2015-06-01</lastmod>
+ </url>
+ <url>
   <loc>http://johntfoster.github.io/categories/peridigm.html</loc>
-  <lastmod>2015-05-27</lastmod>
+  <lastmod>2015-06-01</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/powerpoint.html</loc>
-  <lastmod>2015-05-27</lastmod>
+  <lastmod>2015-06-01</lastmod>
+ </url>
+ <url>
+  <loc>http://johntfoster.github.io/categories/python.html</loc>
+  <lastmod>2015-06-01</lastmod>
+ </url>
+ <url>
+  <loc>http://johntfoster.github.io/categories/recursion.html</loc>
+  <lastmod>2015-06-01</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/texshop.html</loc>
-  <lastmod>2015-05-27</lastmod>
+  <lastmod>2015-06-01</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/theme.html</loc>
-  <lastmod>2015-05-27</lastmod>
+  <lastmod>2015-06-01</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/travis-ci.html</loc>
-  <lastmod>2015-05-27</lastmod>
+  <lastmod>2015-06-01</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/trilinos.html</loc>
-  <lastmod>2015-05-27</lastmod>
+  <lastmod>2015-06-01</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/ut.html</loc>
-  <lastmod>2015-05-27</lastmod>
+  <lastmod>2015-06-01</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/index.html</loc>
-  <lastmod>2015-05-27</lastmod>
+  <lastmod>2015-06-01</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/posts/cockrell-school-beamer-template.html</loc>
@@ -106,7 +138,7 @@
  </url>
  <url>
   <loc>http://johntfoster.github.io/posts/pythonnumpy-implementation-of-bspline-basis-functions.html</loc>
-  <lastmod>2015-05-27</lastmod>
+  <lastmod>2015-06-01</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/posts/using-exoduspy-to-extract-data-from-fea-database.html</loc>

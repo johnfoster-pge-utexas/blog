@@ -1,7 +1,7 @@
 .. title: Python/Numpy implementation of Bspline basis functions
 .. slug: pythonnumpy-implementation-of-bspline-basis-functions
 .. date: 2015-05-27 08:08:17 UTC-05:00
-.. tags: 
+.. tags: Numpy, Python, Cox-de Boor, Isogeometric Analysis, IGA, Recursion, Memoization, Memoize 
 .. link: 
 .. description: 
 .. type: text

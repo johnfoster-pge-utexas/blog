@@ -1,5 +1,619 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>from the shoulders of giants</title><link>http://johntfoster.github.io/</link><description>mechanics and the mechanics of coding</description><atom:link href="http://johntfoster.github.io/rss.xml" type="application/rss+xml" rel="self"></atom:link><language>en</language><lastBuildDate>Mon, 01 Jun 2015 14:45:55 GMT</lastBuildDate><generator>http://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Python/Numpy implementation of Bspline basis functions</title><link>http://johntfoster.github.io/posts/pythonnumpy-implementation-of-bspline-basis-functions.html</link><dc:creator>John T. Foster</dc:creator><description>&lt;div tabindex="-1" id="notebook" class="border-box-sizing"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>from the shoulders of giants</title><link>http://johntfoster.github.io/</link><description>mechanics and the mechanics of coding</description><atom:link href="http://johntfoster.github.io/rss.xml" type="application/rss+xml" rel="self"></atom:link><language>en</language><lastBuildDate>Mon, 08 Jun 2015 16:13:08 GMT</lastBuildDate><generator>http://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Interactive C++ for HPC</title><link>http://johntfoster.github.io/posts/interactive-c++-for-hpc.html</link><dc:creator>John T. Foster</dc:creator><description>&lt;div tabindex="-1" id="notebook" class="border-box-sizing"&gt;
+    &lt;div class="container" id="notebook-container"&gt;
+
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;I recently discovered &lt;a href="https://root.cern.ch/drupal/content/cling"&gt;cling&lt;/a&gt; after I saw this Tweet&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;&lt;blockquote class="twitter-tweet" lang="en"&gt;&lt;p lang="en" dir="ltr"&gt;I made a C++ kernel for Jupyter for some reason: &lt;a href="https://t.co/7ApuZyeR0r"&gt;https://t.co/7ApuZyeR0r&lt;/a&gt;&lt;/p&gt;— Min RK (@minrk) &lt;a href="https://twitter.com/minrk/status/600762804161933312"&gt;May 19, 2015&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src="//platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;
+
+&lt;p&gt;From the cling website, "Cling is an interactive C++ interpreter, built on the top of LLVM and Clang libraries. Its advantages over the standard interpreters are that it has command line prompt and uses just-in-time (JIT) compiler for compilation."  As I write (or mostly teach through dual-coding with students) quite a bit of C++ and have already been utilizing the &lt;a href="http://ipython.org/"&gt;IPython&lt;/a&gt;/&lt;a href="https://jupyter.org/"&gt;Jupyter&lt;/a&gt; notebook as a teaching tool for sometime, I was immediately interested in using &lt;a href="https://github.com/minrk"&gt;MinRK&lt;/a&gt;'s &lt;a href="https://github.com/minrk/clingkernel"&gt;clingkernel&lt;/a&gt; for this purpose as well as exploring and testing out my own ideas.  As I learned more about cling, I found most of the examples to be very trivial and those that inluded the calling/loading of external functions typically only utilized the functions from the standard library.  I was eager to give it try on something a little more complex, and because most of the code we write in my group is heavily dependent on &lt;a href="http://trilinos.org/"&gt;Trilinos&lt;/a&gt;, I thought I would attempt to solve a simple linear algebra system of the form&lt;/p&gt;
+$$
+A \vec{x} = \vec{b}
+$$&lt;p&gt;using &lt;a href="http://trilinos.org/packages/epetra/"&gt;AztecOO&lt;/a&gt; solvers with &lt;a href="http://trilinos.org/packages/aztecoo/"&gt;Epetra&lt;/a&gt; datastructures from Trilinos (at least AztecOO and Epetra).  This is an adaptation of the example code provided in Figure 1 of the &lt;a href="http://trilinos.org/oldsite/packages/aztecoo/AztecOOUserGuide.pdf"&gt;AztecOO User's guide&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Of course, to reproduce the code below, you will need to &lt;a href="https://github.com/vgvassilev/cling"&gt;install cling&lt;/a&gt; and Trilinos.  Additionally, if you want to use MinRK's &lt;a href="https://github.com/minrk/clingkernel"&gt;clingkernel&lt;/a&gt; you need to install the &lt;a href="https://github.com/jupyter/notebook#jupyter-notebook"&gt;Jupyter notebook&lt;/a&gt; from the &lt;code&gt;master&lt;/code&gt; branch, and install the kernel.  With that, you should be able to download this notebook and execute it with few modifications.&lt;/p&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Cling provides a few metaprocessing commands to perform actions that you would normal provide as arguments to the build system, such as providing locations for include files, loading shared libraries, etc.  The documentation for the metaprocessing commands are&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;.x test.cpp – load a file (if the file defines void test() it will be executed)
+.L libname – load a libary or file
+.x filename.cxx – loads filename and calls void filename() if defined
+.I path – adds an include path
+.printAST – shows the abstract syntax tree after each processed entity
+.q – exit cling
+.help – display a brief description&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We'll start by loading the location of the installed header files in my Trilinos build (here I only built AztecOO and Epetra in serial to keep it simple).  Cling utilizes the Clang compiler which is pretty picky, so I had to edit the header files in a few locations where &lt;code&gt;#include&lt;/code&gt; statments where provided with angle brackets &lt;code&gt;&amp;lt; &amp;gt;&lt;/code&gt; for local includes, where the compiler wanted double quotes.  In other words, I had to change&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;foo.h&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;to&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include "foo.h"&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;in a few of the Trilinos headers.  So the metaprocessing command to tell the system where the header files are:&lt;/p&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-clike"&gt;&lt;pre&gt;.I /usr/local/trilinos-serial/include/
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;And now we provide the include statememts.&lt;/p&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [2]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-clike"&gt;&lt;pre&gt;#include "AztecOO.h"
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [3]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-clike"&gt;&lt;pre&gt;#include "AztecOO_Version.h"
+#include "Epetra_SerialComm.h"
+#include "Epetra_Map.h"
+#include "Epetra_Vector.h"
+#include "Epetra_CrsMatrix.h"
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Now the metaprocessing to load the shared libraries.  Since I'm on a Mac, I had to define the environment variable&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;export &lt;/span&gt;&lt;span class="nv"&gt;DYLD_LIBRARY_PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/usr/local/trilinos-serial/lib:&lt;span class="nv"&gt;$DYLD_LIBRARY_PATH&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;before launching the notebook/cling so the system knows where to find the libraries at runtime.  On a Linux machine, this variable would be &lt;code&gt;LD_LIBRARY_PATH&lt;/code&gt;.&lt;/p&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [4]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-clike"&gt;&lt;pre&gt;.L libepetra
+.L libaztecOO
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Now we start in with the actual Epetra/AztecOO code.  Since it's not apparent to me whether it's possible for &lt;code&gt;cling&lt;/code&gt; to support &lt;a href="http://www.open-mpi.org/"&gt;MPI&lt;/a&gt; processes, we'll just provide a serial implementation.  We start with some code that instantiates the Epetra serial communicator and provides some information about the version of Trilinos we are using.&lt;/p&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [5]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-clike"&gt;&lt;pre&gt;Epetra_SerialComm Comm;
+  
+int NumMyElements = 1000;
+
+if (Comm.MyPID()==0)
+    std::cout &amp;lt;&amp;lt; AztecOO_Version() &amp;lt;&amp;lt; std::endl &amp;lt;&amp;lt; std::endl;
+
+  std::cout &amp;lt;&amp;lt; Comm &amp;lt;&amp;lt;std::endl;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;
+AztecOO in Trilinos 12.1 (Dev)
+
+
+Epetra::Comm::Processor 0 of 1 total processors.
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Notice the immediate output to screen.  Remember this is C++!&lt;/p&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Now we construct a Map that puts same number of equations on each processor.  Of course, we only have one processor here, but the code is generic and could also be run in parallel if multiple processors were available.&lt;/p&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [6]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-clike"&gt;&lt;pre&gt;Epetra_Map Map(-1, NumMyElements, 0, Comm);
+int NumGlobalElements = Map.NumGlobalElements();
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Now we instantiate the column-row sparse matrix $A$&lt;/p&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [7]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-clike"&gt;&lt;pre&gt;Epetra_CrsMatrix A(Copy, Map, 3);
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Here we fill $A$ to be a finite-difference like operator.&lt;/p&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [8]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-clike"&gt;&lt;pre&gt;double negOne = -1.0;
+double posTwo = 2.0;
+for (int i=0; i&amp;lt;NumMyElements; i++) {
+    int GlobalRow = A.GRID(i); int RowLess1 = GlobalRow - 1; int RowPlus1 = GlobalRow + 1;
+
+    if (RowLess1!=-1) A.InsertGlobalValues(GlobalRow, 1, &amp;amp;negOne, &amp;amp;RowLess1);
+    if (RowPlus1!=NumGlobalElements) A.InsertGlobalValues(GlobalRow, 1, &amp;amp;negOne, &amp;amp;RowPlus1);
+    A.InsertGlobalValues(GlobalRow, 1, &amp;amp;posTwo, &amp;amp;GlobalRow);
+};
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;?   
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Now we call the &lt;code&gt;FillComplete()&lt;/code&gt; method to optimize storage of the matrix.&lt;/p&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [9]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-clike"&gt;&lt;pre&gt;A.FillComplete();
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Here we instantiate $\vec{x}$ and the right-hand-side vector $\vec{b}$.  Also, we fill $\vec{b}$ with random numbers for our solution.&lt;/p&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [10]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-clike"&gt;&lt;pre&gt;Epetra_Vector x(Map);
+Epetra_Vector b(Map);
+
+b.Random();
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Now we instantiate the &lt;code&gt;Epetra_Problem&lt;/code&gt; and the Aztec solver from that instance.&lt;/p&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [11]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-clike"&gt;&lt;pre&gt;Epetra_LinearProblem problem(&amp;amp;A, &amp;amp;x, &amp;amp;b);
+
+AztecOO solver(problem);
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Next is the actual solution step.  A GMRES solver is used for 10 iterations.  This won't be enough for convergence of the solver, but this is just for demonstration purposes and I would like to keep the output short.&lt;/p&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [12]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-clike"&gt;&lt;pre&gt;solver.SetAztecOption(AZ_precond, AZ_Jacobi);
+solver.Iterate(10, 1.0E-2);
+
+std::cout &amp;lt;&amp;lt; "Solver performed " &amp;lt;&amp;lt; solver.NumIters() &amp;lt;&amp;lt; " iterations." &amp;lt;&amp;lt; std::endl;
+std::cout &amp;lt;&amp;lt; "Norm of true residual = " &amp;lt;&amp;lt; solver.TrueResidual() &amp;lt;&amp;lt; std::endl;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;
+		*******************************************************
+		***** Problem: Epetra::CrsMatrix
+		***** Preconditioned GMRES solution
+		***** 1 step block Jacobi
+		***** No scaling
+		*******************************************************
+
+                iter:    0           residual = 1.000000e+00
+                iter:    1           residual = 5.832906e-01
+                iter:    2           residual = 4.547092e-01
+                iter:    3           residual = 3.831399e-01
+                iter:    4           residual = 3.366700e-01
+                iter:    5           residual = 3.043737e-01
+                iter:    6           residual = 2.789514e-01
+                iter:    7           residual = 2.592427e-01
+                iter:    8           residual = 2.449521e-01
+                iter:    9           residual = 2.328859e-01
+                iter:   10           residual = 2.223153e-01
+
+
+	***************************************************************
+
+	Warning: maximum number of iterations exceeded
+	without convergence
+
+	Solver:			gmres
+	number of iterations:	10
+
+	Recursive residual =  3.9447e+00
+
+	Calculated Norms				Requested Norm
+	--------------------------------------------	--------------
+
+	||r||_2 / ||r0||_2:		2.223153e-01	1.000000e-02
+
+	***************************************************************
+
+
+
+		Solution time: 0.000680 (sec.)
+		total iterations: 10
+
+Solver performed 10 iterations.
+Norm of true residual = 3.94466
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;To demonstrate that is worked, we'll print out the first 10 values of the solution vector $\vec{x}$.&lt;/p&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [13]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-clike"&gt;&lt;pre&gt;for (int i = 0; i &amp;lt; 10; i++){
+    std::cout &amp;lt;&amp;lt; x[i] &amp;lt;&amp;lt; std::endl; 
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;-0.288916
+-0.723977
+-0.641509
+0.309992
+0.815517
+0.904473
+0.0381509
+-0.675333
+-1.5226
+-3.14536
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;It's pretty amazing to be able to do interactive C++ developement.  If we could get this to work in parallel, it would be a leap forward in the ability to do introspective high-performance scientific computing.&lt;/p&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+</description><category>AztecOO</category><category>C++</category><category>cling</category><category>Epetra`</category><category>Trilinos</category><guid>http://johntfoster.github.io/posts/interactive-c++-for-hpc.html</guid><pubDate>Mon, 08 Jun 2015 16:00:18 GMT</pubDate></item><item><title>Python/Numpy implementation of Bspline basis functions</title><link>http://johntfoster.github.io/posts/pythonnumpy-implementation-of-bspline-basis-functions.html</link><dc:creator>John T. Foster</dc:creator><description>&lt;div tabindex="-1" id="notebook" class="border-box-sizing"&gt;
     &lt;div class="container" id="notebook-container"&gt;
 
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;

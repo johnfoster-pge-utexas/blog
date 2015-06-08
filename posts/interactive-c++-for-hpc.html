@@ -119,7 +119,7 @@ From the cling website, "Cling is an interac'>
 $$
 A \vec{x} = \vec{b}
 $$<p>using <a href="http://trilinos.org/packages/epetra/">AztecOO</a> solvers with <a href="http://trilinos.org/packages/aztecoo/">Epetra</a> datastructures from Trilinos (at least AztecOO and Epetra).  This is an adaptation of the example code provided in Figure 1 of the <a href="http://trilinos.org/oldsite/packages/aztecoo/AztecOOUserGuide.pdf">AztecOO User's guide</a>.</p>
-<p>Of course, to reproduce the code below, you will need to <a href="https://github.com/vgvassilev/cling">install cling</a> and Trilinos.  Additionally, if you want to use MinRK's <a href="https://github.com/minrk/clingkernel">clingkernel</a> you need to install the <a href="https://github.com/jupyter/notebook#jupyter-notebook">Jupyter notebook</a> from the <code>master</code> branch, and install the kernel.  With that, you should be able to download this notebook and execute it with few modifications.</p>
+<p>Of course, to reproduce the code below, you will need to <a href="https://github.com/vgvassilev/cling">install cling</a> and Trilinos.  Additionally, if you want to use MinRK's <a href="https://github.com/minrk/clingkernel">clingkernel</a> you need to install the <a href="https://github.com/jupyter/notebook#jupyter-notebook">Jupyter notebook</a> from the <code>master</code> branch, and install the kernel.  With that, you should be able to <a href="http://johntfoster.github.io/posts/interactive-c++-for-hpc.ipynb">download this notebook</a> and execute it with few modifications.</p>
 
 </div>
 </div>
@@ -154,7 +154,7 @@ $$<p>using <a href="http://trilinos.org/packages/epetra/">AztecOO</a> solvers wi
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-clike"><pre>.I /usr/local/trilinos-serial/include/
+<div class=" highlight hl-c++"><pre><span class="p">.</span><span class="n">I</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">trilinos</span><span class="o">-</span><span class="n">serial</span><span class="o">/</span><span class="n">include</span><span class="o">/</span>
 </pre></div>
 
 </div>
@@ -191,7 +191,7 @@ $$<p>using <a href="http://trilinos.org/packages/epetra/">AztecOO</a> solvers wi
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-clike"><pre>#include "AztecOO.h"
+<div class=" highlight hl-c++"><pre><span class="cp">#include "AztecOO.h"</span>
 </pre></div>
 
 </div>
@@ -218,11 +218,11 @@ $$<p>using <a href="http://trilinos.org/packages/epetra/">AztecOO</a> solvers wi
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-clike"><pre>#include "AztecOO_Version.h"
-#include "Epetra_SerialComm.h"
-#include "Epetra_Map.h"
-#include "Epetra_Vector.h"
-#include "Epetra_CrsMatrix.h"
+<div class=" highlight hl-c++"><pre><span class="cp">#include "AztecOO_Version.h"</span>
+<span class="cp">#include "Epetra_SerialComm.h"</span>
+<span class="cp">#include "Epetra_Map.h"</span>
+<span class="cp">#include "Epetra_Vector.h"</span>
+<span class="cp">#include "Epetra_CrsMatrix.h"</span>
 </pre></div>
 
 </div>
@@ -262,8 +262,8 @@ $$<p>using <a href="http://trilinos.org/packages/epetra/">AztecOO</a> solvers wi
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-clike"><pre>.L libepetra
-.L libaztecOO
+<div class=" highlight hl-c++"><pre><span class="p">.</span><span class="n">L</span> <span class="n">libepetra</span>
+<span class="p">.</span><span class="n">L</span> <span class="n">libaztecOO</span>
 </pre></div>
 
 </div>
@@ -300,14 +300,14 @@ $$<p>using <a href="http://trilinos.org/packages/epetra/">AztecOO</a> solvers wi
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-clike"><pre>Epetra_SerialComm Comm;
+<div class=" highlight hl-c++"><pre><span class="n">Epetra_SerialComm</span> <span class="n">Comm</span><span class="p">;</span>
   
-int NumMyElements = 1000;
+<span class="kt">int</span> <span class="n">NumMyElements</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
 
-if (Comm.MyPID()==0)
-    std::cout &lt;&lt; AztecOO_Version() &lt;&lt; std::endl &lt;&lt; std::endl;
+<span class="k">if</span> <span class="p">(</span><span class="n">Comm</span><span class="p">.</span><span class="n">MyPID</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">AztecOO_Version</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
-  std::cout &lt;&lt; Comm &lt;&lt;std::endl;
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">Comm</span> <span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 </pre></div>
 
 </div>
@@ -359,8 +359,8 @@ Epetra::Comm::Processor 0 of 1 total processors.
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-clike"><pre>Epetra_Map Map(-1, NumMyElements, 0, Comm);
-int NumGlobalElements = Map.NumGlobalElements();
+<div class=" highlight hl-c++"><pre><span class="n">Epetra_Map</span> <span class="nf">Map</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">NumMyElements</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Comm</span><span class="p">);</span>
+<span class="kt">int</span> <span class="n">NumGlobalElements</span> <span class="o">=</span> <span class="n">Map</span><span class="p">.</span><span class="n">NumGlobalElements</span><span class="p">();</span>
 </pre></div>
 
 </div>
@@ -397,7 +397,7 @@ int NumGlobalElements = Map.NumGlobalElements();
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-clike"><pre>Epetra_CrsMatrix A(Copy, Map, 3);
+<div class=" highlight hl-c++"><pre><span class="n">Epetra_CrsMatrix</span> <span class="nf">A</span><span class="p">(</span><span class="n">Copy</span><span class="p">,</span> <span class="n">Map</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
 </pre></div>
 
 </div>
@@ -434,15 +434,15 @@ int NumGlobalElements = Map.NumGlobalElements();
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-clike"><pre>double negOne = -1.0;
-double posTwo = 2.0;
-for (int i=0; i&lt;NumMyElements; i++) {
-    int GlobalRow = A.GRID(i); int RowLess1 = GlobalRow - 1; int RowPlus1 = GlobalRow + 1;
+<div class=" highlight hl-c++"><pre><span class="kt">double</span> <span class="n">negOne</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">;</span>
+<span class="kt">double</span> <span class="n">posTwo</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">NumMyElements</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">GlobalRow</span> <span class="o">=</span> <span class="n">A</span><span class="p">.</span><span class="n">GRID</span><span class="p">(</span><span class="n">i</span><span class="p">);</span> <span class="kt">int</span> <span class="n">RowLess1</span> <span class="o">=</span> <span class="n">GlobalRow</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="kt">int</span> <span class="n">RowPlus1</span> <span class="o">=</span> <span class="n">GlobalRow</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
 
-    if (RowLess1!=-1) A.InsertGlobalValues(GlobalRow, 1, &amp;negOne, &amp;RowLess1);
-    if (RowPlus1!=NumGlobalElements) A.InsertGlobalValues(GlobalRow, 1, &amp;negOne, &amp;RowPlus1);
-    A.InsertGlobalValues(GlobalRow, 1, &amp;posTwo, &amp;GlobalRow);
-};
+    <span class="k">if</span> <span class="p">(</span><span class="n">RowLess1</span><span class="o">!=-</span><span class="mi">1</span><span class="p">)</span> <span class="n">A</span><span class="p">.</span><span class="n">InsertGlobalValues</span><span class="p">(</span><span class="n">GlobalRow</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">negOne</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">RowLess1</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">RowPlus1</span><span class="o">!=</span><span class="n">NumGlobalElements</span><span class="p">)</span> <span class="n">A</span><span class="p">.</span><span class="n">InsertGlobalValues</span><span class="p">(</span><span class="n">GlobalRow</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">negOne</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">RowPlus1</span><span class="p">);</span>
+    <span class="n">A</span><span class="p">.</span><span class="n">InsertGlobalValues</span><span class="p">(</span><span class="n">GlobalRow</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">posTwo</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">GlobalRow</span><span class="p">);</span>
+<span class="p">};</span>
 </pre></div>
 
 </div>
@@ -480,7 +480,7 @@ for (int i=0; i&lt;NumMyElements; i++) {
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-clike"><pre>A.FillComplete();
+<div class=" highlight hl-c++"><pre><span class="n">A</span><span class="p">.</span><span class="n">FillComplete</span><span class="p">();</span>
 </pre></div>
 
 </div>
@@ -517,10 +517,10 @@ for (int i=0; i&lt;NumMyElements; i++) {
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-clike"><pre>Epetra_Vector x(Map);
-Epetra_Vector b(Map);
+<div class=" highlight hl-c++"><pre><span class="n">Epetra_Vector</span> <span class="nf">x</span><span class="p">(</span><span class="n">Map</span><span class="p">);</span>
+<span class="n">Epetra_Vector</span> <span class="nf">b</span><span class="p">(</span><span class="n">Map</span><span class="p">);</span>
 
-b.Random();
+<span class="n">b</span><span class="p">.</span><span class="n">Random</span><span class="p">();</span>
 </pre></div>
 
 </div>
@@ -558,9 +558,9 @@ b.Random();
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-clike"><pre>Epetra_LinearProblem problem(&amp;A, &amp;x, &amp;b);
+<div class=" highlight hl-c++"><pre><span class="n">Epetra_LinearProblem</span> <span class="nf">problem</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
 
-AztecOO solver(problem);
+<span class="n">AztecOO</span> <span class="nf">solver</span><span class="p">(</span><span class="n">problem</span><span class="p">);</span>
 </pre></div>
 
 </div>
@@ -598,11 +598,11 @@ AztecOO solver(problem);
 <div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-clike"><pre>solver.SetAztecOption(AZ_precond, AZ_Jacobi);
-solver.Iterate(10, 1.0E-2);
+<div class=" highlight hl-c++"><pre><span class="n">solver</span><span class="p">.</span><span class="n">SetAztecOption</span><span class="p">(</span><span class="n">AZ_precond</span><span class="p">,</span> <span class="n">AZ_Jacobi</span><span class="p">);</span>
+<span class="n">solver</span><span class="p">.</span><span class="n">Iterate</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">1.0E-2</span><span class="p">);</span>
 
-std::cout &lt;&lt; "Solver performed " &lt;&lt; solver.NumIters() &lt;&lt; " iterations." &lt;&lt; std::endl;
-std::cout &lt;&lt; "Norm of true residual = " &lt;&lt; solver.TrueResidual() &lt;&lt; std::endl;
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Solver performed "</span> <span class="o">&lt;&lt;</span> <span class="n">solver</span><span class="p">.</span><span class="n">NumIters</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">" iterations."</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Norm of true residual = "</span> <span class="o">&lt;&lt;</span> <span class="n">solver</span><span class="p">.</span><span class="n">TrueResidual</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 </pre></div>
 
 </div>
@@ -684,9 +684,9 @@ Norm of true residual = 3.94466
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-clike"><pre>for (int i = 0; i &lt; 10; i++){
-    std::cout &lt;&lt; x[i] &lt;&lt; std::endl; 
-}
+<div class=" highlight hl-c++"><pre><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> 
+<span class="p">}</span>
 </pre></div>
 
 </div>

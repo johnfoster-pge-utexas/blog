@@ -37,8 +37,16 @@
   <lastmod>2015-07-20</lastmod>
  </sitemap>
  <sitemap>
+  <loc>http://johntfoster.github.io/categories/exodus.xml</loc>
+  <lastmod>2015-07-21</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>http://johntfoster.github.io/categories/github.xml</loc>
   <lastmod>2015-07-20</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://johntfoster.github.io/categories/hdf5.xml</loc>
+  <lastmod>2015-07-21</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/categories/hpc.xml</loc>
@@ -69,12 +77,16 @@
   <lastmod>2015-07-20</lastmod>
  </sitemap>
  <sitemap>
+  <loc>http://johntfoster.github.io/categories/netcdf.xml</loc>
+  <lastmod>2015-07-21</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>http://johntfoster.github.io/categories/nikola.xml</loc>
   <lastmod>2015-07-20</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/categories/numpy.xml</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/categories/peridigm.xml</loc>
@@ -86,7 +98,7 @@
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/categories/python.xml</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://johntfoster.github.io/categories/recursion.xml</loc>

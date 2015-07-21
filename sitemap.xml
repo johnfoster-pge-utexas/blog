@@ -22,15 +22,15 @@
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/beamer.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/c++.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/cling.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/cockrell-school.html</loc>
@@ -38,35 +38,43 @@
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/cox-de-boor.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/docker.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/epetra.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
+ </url>
+ <url>
+  <loc>http://johntfoster.github.io/categories/exodus.html</loc>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/github.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
+ </url>
+ <url>
+  <loc>http://johntfoster.github.io/categories/hdf5.html</loc>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/hpc.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/iga.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/index.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/isogeometric-analysis.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/latex.html</loc>
@@ -74,15 +82,19 @@
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/memoization.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/memoize.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/mpi.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
+ </url>
+ <url>
+  <loc>http://johntfoster.github.io/categories/netcdf.html</loc>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/nikola.html</loc>
@@ -90,19 +102,19 @@
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/numpy.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/peridigm.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/powerpoint.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/python.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/recursion.html</loc>
@@ -110,23 +122,23 @@
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/texshop.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/theme.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/travis-ci.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/trilinos.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/ut.html</loc>
-  <lastmod>2015-07-20</lastmod>
+  <lastmod>2015-07-21</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/index.html</loc>

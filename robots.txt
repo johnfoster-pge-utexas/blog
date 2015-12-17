@@ -1,0 +1,4 @@
+Sitemap: http://johntfoster.github.io/sitemapindex.xml
+
+User-Agent: *
+Host: johntfoster.github.io

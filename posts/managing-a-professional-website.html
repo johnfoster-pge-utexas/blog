@@ -93,19 +93,19 @@ MathJax.Hub.Config({
 <h4>Commit changes to local repository and push to GitHub</h4>
 <p><a name="commit"></a></p>
 <p>There are so many great <code>git</code> and <a href="https://github.com">GitHub</a> resources out there, I'm going to assume you know or can find out about basic <code>git</code> usage.  There is one important think to note for the <em>first</em> commit to GitHub.  You may run into problems if there is not an alternate branch of the repository for Travis to push the build results to.  You can create a branch with the following command:</p>
-<pre class="code literal-block">git checkout -b travis-build --orphan
+<pre class="code literal-block"><span></span>git checkout -b travis-build --orphan
 </pre>
 
 
 <p>This will create a new branch called <code>travis-build</code> with no history.  You should then remove all the files in this branch, commit, and push to GitHub</p>
-<pre class="code literal-block">git rm -rf *
+<pre class="code literal-block"><span></span>git rm -rf *
 git commit -m <span class="s2">"First commit to travis-build branch"</span>
 git push origin travis-build
 </pre>
 
 
 <p>assuming the default <code>origin</code> name for your GitHub repository.  Now switch back to your <code>master</code> branch, and push to GitHub, the <code>travis.yml</code> file in your repository (details covered below) will instruct Travis on how to build the repository</p>
-<pre class="code literal-block">git checkout master
+<pre class="code literal-block"><span></span>git checkout master
 git commit -am <span class="s2">"A commit message detailing changes"</span>
 git push origin master
 </pre>
@@ -120,7 +120,7 @@ git push origin master
 <p>Upon committing, Travis reads the <code>travis.yml</code> file in the repository and performs a set of actions.  In this case, we want to build a LaTeX file which there is not a preinstalled Travis Ubuntu instance for LaTeX so we need to use <code>apt-get</code> to install all of the LaTeX dependencies and proper fonts for building the CV. The other commands just some basic Travis configuration, full details for Travis configuration can be found <a href="http://docs.travis-ci.com/">here</a></p>
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=0:16&amp;footer=minimal"></script><p>Once all of the dependencies are installed, Travis will build both the PDF and HTML versions of the CV with</p>
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=17:19&amp;footer=minimal"></script><p>After a successful build, Travis will clone the previously created <code>travis-build</code> branch, copy the newly created PDF and HTML files into this branch, commit them, and push them back to GitHub.  This requires setting up a few environment variables, that can be added to the Travis project page.  The variables are <code>GIT_EMAIL</code>, <code>GIT_NAME</code>, <code>GH_TOKEN</code>, and <code>TRAVIS_TOKEN</code>.  The first two just correspond to basic <code>git</code> configuration and are really just used to store the information of the person who make the commit in the <code>git</code> history.  Since it's actually Travis making the commit, I just define the variables as</p>
-<pre class="code literal-block">GIT_NAME="Travis CI"
+<pre class="code literal-block"><span></span>GIT_NAME="Travis CI"
 GIT_EMAIL=travis-ci@travis.org
 </pre>
 
@@ -134,12 +134,12 @@ GIT_EMAIL=travis-ci@travis.org
 <p>The other two environment variables, <code>GH_TOKEN</code> and <code>TRAVIS_TOKEN</code> are more critical as they allow the Travis the proper credentials to commit back to Github and to issue a new build of the website for which the CV will be included. The get a GitHub token, go to your GitHub settings page, click on Applications on the left-hand panel and then "Generate new token", give the token a name and copy or write down the token somewhere safely.  </p>
 <p><img src="../files/github-settings.png"></p>
 <p><strong>This will be the only time you can actually see the token</strong> so make sure you have it copied somewhere.  You can use the same token form multiple Travis jobs, but you have to know what it is and cannot reveal it again later.  Use this token to set the <code>GH_TOKEN</code> environment variable back on the Travis site.  Finally, you can get a <code>TRAVIS_TOKEN</code> through the Ruby <a href="http://blog.travis-ci.com/2013-01-14-new-client/">Travis command line interface</a>.  If you have Ruby installed you can install Travis like any Ruby <code>gem</code> with</p>
-<pre class="code literal-block">gem install travis
+<pre class="code literal-block"><span></span>gem install travis
 </pre>
 
 
 <p>Then you can find your Travis access token with </p>
-<pre class="code literal-block">travis token
+<pre class="code literal-block"><span></span>travis token
 </pre>
 
 
@@ -159,7 +159,7 @@ GIT_EMAIL=travis-ci@travis.org
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/blob/master/.travis.yml?slice=0:9&amp;footer=minimal"></script><p>Nikola can be installed via <code>pip</code> in Python.  Because I also want to keep the option open to blog in IPython, there are also IPython and all the scientific Python stack dependencies that need to be installed.  To install all of these dependencies we use a <code>requirements.txt</code> file.</p>
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/blob/master/.travis.yml?slice=11:13&amp;footer=minimal"></script><p>Then we can build the website</p>
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/blob/master/.travis.yml?slice=13&amp;footer=minimal"></script><p>In order to get the PDF and HTML versions of the CV that was built and posted earlier to show as a page in this website, I use a ReStructured Text format document which Nikola can compile, using the raw html directive</p>
-<pre class="code literal-block"><span class="p">..</span> <span class="ow">raw</span><span class="p">::</span> html
+<pre class="code literal-block"><span></span><span class="p">..</span> <span class="ow">raw</span><span class="p">::</span> html
    <span class="nc">:url:</span> <span class="nf">https://raw.githubusercontent.com/johntfoster/CV/travis-build/cv.html</span>
 </pre>
 
@@ -185,16 +185,16 @@ GIT_EMAIL=travis-ci@travis.org
         };
         (function() {
             var dsq = document.createElement('script'); dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
         })();
-    </script><noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
 </noscript>
-    <a href="//disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
     </div>
-                    <footer id="footer"><p>Contents © 2015         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
+                    <footer id="footer"><p>Contents © 2017         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
             
         </footer>
 </div>

@@ -74,11 +74,10 @@ MathJax.Hub.Config({
 \end{equation}<p>which has the analytic solution</p>
 \begin{equation}
 x(t) = {\rm e}^t
-\end{equation}<p>I'm too lazy to code up anything much more sophisticated, so let's use an Euler explicit finite difference solution for $0 
+\end{equation}<p>I'm too lazy to code up anything much more sophisticated, so let's use an Euler explicit finite difference solution for $0 &lt; t &lt; 100$.  We'll write a function that computes the $L_2$ norm of the error between the discrete solution and the exact solution.  The formula for the norm is</p>
 $$
 \Vert error \Vert_{L_2} = \sqrt{ \frac{1}{N} \sum_{i=1}^N(discrete(x_i) - exact(x_i))^2}
 $$
-</p>
 </div>
 </div>
 </div>
@@ -87,7 +86,7 @@ $$
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="k">def</span> <span class="nf">finite_diff_solution_err</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
     <span class="sd">"""</span>
@@ -134,7 +133,7 @@ $$
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">dofs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">100000</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dofs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">100000</span><span class="p">])</span>
 
 <span class="n">errs</span> <span class="o">=</span> <span class="p">[</span><span class="n">finite_diff_solution_err</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dofs</span><span class="p">]</span>
 </pre></div>
@@ -159,17 +158,17 @@ $$
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
-<span class="c">#Fit a straight line</span>
+<span class="c1">#Fit a straight line</span>
 <span class="n">coefs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">dofs</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">errs</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">coefs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">dofs</span><span class="p">)</span> <span class="o">+</span> <span class="n">coefs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-<span class="c">#Plot</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">dofs</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s">'b-'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">dofs</span><span class="p">,</span> <span class="n">errs</span><span class="p">,</span> <span class="s">'b^'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">"$\log_{10} h$"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">"$\log_{10} \Vert error \Vert_{L_2}$"</span><span class="p">);</span>
+<span class="c1">#Plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">dofs</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">'b-'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">dofs</span><span class="p">,</span> <span class="n">errs</span><span class="p">,</span> <span class="s1">'b^'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"$\log_</span><span class="si">{10}</span><span class="s2"> h$"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"$\log_</span><span class="si">{10}</span><span class="s2"> \Vert error \Vert_</span><span class="si">{L_2}</span><span class="s2">$"</span><span class="p">);</span>
 </pre></div>
 
 </div>
@@ -182,6 +181,7 @@ $$
 
 <div class="output_area">
 <div class="prompt"></div>
+
 
 
 <div class="output_png output_subarea ">
@@ -209,7 +209,7 @@ $$
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">coefs</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">coefs</span>
 </pre></div>
 
 </div>
@@ -222,6 +222,7 @@ $$
 
 <div class="output_area">
 <div class="prompt output_prompt">Out[4]:</div>
+
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -257,16 +258,16 @@ $$
         };
         (function() {
             var dsq = document.createElement('script'); dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
         })();
-    </script><noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
 </noscript>
-    <a href="//disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
     </div>
-                    <footer id="footer"><p>Contents © 2015         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
+                    <footer id="footer"><p>Contents © 2017         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
             
         </footer>
 </div>

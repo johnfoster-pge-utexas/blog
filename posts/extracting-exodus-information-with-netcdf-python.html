@@ -99,7 +99,7 @@ MathJax.Hub.Config({
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="kn">import</span> <span class="nn">netCDF4</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">netCDF4</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 </pre></div>
 
@@ -123,7 +123,7 @@ MathJax.Hub.Config({
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="n">nc</span> <span class="o">=</span> <span class="n">netCDF4</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="s">'../files/s_curve.g'</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">nc</span> <span class="o">=</span> <span class="n">netCDF4</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="s1">'../files/s_curve.g'</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -147,7 +147,7 @@ MathJax.Hub.Config({
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="k">print</span> <span class="n">nc</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span> <span class="n">nc</span>
 </pre></div>
 
 </div>
@@ -160,6 +160,7 @@ MathJax.Hub.Config({
 
 <div class="output_area">
 <div class="prompt"></div>
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>&lt;type 'netCDF4._netCDF4.Dataset'&gt;
 root group (NETCDF3_64BIT data model, file format NETCDF3):
@@ -195,7 +196,7 @@ root group (NETCDF3_64BIT data model, file format NETCDF3):
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="n">nc</span><span class="o">.</span><span class="n">variables</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">nc</span><span class="o">.</span><span class="n">variables</span>
 </pre></div>
 
 </div>
@@ -208,6 +209,7 @@ root group (NETCDF3_64BIT data model, file format NETCDF3):
 
 <div class="output_area">
 <div class="prompt output_prompt">Out[4]:</div>
+
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -363,9 +365,9 @@ filling off
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="n">X</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s">'coordx'</span><span class="p">]</span>
-<span class="n">Y</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s">'coordy'</span><span class="p">]</span>
-<span class="n">connect</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s">'connect1'</span><span class="p">]</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'coordx'</span><span class="p">]</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'coordy'</span><span class="p">]</span>
+<span class="n">connect</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'connect1'</span><span class="p">]</span>
 <span class="k">print</span> <span class="n">connect</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 
@@ -379,6 +381,7 @@ filling off
 
 <div class="output_area">
 <div class="prompt"></div>
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[[ 1  2  3  4]
  [ 2  5  6  3]
@@ -413,7 +416,7 @@ filling off
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class=" highlight hl-ipython2"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Polygon</span>
 <span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="kn">import</span> <span class="n">PatchCollection</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
@@ -440,7 +443,7 @@ filling off
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="n">xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">X</span><span class="p">[:],</span> <span class="n">Y</span><span class="p">[:]])</span><span class="o">.</span><span class="n">T</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">X</span><span class="p">[:],</span> <span class="n">Y</span><span class="p">[:]])</span><span class="o">.</span><span class="n">T</span>
 
 <span class="n">patches</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">coords</span> <span class="ow">in</span> <span class="n">xy</span><span class="p">[</span><span class="n">connect</span><span class="p">[:]</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
@@ -454,7 +457,7 @@ filling off
 <span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s">'equal'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">'equal'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -468,6 +471,7 @@ filling off
 
 <div class="output_area">
 <div class="prompt"></div>
+
 
 
 <div class="output_png output_subarea ">
@@ -495,7 +499,7 @@ filling off
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="n">nc</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">nc</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -526,16 +530,16 @@ filling off
         };
         (function() {
             var dsq = document.createElement('script'); dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
         })();
-    </script><noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
 </noscript>
-    <a href="//disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
     </div>
-                    <footer id="footer"><p>Contents © 2015         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
+                    <footer id="footer"><p>Contents © 2017         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
             
         </footer>
 </div>

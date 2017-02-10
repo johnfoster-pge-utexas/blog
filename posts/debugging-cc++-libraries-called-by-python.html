@@ -62,27 +62,27 @@ MathJax.Hub.Config({
             <div>
 <p>I've been debugging a C++ library that I wrote and am calling from Python via a <a href="https://cffi.readthedocs.org/en/latest/">CFFI</a> interface.  After an hour or two of debugging with print-statements without resolution, I decided to figure out how to use a proper debugger. I'm very comfortable on the command-line and have used <code>gdb</code> in this way often in the past, so am happy I found an easy solution.  The instructions that follow should work for any C/C++ library built with debug flags enabled (i.e. the <code>-g</code> compiler flag) that is called from Python.  While I am using CFFI, it should also work for <a href="https://docs.python.org/2/library/ctypes.html">ctypes</a> or <a href="http://www.swig.org/">SWIG</a> interfaces.  Also the commands below are specific to the <code>lldb</code> debugger, but could be easily translated to <code>gdb</code>.</p>
 <p>First, in two separate terminal windows, launch <code>ipython</code> and <code>lldb</code>.  At the IPython prompt, type:</p>
-<pre class="code literal-block">In [1]: !ps aux | grep -i ipython
+<pre class="code literal-block"><span></span>In [1]: !ps aux | grep -i ipython
 </pre>
 
 
 <p>and look for the process ID (pid) of the IPython session.  Let's assume the process ID in our case is <code>1234</code>.  Go to the <code>lldb</code> command prompt and attach to the IPython session with</p>
-<pre class="code literal-block">(lldb) attach --pid 1234
+<pre class="code literal-block"><span></span>(lldb) attach --pid 1234
 </pre>
 
 
 <p>followed by</p>
-<pre class="code literal-block">(lldb) continue
+<pre class="code literal-block"><span></span>(lldb) continue
 </pre>
 
 
 <p>to release the process.  Now your ready to set breakpoints, etc.  For example, to set a breakpoint on line 400 of a <code>myfile.cpp</code> we would type</p>
-<pre class="code literal-block">(lldb) breakpoint set -f myfile.cpp -l 400
+<pre class="code literal-block"><span></span>(lldb) breakpoint set -f myfile.cpp -l 400
 </pre>
 
 
 <p>Assuming <code>myfile.cpp</code> is compiled into a library that is called by the Python script/module <code>myscript.py</code>, we can now run the Python code in the IPython terminal</p>
-<pre class="code literal-block">In [2]: run myscript.py
+<pre class="code literal-block"><span></span>In [2]: run myscript.py
 </pre>
 
 
@@ -93,6 +93,9 @@ MathJax.Hub.Config({
                 <ul class="pager hidden-print">
 <li class="previous">
                 <a href="git-and-github-tutorial.html" rel="prev" title="git and Github tutorial">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="peridigm-tutorial.html" rel="next" title="Peridigm tutorial">Next post</a>
             </li>
         </ul>
 <div id="disqus_thread"></div>
@@ -106,16 +109,16 @@ MathJax.Hub.Config({
         };
         (function() {
             var dsq = document.createElement('script'); dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
         })();
-    </script><noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
 </noscript>
-    <a href="//disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
     </div>
-                    <footer id="footer"><p>Contents © 2015         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
+                    <footer id="footer"><p>Contents © 2017         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
             
         </footer>
 </div>

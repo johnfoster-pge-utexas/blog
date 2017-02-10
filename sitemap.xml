@@ -7,190 +7,198 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>http://johntfoster.github.io/2014/index.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/2015/index.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://johntfoster.github.io/2017/index.html</loc>
+  <lastmod>2017-02-10T18:56:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/archive.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/aztecoo.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/beamer.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/c%2B%2B.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/cling.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/cockrell-school.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/cox-de-boor.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/docker.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/epetra.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/exodus.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/github.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/hdf5.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/hpc.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/iga.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/index.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/isogeometric-analysis.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/latex.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/memoization.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/memoize.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/mpi.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/netcdf.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/nikola.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/numpy.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/peridigm.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/powerpoint.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/python.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/recursion.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/texshop.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/theme.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/travis-ci.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/trilinos.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/categories/ut.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/index-1.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/index.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:56:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/posts/cockrell-school-beamer-template.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/posts/debugging-cc%2B%2B-libraries-called-by-python.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/posts/discrete-error-and-convergence.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/posts/extracting-exodus-information-with-netcdf-python.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/posts/git-and-github-tutorial.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/posts/interactive-c%2B%2B-for-hpc.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/posts/keep-texshop-from-stealing-focus.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/posts/managing-a-professional-website.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://johntfoster.github.io/posts/peridigm-tutorial.html</loc>
+  <lastmod>2017-02-10T18:56:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/posts/peridigm-without-building-via-Docker.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/posts/pythonnumpy-implementation-of-bspline-basis-functions.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
  <url>
   <loc>http://johntfoster.github.io/posts/using-exoduspy-to-extract-data-from-fea-database.html</loc>
-  <lastmod>2015-12-17T02:11:00Z</lastmod>
+  <lastmod>2017-02-10T18:52:00Z</lastmod>
  </url>
 </urlset>

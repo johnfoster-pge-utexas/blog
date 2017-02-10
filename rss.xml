@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>from the shoulders of giants</title><link>http://johntfoster.github.io/</link><description>mechanics and the mechanics of coding</description><atom:link href="http://johntfoster.github.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Thu, 17 Dec 2015 02:11:51 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Debugging C/C++ libraries called by Python</title><link>http://johntfoster.github.io/posts/debugging-cc%2B%2B-libraries-called-by-python.html</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;p&gt;I've been debugging a C++ library that I wrote and am calling from Python via a &lt;a href="https://cffi.readthedocs.org/en/latest/"&gt;CFFI&lt;/a&gt; interface.  After an hour or two of debugging with print-statements without resolution, I decided to figure out how to use a proper debugger. I'm very comfortable on the command-line and have used &lt;code&gt;gdb&lt;/code&gt; in this way often in the past, so am happy I found an easy solution.  The instructions that follow should work for any C/C++ library built with debug flags enabled (i.e. the &lt;code&gt;-g&lt;/code&gt; compiler flag) that is called from Python.  While I am using CFFI, it should also work for &lt;a href="https://docs.python.org/2/library/ctypes.html"&gt;ctypes&lt;/a&gt; or &lt;a href="http://www.swig.org/"&gt;SWIG&lt;/a&gt; interfaces.  Also the commands below are specific to the &lt;code&gt;lldb&lt;/code&gt; debugger, but could be easily translated to &lt;code&gt;gdb&lt;/code&gt;.&lt;/p&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>from the shoulders of giants</title><link>http://johntfoster.github.io/</link><description>mechanics and the mechanics of coding</description><atom:link href="http://johntfoster.github.io/rss.xml" type="application/rss+xml" rel="self"></atom:link><language>en</language><lastBuildDate>Fri, 10 Feb 2017 18:56:15 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Peridigm tutorial</title><link>http://johntfoster.github.io/posts/peridigm-tutorial.html</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;p&gt;I recently gave a short introduction to &lt;a href="https://peridigm.sandia.gov"&gt;Peridigm&lt;/a&gt;, the massively parallel computational peridynamics code.  It briefly covers, the history of Peridigm, and tips  on building, running, extending, and learning to use Peridigm.&lt;/p&gt;
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/pNmlmr3ct8k" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;&lt;/div&gt;</description><guid>http://johntfoster.github.io/posts/peridigm-tutorial.html</guid><pubDate>Thu, 09 Feb 2017 22:37:11 GMT</pubDate></item><item><title>Debugging C/C++ libraries called by Python</title><link>http://johntfoster.github.io/posts/debugging-cc%2B%2B-libraries-called-by-python.html</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;p&gt;I've been debugging a C++ library that I wrote and am calling from Python via a &lt;a href="https://cffi.readthedocs.org/en/latest/"&gt;CFFI&lt;/a&gt; interface.  After an hour or two of debugging with print-statements without resolution, I decided to figure out how to use a proper debugger. I'm very comfortable on the command-line and have used &lt;code&gt;gdb&lt;/code&gt; in this way often in the past, so am happy I found an easy solution.  The instructions that follow should work for any C/C++ library built with debug flags enabled (i.e. the &lt;code&gt;-g&lt;/code&gt; compiler flag) that is called from Python.  While I am using CFFI, it should also work for &lt;a href="https://docs.python.org/2/library/ctypes.html"&gt;ctypes&lt;/a&gt; or &lt;a href="http://www.swig.org/"&gt;SWIG&lt;/a&gt; interfaces.  Also the commands below are specific to the &lt;code&gt;lldb&lt;/code&gt; debugger, but could be easily translated to &lt;code&gt;gdb&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;First, in two separate terminal windows, launch &lt;code&gt;ipython&lt;/code&gt; and &lt;code&gt;lldb&lt;/code&gt;.  At the IPython prompt, type:&lt;/p&gt;
-&lt;pre class="code literal-block"&gt;In [1]: !ps aux | grep -i ipython
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;In [1]: !ps aux | grep -i ipython
 &lt;/pre&gt;
 
 
 &lt;p&gt;and look for the process ID (pid) of the IPython session.  Let's assume the process ID in our case is &lt;code&gt;1234&lt;/code&gt;.  Go to the &lt;code&gt;lldb&lt;/code&gt; command prompt and attach to the IPython session with&lt;/p&gt;
-&lt;pre class="code literal-block"&gt;(lldb) attach --pid 1234
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;(lldb) attach --pid 1234
 &lt;/pre&gt;
 
 
 &lt;p&gt;followed by&lt;/p&gt;
-&lt;pre class="code literal-block"&gt;(lldb) continue
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;(lldb) continue
 &lt;/pre&gt;
 
 
 &lt;p&gt;to release the process.  Now your ready to set breakpoints, etc.  For example, to set a breakpoint on line 400 of a &lt;code&gt;myfile.cpp&lt;/code&gt; we would type&lt;/p&gt;
-&lt;pre class="code literal-block"&gt;(lldb) breakpoint set -f myfile.cpp -l 400
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;(lldb) breakpoint set -f myfile.cpp -l 400
 &lt;/pre&gt;
 
 
 &lt;p&gt;Assuming &lt;code&gt;myfile.cpp&lt;/code&gt; is compiled into a library that is called by the Python script/module &lt;code&gt;myscript.py&lt;/code&gt;, we can now run the Python code in the IPython terminal&lt;/p&gt;
-&lt;pre class="code literal-block"&gt;In [2]: run myscript.py
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;In [2]: run myscript.py
 &lt;/pre&gt;
 
 
@@ -52,7 +53,7 @@
 &lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;netCDF4&lt;/span&gt;
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;netCDF4&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -76,7 +77,7 @@
 &lt;div class="prompt input_prompt"&gt;In [2]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span class="n"&gt;nc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;netCDF4&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Dataset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'../files/s_curve.g'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;nc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;netCDF4&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Dataset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'../files/s_curve.g'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
@@ -100,7 +101,7 @@
 &lt;div class="prompt input_prompt"&gt;In [3]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;nc&lt;/span&gt;
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;nc&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
@@ -111,7 +112,9 @@
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;&amp;lt;type 'netCDF4._netCDF4.Dataset'&amp;gt;
 root group (NETCDF3_64BIT data model, file format NETCDF3):
@@ -147,7 +150,7 @@ root group (NETCDF3_64BIT data model, file format NETCDF3):
 &lt;div class="prompt input_prompt"&gt;In [4]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span class="n"&gt;nc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;variables&lt;/span&gt;
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;nc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;variables&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
@@ -158,7 +161,9 @@ root group (NETCDF3_64BIT data model, file format NETCDF3):
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[4]:&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt output_prompt"&gt;Out[4]:&lt;/div&gt;
+
 
 
 &lt;div class="output_text output_subarea output_execute_result"&gt;
@@ -314,9 +319,9 @@ filling off
 &lt;div class="prompt input_prompt"&gt;In [5]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;variables&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'coordx'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-&lt;span class="n"&gt;Y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;variables&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'coordy'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-&lt;span class="n"&gt;connect&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;variables&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'connect1'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;variables&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'coordx'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;Y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;variables&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'coordy'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;connect&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;variables&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'connect1'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;connect&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -328,7 +333,9 @@ filling off
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;[[ 1  2  3  4]
  [ 2  5  6  3]
@@ -363,7 +370,7 @@ filling off
 &lt;div class="prompt input_prompt"&gt;In [6]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="k"&gt;matplotlib&lt;/span&gt; inline
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="k"&gt;matplotlib&lt;/span&gt; inline
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.patches&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Polygon&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.collections&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;PatchCollection&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
@@ -390,7 +397,7 @@ filling off
 &lt;div class="prompt input_prompt"&gt;In [7]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span class="n"&gt;xy&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;[:],&lt;/span&gt; &lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="p"&gt;[:]])&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;xy&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;[:],&lt;/span&gt; &lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="p"&gt;[:]])&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;
 
 &lt;span class="n"&gt;patches&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
 &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;coords&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;xy&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;connect&lt;/span&gt;&lt;span class="p"&gt;[:]&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt;
@@ -404,7 +411,7 @@ filling off
 &lt;span class="n"&gt;ax&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add_collection&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;ax&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_xlim&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
 &lt;span class="n"&gt;ax&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_ylim&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-&lt;span class="n"&gt;ax&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_aspect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'equal'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;ax&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_aspect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'equal'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -416,7 +423,9 @@ filling off
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 
 
 &lt;div class="output_png output_subarea "&gt;
@@ -444,7 +453,7 @@ filling off
 &lt;div class="prompt input_prompt"&gt;In [8]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span class="n"&gt;nc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;nc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
@@ -504,7 +513,7 @@ $$&lt;p&gt;using &lt;a href="http://trilinos.org/packages/epetra/"&gt;AztecOO&lt
 &lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;I&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;trilinos&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;serial&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;I&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;trilinos&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;serial&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
@@ -515,7 +524,9 @@ $$&lt;p&gt;using &lt;a href="http://trilinos.org/packages/epetra/"&gt;AztecOO&lt
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;&lt;/pre&gt;
 &lt;/div&gt;
@@ -540,7 +551,7 @@ $$&lt;p&gt;using &lt;a href="http://trilinos.org/packages/epetra/"&gt;AztecOO&lt
 &lt;div class="prompt input_prompt"&gt;In [2]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span class="cp"&gt;#include "AztecOO.h"&lt;/span&gt;
+&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;"AztecOO.h"&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
@@ -551,7 +562,9 @@ $$&lt;p&gt;using &lt;a href="http://trilinos.org/packages/epetra/"&gt;AztecOO&lt
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;&lt;/pre&gt;
 &lt;/div&gt;
@@ -566,11 +579,11 @@ $$&lt;p&gt;using &lt;a href="http://trilinos.org/packages/epetra/"&gt;AztecOO&lt
 &lt;div class="prompt input_prompt"&gt;In [3]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span class="cp"&gt;#include "AztecOO_Version.h"&lt;/span&gt;
-&lt;span class="cp"&gt;#include "Epetra_SerialComm.h"&lt;/span&gt;
-&lt;span class="cp"&gt;#include "Epetra_Map.h"&lt;/span&gt;
-&lt;span class="cp"&gt;#include "Epetra_Vector.h"&lt;/span&gt;
-&lt;span class="cp"&gt;#include "Epetra_CrsMatrix.h"&lt;/span&gt;
+&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;"AztecOO_Version.h"&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;"Epetra_SerialComm.h"&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;"Epetra_Map.h"&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;"Epetra_Vector.h"&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;"Epetra_CrsMatrix.h"&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
@@ -581,7 +594,9 @@ $$&lt;p&gt;using &lt;a href="http://trilinos.org/packages/epetra/"&gt;AztecOO&lt
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;&lt;/pre&gt;
 &lt;/div&gt;
@@ -597,7 +612,7 @@ $$&lt;p&gt;using &lt;a href="http://trilinos.org/packages/epetra/"&gt;AztecOO&lt
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Now the metaprocessing to load the shared libraries.  Since I'm on a Mac, I had to define the environment variable&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;export &lt;/span&gt;&lt;span class="nv"&gt;DYLD_LIBRARY_PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/usr/local/trilinos-serial/lib:&lt;span class="nv"&gt;$DYLD_LIBRARY_PATH&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;DYLD_LIBRARY_PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/usr/local/trilinos-serial/lib:&lt;span class="nv"&gt;$DYLD_LIBRARY_PATH&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;before launching the notebook/cling so the system knows where to find the libraries at runtime.  On a Linux machine, this variable would be &lt;code&gt;LD_LIBRARY_PATH&lt;/code&gt;.&lt;/p&gt;
 
@@ -609,7 +624,7 @@ $$&lt;p&gt;using &lt;a href="http://trilinos.org/packages/epetra/"&gt;AztecOO&lt
 &lt;div class="prompt input_prompt"&gt;In [4]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;L&lt;/span&gt; &lt;span class="n"&gt;libepetra&lt;/span&gt;
+&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;L&lt;/span&gt; &lt;span class="n"&gt;libepetra&lt;/span&gt;
 &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;L&lt;/span&gt; &lt;span class="n"&gt;libaztecOO&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -621,7 +636,9 @@ $$&lt;p&gt;using &lt;a href="http://trilinos.org/packages/epetra/"&gt;AztecOO&lt
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;&lt;/pre&gt;
 &lt;/div&gt;
@@ -646,7 +663,7 @@ $$&lt;p&gt;using &lt;a href="http://trilinos.org/packages/epetra/"&gt;AztecOO&lt
 &lt;div class="prompt input_prompt"&gt;In [5]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span class="n"&gt;Epetra_SerialComm&lt;/span&gt; &lt;span class="n"&gt;Comm&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Epetra_SerialComm&lt;/span&gt; &lt;span class="n"&gt;Comm&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
   
 &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;NumMyElements&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1000&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 
@@ -664,7 +681,9 @@ $$&lt;p&gt;using &lt;a href="http://trilinos.org/packages/epetra/"&gt;AztecOO&lt
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;
 AztecOO in Trilinos 12.1 (Dev)
@@ -704,7 +723,7 @@ Epetra::Comm::Processor 0 of 1 total processors.
 &lt;div class="prompt input_prompt"&gt;In [6]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span class="n"&gt;Epetra_Map&lt;/span&gt; &lt;span class="nf"&gt;Map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;NumMyElements&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Comm&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Epetra_Map&lt;/span&gt; &lt;span class="nf"&gt;Map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;NumMyElements&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Comm&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;NumGlobalElements&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Map&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;NumGlobalElements&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -716,7 +735,9 @@ Epetra::Comm::Processor 0 of 1 total processors.
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;&lt;/pre&gt;
 &lt;/div&gt;
@@ -741,7 +762,7 @@ Epetra::Comm::Processor 0 of 1 total processors.
 &lt;div class="prompt input_prompt"&gt;In [7]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span class="n"&gt;Epetra_CrsMatrix&lt;/span&gt; &lt;span class="nf"&gt;A&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Copy&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Map&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Epetra_CrsMatrix&lt;/span&gt; &lt;span class="nf"&gt;A&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Copy&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Map&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
@@ -752,7 +773,9 @@ Epetra::Comm::Processor 0 of 1 total processors.
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;&lt;/pre&gt;
 &lt;/div&gt;
@@ -777,7 +800,7 @@ Epetra::Comm::Processor 0 of 1 total processors.
 &lt;div class="prompt input_prompt"&gt;In [8]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span class="kt"&gt;double&lt;/span&gt; &lt;span class="n"&gt;negOne&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kt"&gt;double&lt;/span&gt; &lt;span class="n"&gt;negOne&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="kt"&gt;double&lt;/span&gt; &lt;span class="n"&gt;posTwo&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mf"&gt;2.0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;NumMyElements&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;GlobalRow&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GRID&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;RowLess1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;GlobalRow&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;RowPlus1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;GlobalRow&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
@@ -796,7 +819,9 @@ Epetra::Comm::Processor 0 of 1 total processors.
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;?   
 &lt;/pre&gt;
@@ -822,7 +847,7 @@ Epetra::Comm::Processor 0 of 1 total processors.
 &lt;div class="prompt input_prompt"&gt;In [9]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;FillComplete&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;FillComplete&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
@@ -833,7 +858,9 @@ Epetra::Comm::Processor 0 of 1 total processors.
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;&lt;/pre&gt;
 &lt;/div&gt;
@@ -858,7 +885,7 @@ Epetra::Comm::Processor 0 of 1 total processors.
 &lt;div class="prompt input_prompt"&gt;In [10]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span class="n"&gt;Epetra_Vector&lt;/span&gt; &lt;span class="nf"&gt;x&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Map&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Epetra_Vector&lt;/span&gt; &lt;span class="nf"&gt;x&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Map&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;span class="n"&gt;Epetra_Vector&lt;/span&gt; &lt;span class="nf"&gt;b&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Map&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 
 &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Random&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
@@ -872,7 +899,9 @@ Epetra::Comm::Processor 0 of 1 total processors.
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;
 &lt;/pre&gt;
@@ -898,7 +927,7 @@ Epetra::Comm::Processor 0 of 1 total processors.
 &lt;div class="prompt input_prompt"&gt;In [11]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span class="n"&gt;Epetra_LinearProblem&lt;/span&gt; &lt;span class="nf"&gt;problem&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Epetra_LinearProblem&lt;/span&gt; &lt;span class="nf"&gt;problem&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 
 &lt;span class="n"&gt;AztecOO&lt;/span&gt; &lt;span class="nf"&gt;solver&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;problem&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -911,7 +940,9 @@ Epetra::Comm::Processor 0 of 1 total processors.
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;
 &lt;/pre&gt;
@@ -937,7 +968,7 @@ Epetra::Comm::Processor 0 of 1 total processors.
 &lt;div class="prompt input_prompt"&gt;In [12]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span class="n"&gt;solver&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SetAztecOption&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;AZ_precond&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;AZ_Jacobi&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;solver&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SetAztecOption&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;AZ_precond&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;AZ_Jacobi&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;span class="n"&gt;solver&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Iterate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;1.0E-2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 
 &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"Solver performed "&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;solver&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;NumIters&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;" iterations."&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
@@ -952,7 +983,9 @@ Epetra::Comm::Processor 0 of 1 total processors.
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;
 		*******************************************************
@@ -1022,7 +1055,7 @@ Norm of true residual = 3.94466
 &lt;div class="prompt input_prompt"&gt;In [13]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+&lt;div class=" highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
     &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; 
 &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -1035,7 +1068,9 @@ Norm of true residual = 3.94466
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;-0.288916
 -0.723977
@@ -1106,7 +1141,7 @@ Norm of true residual = 3.94466
 &lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;bspline&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Bspline&lt;/span&gt;
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;bspline&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Bspline&lt;/span&gt;
 
 &lt;span class="n"&gt;knot_vector&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="n"&gt;basis&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Bspline&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;knot_vector&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -1123,7 +1158,9 @@ Norm of true residual = 3.94466
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 
 
 &lt;div class="output_png output_subarea "&gt;
@@ -1151,7 +1188,7 @@ Norm of true residual = 3.94466
 &lt;div class="prompt input_prompt"&gt;In [2]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
 &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linspace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -1165,7 +1202,7 @@ Norm of true residual = 3.94466
 &lt;div class="prompt input_prompt"&gt;In [3]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;timeit&lt;/span&gt; 
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;timeit&lt;/span&gt; 
 [ basis._Bspline__basis(i, basis.p) for i in x ]
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -1177,7 +1214,9 @@ Norm of true residual = 3.94466
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;1 loops, best of 3: 192 ms per loop
 &lt;/pre&gt;
@@ -1203,7 +1242,7 @@ Norm of true residual = 3.94466
 &lt;div class="prompt input_prompt"&gt;In [4]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;timeit&lt;/span&gt; 
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;timeit&lt;/span&gt; 
 [ basis(i) for i in x ]
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -1215,7 +1254,9 @@ Norm of true residual = 3.94466
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;100 loops, best of 3: 2.36 ms per loop
 &lt;/pre&gt;
@@ -1241,22 +1282,22 @@ Norm of true residual = 3.94466
 </description><category>Cox-de Boor</category><category>IGA</category><category>Isogeometric Analysis</category><category>Memoization</category><category>Memoize</category><category>Numpy</category><category>Python</category><category>Recursion</category><guid>http://johntfoster.github.io/posts/pythonnumpy-implementation-of-bspline-basis-functions.html</guid><pubDate>Wed, 27 May 2015 13:08:17 GMT</pubDate></item><item><title>Run Peridigm (and other scientific HPC codes) without building via Docker</title><link>http://johntfoster.github.io/posts/peridigm-without-building-via-Docker.html</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;p&gt;If your a software engineer working in web development or cloud software deployment, you would have had to have your head in the sand for the last two years to have not heard of &lt;a href="http://www.docker.com"&gt;Docker&lt;/a&gt; by now.  Briefly, Docker is a light-weight application container deployment service (think super low-overhead virtual machine, usually meant to contain one application and its dependencies), based on Linux containers.  While there are &lt;a href="https://www.google.com/search?q=docker&amp;amp;oq=docker++&amp;amp;aqs=chrome..69i57j69i60l2j0l3.2551j1j9&amp;amp;sourceid=chrome&amp;amp;es_sm=119&amp;amp;ie=UTF-8"&gt;100s of articles&lt;/a&gt; describing Docker, its uses, many services, and even companies springing up around it; my colleagues in the scientific computing/high-performance computing (HPC) world are either not aware of Docker or don't see the utility, because it's hard to find significant information for or uses of Docker in this field.  This post will hopefully demonstrate some of the utility of the service and promote its use in HPC and in academic settings.  Additionally, as a contributor to the open-source software &lt;a href="http://peridigm.sandia.gov"&gt;Peridigm&lt;/a&gt;, my hope it that the path demonstrated here might lower the courage required to try out the software and promote new users.&lt;/p&gt;
 &lt;p&gt;To provide some background/context for my own interest in Docker, in my current role as an academic advisor to graduate students and in my previous career as a researcher at Sandia National Laboratories I have often been a user and/or developer of scientific software that has a fairly complex dependent application stack. To use &lt;em&gt;Peridigm&lt;/em&gt;, a massively parallel computational peridynamic mechanics simulation code, as an example, we have a large dependency on &lt;a href="http://trilinos.org"&gt;Trilinos&lt;/a&gt;.  The packages we use from Trilinos have additional dependencies on a message passing interface (MPI) implementation (e.g. &lt;a href="http://www.open-mpi.org"&gt;OpenMPI&lt;/a&gt;), &lt;a href="http://www.boost.org"&gt;Boost&lt;/a&gt;, and &lt;a href="http://www.unidata.ucar.edu/software/netcdf/"&gt;NetCDF&lt;/a&gt;.  NetCDF has a dependency on &lt;a href="https://hdfgroup.org/HDF5/"&gt;HDF5&lt;/a&gt;, HDF5 on &lt;a href="http://www.zlib.net/"&gt;zlib&lt;/a&gt;, etc.  All of these need a C/C++ compiler for building, of course, and if we are using the Intel compilers we might as well go ahead and use &lt;a href="https://software.intel.com/en-us/intel-mkl"&gt;MKL&lt;/a&gt; libraries for efficiency.  Trilinos uses &lt;a href="http://www.cmake.org"&gt;CMake&lt;/a&gt; as a build system, so we need that around as well, at least during the build process. I'm sure there are others I am not thinking of at this moment.  Figuring out and understanding these dependencies and learning to debug build issues can take a really long time for a budding computational scientist to master.  Problems can be really compounded in a large multi-user HPC cluster where many different versions of compilers and libraries are present.  Using UNIX &lt;a href="http://modules.sourceforge.net/"&gt;modules&lt;/a&gt; goes a long way towards keeping things straight, but problems still arise that can be time consuming to troubleshoot.  I usually have new graduate students go through the process of building &lt;em&gt;Peridigm&lt;/em&gt; and all the dependencies for their own learning experience when they first join my group, in every case they struggle considerably the first few times the have to build the entire suite of software on a new machine.  In some cases, particularly with MS level students, it can be a serious impediment to progress, as they are very short time lines to make meaningful research progress, and oftentimes they are only going to be end-users of the code, not developers.  Almost certainly they are not going to make changes to any of the packages in Trilinos or any of the other dependencies outside of &lt;em&gt;Peridigm&lt;/em&gt;.  Enter Docker.&lt;/p&gt;
 &lt;p&gt;Docker allows for the ability to run applications in prebuilt containers on any Linux machine with Docker installed (or even Mac OS X and Windows via &lt;a href="http://boot2docker.io/"&gt;Boot2Docker&lt;/a&gt;).  If your Linux distribution doesn't already have it installed, just use your package manager (e.g. &lt;code&gt;apt-get install docker&lt;/code&gt; on Debian/Ubuntu based machines and &lt;code&gt;yum install docker&lt;/code&gt; on Fedora/Redhat based machines).  Docker is so ubiquitous at this point there are even entire Linux distributions like &lt;a href="https://coreos.com/"&gt;CoreOS&lt;/a&gt; being built specifically to maximize its strengths.  Additionally, there is the &lt;a href="https://registry.hub.docker.com/"&gt;Docker Hub Registry&lt;/a&gt; which provides &lt;a href="http://github.com"&gt;Github&lt;/a&gt; like &lt;code&gt;push/pull&lt;/code&gt; operations and cloud storage of prebuilt images.  Of course, you or your organization can host your own Docker image registry as well (note: think of a &lt;em&gt;Docker image&lt;/em&gt; like a C++ class, and a &lt;em&gt;Docker container&lt;/em&gt; as a C++ object, or an &lt;em&gt;instance&lt;/em&gt; of the image that runs).  You can derive images from one another and this is what I have done in setting up an image of &lt;em&gt;Peridigm&lt;/em&gt;.  First, I have an image that starts with a baseline Debian based Linux and installs NetCDF and its dependencies.  I have two tagged versions, a standard NetCDF build and a &lt;em&gt;largefiles&lt;/em&gt; patched version which makes the &lt;a href="https://peridigm.sandia.gov/content/netcdf"&gt;large file modifications&lt;/a&gt; as suggested in the &lt;em&gt;Peridigm&lt;/em&gt; build documentation. The NetCDF largefile image can be pulled to a Docker users local machine from my public Docker Hub Registry with&lt;/p&gt;
-&lt;pre class="code literal-block"&gt;docker pull johntfoster/netcdf:largefiles
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;docker pull johntfoster/netcdf:largefiles
 &lt;/pre&gt;
 
 
 &lt;p&gt;the NetCDF image is built automatically via continuous integration with a &lt;a href="https://github.com/johntfoster/docker-netcdf"&gt;Github repository&lt;/a&gt; that contains a &lt;a href="https://docs.docker.com/reference/builder/"&gt;Dockerfile&lt;/a&gt; with instructions for the image build process.  I then derive a Trilinos image from the NetCDF largefiles image.  This image contains only the Trilinos packages enabled such that &lt;em&gt;Peridigm&lt;/em&gt; can be built.  The Trilinos image can be pulled to a local machine with&lt;/p&gt;
-&lt;pre class="code literal-block"&gt;docker pull johntfoster/trilinos
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;docker pull johntfoster/trilinos
 &lt;/pre&gt;
 
 
 &lt;p&gt;this Trilinos image could be used to derive other images for other Trilinos based application codes which utilize the same dependent packages as &lt;em&gt;Peridigm&lt;/em&gt;.  The &lt;code&gt;cmake&lt;/code&gt; build script which shows the active Trilinos packages in this image can be viewed &lt;a href="https://github.com/johntfoster/docker-trilinos/blob/master/trilinos-debian-cmake.sh"&gt;here&lt;/a&gt;.  This image is also built via continuous integration with &lt;a href="https://github.com/johntfoster/docker-trilinos"&gt;this Github repository&lt;/a&gt; which can easily be modified to include more Trilinos packages.  Finally, the &lt;em&gt;Peridigm&lt;/em&gt; image can be pulled to a local machine with&lt;/p&gt;
-&lt;pre class="code literal-block"&gt;docker pull johntfoster/peridigm
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;docker pull johntfoster/peridigm
 &lt;/pre&gt;
 
 
 &lt;p&gt;this image is built from the Dockerfile &lt;a href="https://github.com/johntfoster/docker-peridigm"&gt;found here&lt;/a&gt;, however it must be modified slightly to work with a local &lt;em&gt;Peridigm&lt;/em&gt; source distribution if you want to build your own image because I do not want to distribute the &lt;em&gt;Peridigm&lt;/em&gt; software source code as that is done by Sandia National Laboratories (see &lt;a href="http://peridigm.sandia.gov"&gt;here&lt;/a&gt; if interested in getting the source). To run &lt;em&gt;Peridigm&lt;/em&gt; you simply have to run the command:&lt;/p&gt;
-&lt;pre class="code literal-block"&gt;docker run --name peridigm0 -d -v &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;:/output johntfoster/peridigm &lt;span class="se"&gt;\ &lt;/span&gt;
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;docker run --name peridigm0 -d -v &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;:/output johntfoster/peridigm &lt;span class="se"&gt;\ &lt;/span&gt;
        Peridigm fragmenting_cylinder.peridigm 
 &lt;/pre&gt;
 
@@ -1276,37 +1317,37 @@ Norm of true residual = 3.94466
 &lt;/ol&gt;
 &lt;p&gt;That's it.  No compiling, no dependencies.  Most of the performance studies I've seen report a very small, 1-2% hit from the Dockerized version of an application over a natively installed application stack.&lt;/p&gt;
 &lt;p&gt;Of course, &lt;em&gt;Peridigm&lt;/em&gt; is meant to be run in a massively parallel setting.  A Docker container can take advantage of some multithreading, therefore you can also just run an MPI job right inside a Docker container, for &lt;em&gt;Peridigm&lt;/em&gt; we can simply run&lt;/p&gt;
-&lt;pre class="code literal-block"&gt;docker run --name peridigm0 -d -v &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;:/output johntfoster/peridigm &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;docker run --name peridigm0 -d -v &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;:/output johntfoster/peridigm &lt;span class="se"&gt;\&lt;/span&gt;
        mpiexec -np &lt;span class="m"&gt;2&lt;/span&gt; Peridigm fragmenting_cylinder.peridigm 
 &lt;/pre&gt;
 
 
 &lt;p&gt;for a possibly small performance gain.  If you run this command, you should now see the domain decomposed output files, e.g. &lt;code&gt;fragmenting_cylinder.e.0&lt;/code&gt; and  &lt;code&gt;fragmenting_cylinder.e.1&lt;/code&gt; appear in your mounted directory.  However, this alone will not give you the true gains you expect form multicore CPUs or close to what you would see in a massively parallel HPC cluster.  We can spawn a virtual cluster of Docker containers, from the &lt;code&gt;johntfoster/peridigm&lt;/code&gt; image and use MPI to communicate between them.  To do this, we launch our virtual cluster with &lt;code&gt;docker run ...&lt;/code&gt; but this time without any execution command.  The default is for these containers to be ssh servers, so they will sit there idle until we need them for an MPI task.  For example, if we want a 2 node job, we can run&lt;/p&gt;
-&lt;pre class="code literal-block"&gt;docker run --name peridigm0 -d -P -h node0 -v &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;:/output johntfoster/peridigm
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;docker run --name peridigm0 -d -P -h node0 -v &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;:/output johntfoster/peridigm
 docker run --name peridigm1 -d -P -h node1 -v &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;:/output johntfoster/peridigm
 &lt;/pre&gt;
 
 
 &lt;p&gt;this launches containers named &lt;code&gt;peridigm0&lt;/code&gt; and &lt;code&gt;peridigm1&lt;/code&gt; that will have local (to their containers) machine names &lt;code&gt;node0&lt;/code&gt; and &lt;code&gt;node1&lt;/code&gt;.  Now we can find the containers IP addresses with the following command&lt;/p&gt;
-&lt;pre class="code literal-block"&gt;docker inspect -f &lt;span class="s2"&gt;"{{ .NetworkSettings.IPAddress }}"&lt;/span&gt; peridigm0
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;docker inspect -f &lt;span class="s2"&gt;"{{ .NetworkSettings.IPAddress }}"&lt;/span&gt; peridigm0
 docker inspect -f &lt;span class="s2"&gt;"{{ .NetworkSettings.IPAddress }}"&lt;/span&gt; peridigm1
 &lt;/pre&gt;
 
 
 &lt;p&gt;These commands will return the ip addresses, just for demonstration purposes, let's assume that they are &lt;code&gt;10.1.0.124&lt;/code&gt; and &lt;code&gt;10.1.0.125&lt;/code&gt; respectively.  Now we can launch &lt;code&gt;mpiexec&lt;/code&gt; to run &lt;em&gt;Peridigm&lt;/em&gt; on our virtual cluster.  This time the containers are already running, so all we have to is run&lt;/p&gt;
-&lt;pre class="code literal-block"&gt;docker &lt;span class="nb"&gt;exec &lt;/span&gt;peridigm0 mpiexec -np &lt;span class="m"&gt;2&lt;/span&gt; -host 10.1.0.124,10.1.0.125 &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;docker &lt;span class="nb"&gt;exec&lt;/span&gt; peridigm0 mpiexec -np &lt;span class="m"&gt;2&lt;/span&gt; -host &lt;span class="m"&gt;10&lt;/span&gt;.1.0.124,10.1.0.125 &lt;span class="se"&gt;\&lt;/span&gt;
        Peridigm fragmenting_cylinder.peridigm
 &lt;/pre&gt;
 
 
 &lt;p&gt;which executes &lt;code&gt;mpiexec&lt;/code&gt; on the container named &lt;code&gt;peridigm0&lt;/code&gt; and passes a host list to make MPI aware of where the nodes waiting for tasks are.  You can have fine grained control over &lt;code&gt;mpirun&lt;/code&gt; as well, for example if you wanted to run 2 MPI tasks per Docker container, you could do something like&lt;/p&gt;
-&lt;pre class="code literal-block"&gt;docker &lt;span class="nb"&gt;exec &lt;/span&gt;peridigm0 mpiexec -np &lt;span class="m"&gt;4&lt;/span&gt; -num-proc &lt;span class="m"&gt;2&lt;/span&gt; -host 10.1.0.124,10.1.0.125 &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;docker &lt;span class="nb"&gt;exec&lt;/span&gt; peridigm0 mpiexec -np &lt;span class="m"&gt;4&lt;/span&gt; -num-proc &lt;span class="m"&gt;2&lt;/span&gt; -host &lt;span class="m"&gt;10&lt;/span&gt;.1.0.124,10.1.0.125 &lt;span class="se"&gt;\&lt;/span&gt;
        Peridigm fragmenting_cylinder.peridigm
 &lt;/pre&gt;
 
 
 &lt;p&gt;when your finished you can stop and remove the containers with&lt;/p&gt;
-&lt;pre class="code literal-block"&gt;docker stop peridigm0 peridigm1
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;docker stop peridigm0 peridigm1
 docker rm -v peridigm0 peridigm1
 &lt;/pre&gt;
 
@@ -1315,7 +1356,7 @@ docker rm -v peridigm0 peridigm1
 &lt;script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/docker-peridigm/blob/master/pdrun?footer=minimal"&gt;&lt;/script&gt;
 
 &lt;p&gt;You can utilize this script to run &lt;em&gt;Peridigm&lt;/em&gt; simulations on a virtual Docker cluster with the following command:&lt;/p&gt;
-&lt;pre class="code literal-block"&gt;./pdrun --np &lt;span class="m"&gt;4&lt;/span&gt; fragmenting_cylinder.peridigm --path&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;./pdrun --np &lt;span class="m"&gt;4&lt;/span&gt; fragmenting_cylinder.peridigm --path&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
 &lt;/pre&gt;
 
 
@@ -1323,7 +1364,7 @@ docker rm -v peridigm0 peridigm1
 &lt;p&gt;The last point I would like to make about Docker is that, while I demonstrated that end users can benefit by eliminating the entire build process and move right to running the simulation code, also developers could greatly benefit from using a common development image and requiring only support for the Docker image, as it can be quickly deployed and tested against all platforms.  How many times have your heard, even from experienced developers, after a commit fails in continuous integration, "It worked on my machine...".  Docker offers a solution to those problems and many others.&lt;/p&gt;&lt;/div&gt;</description><category>Docker</category><category>HPC</category><category>MPI</category><category>Peridigm</category><category>Trilinos</category><guid>http://johntfoster.github.io/posts/peridigm-without-building-via-Docker.html</guid><pubDate>Wed, 22 Apr 2015 15:44:25 GMT</pubDate></item><item><title>A LaTeX Beamer template/theme for the Cockrell School of Engineering</title><link>http://johntfoster.github.io/posts/cockrell-school-beamer-template.html</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;p&gt;This post is mainly aimed at my colleagues (and students) in the Cockrell School of Engineering at &lt;a href="http://www.utexas.edu"&gt;The University of Texas at Austin&lt;/a&gt;.  As you may have gathered from other posts on this blog, I am a huge fan of &lt;a href="http://www.latex-project.org/"&gt;LaTeX&lt;/a&gt; for typesetting documents.  Recently, I had to give a talk within the &lt;a href="http://pge.utexas.edu"&gt;Department&lt;/a&gt; and was asked polietly by our Communications Coordinator to use a provided MS PowerPoint template that conforms to the &lt;a href="http://www.engr.utexas.edu/communications/visualguidelines"&gt;Visual Style Guide&lt;/a&gt; of the &lt;a href="http://engr.utexas.edu"&gt;Cockrell School of Engineering&lt;/a&gt;. &lt;/p&gt;
 &lt;p&gt;I have many reasons for disliking PowerPoint that I will not go into here, but I have avoided using it at all costs for several years now, and did not want to start now.  I also have an appreciation for branding and respect the desire to project a uniform brand from the Departments/School.  My solution was to create my own LaTeX Beamer presentation style that replicates the Cockrell School PowerPoint as close as possible.  I hacked it together relatively quickly for my talk which I delivered last week, but decided over the weekend to put together something a little more robust to share with my colleagues in the Cockrell School.  The style file accepts arguments to input different department names and has some nice features for using BibTeX citations within the presentation.&lt;/p&gt;
 &lt;p&gt;The repository can be found cloned with &lt;code&gt;git&lt;/code&gt; with the following command:&lt;/p&gt;
-&lt;pre class="code literal-block"&gt;git clone git@github.com:johntfoster/cockrell-school-latex-beamer-template
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;git clone git@github.com:johntfoster/cockrell-school-latex-beamer-template
 &lt;/pre&gt;
 
 
@@ -1331,7 +1372,7 @@ docker rm -v peridigm0 peridigm1
 &lt;p&gt;You can also download a zip archive of the files : &lt;a href="https://github.com/johntfoster/cockrell-school-latex-beamer-template/archive/master.zip"&gt;cockrell-school-latex-beamer-template-master.zip&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;An example of the PDF output results are shown below:&lt;/p&gt;
 &lt;p&gt;&lt;img src="http://johntfoster.github.io/files/presentation.gif" width="500"&gt;&lt;/p&gt;&lt;/div&gt;</description><category>Beamer</category><category>Cockrell School</category><category>LaTeX</category><category>PowerPoint</category><category>theme</category><category>UT</category><guid>http://johntfoster.github.io/posts/cockrell-school-beamer-template.html</guid><pubDate>Mon, 13 Apr 2015 02:44:25 GMT</pubDate></item><item><title>Prevent TeXShop from stealing focus from an external editor</title><link>http://johntfoster.github.io/posts/keep-texshop-from-stealing-focus.html</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;p&gt;I use &lt;a href="http://www.vim.org/"&gt;Vim&lt;/a&gt; as my editor of choice for nearly all text editing activities including writing LaTeX documents.  My usual workflow is to use a split window setup with &lt;code&gt;tmux&lt;/code&gt; and run &lt;code&gt;latexmk -pvc&lt;/code&gt; on my LaTeX file in one split-pane while editing the source file in the other split-pane.  If your not familiar with &lt;code&gt;latexmk&lt;/code&gt; it is a Perl script that, in a smart way, using minimal number of compile runs, keeps your LaTeX document output up-to-date with the correct cross-references, citations, etc.  The &lt;code&gt;-pvc&lt;/code&gt; option keeps it running in the background and recompiles with a detected change in &lt;em&gt;any&lt;/em&gt; of the project files.  I then use &lt;a href="http://pages.uoregon.edu/koch/texshop/"&gt;TeXShop&lt;/a&gt; as a PDF viewer because it has the nice ability to detect changes to the PDF output and autoupdate.  Mac OS X's built-in Preview will do this as well, but you must click the window to enable the refresh.  However, by default, TeXShop will steal focus from the editor window.  This is annoying causing me to click or Command-Tab back to the Terminal to continue typing.  I found a fix in a &lt;a href="http://tex.stackexchange.com/questions/43057/macosx-pdf-viewer-automatic-reload-on-file-modification"&gt;comment on Stack Exchange&lt;/a&gt;.  If you type&lt;/p&gt;
-&lt;pre class="code literal-block"&gt;defaults write TeXShop BringPdfFrontOnAutomaticUpdate NO
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;defaults write TeXShop BringPdfFrontOnAutomaticUpdate NO
 &lt;/pre&gt;
 
 
@@ -1354,7 +1395,7 @@ docker rm -v peridigm0 peridigm1
 &lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;%%bash
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;%%bash
 ln -sf /usr/local/netcdf/lib/libnetcdf.dylib /usr/local/trilinos/lib/.
 ln -sf /usr/local/trilinos/include /usr/local/trilinos/inc
 &lt;/pre&gt;&lt;/div&gt;
@@ -1380,8 +1421,8 @@ ln -sf /usr/local/trilinos/include /usr/local/trilinos/inc
 &lt;div class="prompt input_prompt"&gt;In [2]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;
-&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'/usr/local/trilinos/bin'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;
+&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'/usr/local/trilinos/bin'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
@@ -1404,9 +1445,9 @@ ln -sf /usr/local/trilinos/include /usr/local/trilinos/inc
 &lt;div class="prompt input_prompt"&gt;In [3]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;exodus&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;exodus&lt;/span&gt;
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;exodus&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;exodus&lt;/span&gt;
 
-&lt;span class="n"&gt;e&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;exodus&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mode&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'r'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;array_type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'numpy'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;e&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;exodus&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mode&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'r'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;array_type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'numpy'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
@@ -1417,7 +1458,9 @@ ln -sf /usr/local/trilinos/include /usr/local/trilinos/inc
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;
 You are using exodus.py v 1.02 (beta), a python wrapper of some of the exodus II library.
@@ -1448,7 +1491,7 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 &lt;div class="prompt input_prompt"&gt;In [4]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span class="n"&gt;time_steps&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_times&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;time_steps&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_times&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
@@ -1471,7 +1514,7 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 &lt;div class="prompt input_prompt"&gt;In [5]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_global_variable_names&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_global_variable_names&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
@@ -1482,7 +1525,9 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[5]:&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt output_prompt"&gt;Out[5]:&lt;/div&gt;
+
 
 
 &lt;div class="output_text output_subarea output_execute_result"&gt;
@@ -1510,8 +1555,8 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 &lt;div class="prompt input_prompt"&gt;In [6]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span class="n"&gt;vm_max&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_global_variable_values&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'Max_Von_Mises_Stress'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;vm_min&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_global_variable_values&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'Min_Von_Mises_Stress'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;vm_max&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_global_variable_values&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'Max_Von_Mises_Stress'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;vm_min&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_global_variable_values&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'Min_Von_Mises_Stress'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
@@ -1534,7 +1579,7 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 &lt;div class="prompt input_prompt"&gt;In [7]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span class="n"&gt;eng_strain_Y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;time_steps&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mf"&gt;0.001&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mf"&gt;1.0e-8&lt;/span&gt;
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;eng_strain_Y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;time_steps&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mf"&gt;0.001&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mf"&gt;1.0e-8&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
@@ -1557,10 +1602,10 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 &lt;div class="prompt input_prompt"&gt;In [8]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="k"&gt;matplotlib&lt;/span&gt; inline
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="k"&gt;matplotlib&lt;/span&gt; inline
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
 &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;plot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;eng_strain_Y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;vm_max&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;eng_strain_Y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;vm_min&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ylabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Max/Min von Mises Stress"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ylabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Max/Min von Mises Stress"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
@@ -1571,7 +1616,9 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 &lt;div class="output"&gt;
 
 
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+
 
 
 &lt;div class="output_png output_subarea "&gt;
@@ -1599,7 +1646,7 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 &lt;div class="prompt input_prompt"&gt;In [9]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;%%bash
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;%%bash
 rm /usr/local/trilinos/lib/libnetcdf.dylib
 rm /usr/local/trilinos/inc
 &lt;/pre&gt;&lt;/div&gt;
@@ -1611,178 +1658,4 @@ rm /usr/local/trilinos/inc
 &lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;
-</description><guid>http://johntfoster.github.io/posts/using-exoduspy-to-extract-data-from-fea-database.html</guid><pubDate>Mon, 16 Feb 2015 16:41:59 GMT</pubDate></item><item><title>Discrete error and convergence</title><link>http://johntfoster.github.io/posts/discrete-error-and-convergence.html</link><dc:creator>John T. Foster</dc:creator><description>&lt;div tabindex="-1" id="notebook" class="border-box-sizing"&gt;
-    &lt;div class="container" id="notebook-container"&gt;
-
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;I was asked a question today about a typical way to present the error between a numerical scheme and an exact solution, and the convergence of the method.  I will demonstate one method that is typically used based on the $L_2$-norm of the error.&lt;/p&gt;
-&lt;p&gt;Consider the ODE&lt;/p&gt;
-\begin{equation}
-\frac{\rm{d}x}{\rm{d}t} = x(t) \quad x(0) = 1
-\end{equation}&lt;p&gt;which has the analytic solution&lt;/p&gt;
-\begin{equation}
-x(t) = {\rm e}^t
-\end{equation}&lt;p&gt;I'm too lazy to code up anything much more sophisticated, so let's use an Euler explicit finite difference solution for $0 
-$$
-\Vert error \Vert_{L_2} = \sqrt{ \frac{1}{N} \sum_{i=1}^N(discrete(x_i) - exact(x_i))^2}
-$$
-&lt;/p&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-    &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
-
-&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;finite_diff_solution_err&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-    &lt;span class="sd"&gt;"""&lt;/span&gt;
-&lt;span class="sd"&gt;       Compute explicit finite difference solution and L2 error norm&lt;/span&gt;
-&lt;span class="sd"&gt;       &lt;/span&gt;
-&lt;span class="sd"&gt;       input: N - number of time steps&lt;/span&gt;
-&lt;span class="sd"&gt;       output: normed error&lt;/span&gt;
-&lt;span class="sd"&gt;    """&lt;/span&gt;
-    
-    &lt;span class="n"&gt;t&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linspace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;100.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    
-    &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros_like&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    
-    &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;arange&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    
-    &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mf"&gt;1.0&lt;/span&gt;
-    
-    &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;1.0&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:]&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:])&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-    
-    &lt;span class="n"&gt;exact&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    
-    &lt;span class="n"&gt;err&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sqrt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;[:]&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;exact&lt;/span&gt;&lt;span class="p"&gt;[:])&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt; &lt;span class="mf"&gt;2.0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;err&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Now let's solve our problem for increasing degrees-of-freedom&lt;/p&gt;
-
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [2]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-    &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span class="n"&gt;dofs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;10000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;100000&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-
-&lt;span class="n"&gt;errs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;finite_diff_solution_err&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;dofs&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Finally, we plot the results as a function of step size $h$.  If we fit a straight line to the data, we get an estimate of the convergence rate of the method, so we'll do that as well.&lt;/p&gt;
-
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [3]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-    &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="k"&gt;matplotlib&lt;/span&gt; inline
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
-
-&lt;span class="c"&gt;#Fit a straight line&lt;/span&gt;
-&lt;span class="n"&gt;coefs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;polyfit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log10&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;1.0&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;dofs&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log10&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;errs&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;coefs&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log10&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;1.0&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;dofs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;coefs&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-&lt;span class="c"&gt;#Plot&lt;/span&gt;
-&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loglog&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;1.0&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;dofs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'b-'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loglog&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;1.0&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;dofs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;errs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'b^'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xlabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"$\log_{10} h$"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ylabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"$\log_{10} \Vert error \Vert_{L_2}$"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class="output_wrapper"&gt;
-&lt;div class="output"&gt;
-
-
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
-
-
-&lt;div class="output_png output_subarea "&gt;
-&lt;img src="data:image/png;base64,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"&gt;
-&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;The first term below is the slope of the least-square fit staight line which shows the convergence rate.&lt;/p&gt;
-
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [4]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-    &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span class="n"&gt;coefs&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class="output_wrapper"&gt;
-&lt;div class="output"&gt;
-
-
-&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[4]:&lt;/div&gt;
-
-
-&lt;div class="output_text output_subarea output_execute_result"&gt;
-&lt;pre&gt;array([  0.45172826,  43.45975537])&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-</description><guid>http://johntfoster.github.io/posts/discrete-error-and-convergence.html</guid><pubDate>Tue, 10 Feb 2015 21:09:54 GMT</pubDate></item></channel></rss>
+</description><guid>http://johntfoster.github.io/posts/using-exoduspy-to-extract-data-from-fea-database.html</guid><pubDate>Mon, 16 Feb 2015 16:41:59 GMT</pubDate></item></channel></rss>

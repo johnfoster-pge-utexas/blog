@@ -18,7 +18,7 @@ import time
 
 # Data about this site
 BLOG_AUTHOR = "John T. Foster"  # (translatable)
-BLOG_TITLE = "from the shoulders of giants"  # (translatable)
+BLOG_TITLE = "John T. Foster"  # (translatable)
 # This is the main URL for your site. It will be used
 # in a prominent link
 SITE_URL = "http://johntfoster.github.io/"
@@ -692,7 +692,7 @@ BODY_END = """
 
 # If you hate "Filenames with Capital Letters and Spaces.md", you should
 # set this to true.
-UNSLUGIFY_TITLES = True
+FILE_METADATA_UNSLUGIFY_TITLES = True
 
 # Additional metadata that is added to a post when creating a new_post
 # ADDITIONAL_METADATA = {}

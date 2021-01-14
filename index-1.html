@@ -12,7 +12,7 @@
 <link href="assets/css/ipython.min.css" rel="stylesheet" type="text/css">
 <link href="assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
-<link rel="canonical" href="http://johntfoster.github.io/index-1.html">
+<link rel="canonical" href="https://johnfoster.pge.utexas.edu/blog/index-1.html">
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
  tex2jax: {
@@ -42,6 +42,36 @@ MathJax.Hub.Config({
 
         </ul></section><section class="page-content"><div class="content" rel="main">
         <div class="post">
+            <h1 class="title"><a href="posts/keep-texshop-from-stealing-focus/">Prevent TeXShop from stealing focus from an external editor</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2015-04-08T21:44:25-05:00">2015-04-08 21:44</time>
+</div>
+                <div class="stats">
+                                <a href="posts/keep-texshop-from-stealing-focus/#disqus_thread" data-disqus-identifier="cache/posts/keep-texshop-from-stealing-focus.html">Comments</a>
+
+
+                </div>
+                        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/latex/" rel="tag">LaTeX</a></li>
+           <li><a class="tag p-category" href="categories/texshop/" rel="tag">TeXShop</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>I use <a href="http://www.vim.org/">Vim</a> as my editor of choice for nearly all text editing activities including writing LaTeX documents.  My usual workflow is to use a split window setup with <code>tmux</code> and run <code>latexmk -pvc</code> on my LaTeX file in one split-pane while editing the source file in the other split-pane.  If your not familiar with <code>latexmk</code> it is a Perl script that, in a smart way, using minimal number of compile runs, keeps your LaTeX document output up-to-date with the correct cross-references, citations, etc.  The <code>-pvc</code> option keeps it running in the background and recompiles with a detected change in <em>any</em> of the project files.  I then use <a href="http://pages.uoregon.edu/koch/texshop/">TeXShop</a> as a PDF viewer because it has the nice ability to detect changes to the PDF output and autoupdate.  Mac OS X's built-in Preview will do this as well, but you must click the window to enable the refresh.  However, by default, TeXShop will steal focus from the editor window.  This is annoying causing me to click or Command-Tab back to the Terminal to continue typing.  I found a fix in a <a href="http://tex.stackexchange.com/questions/43057/macosx-pdf-viewer-automatic-reload-on-file-modification">comment on Stack Exchange</a>.  If you type</p>
+<pre class="code literal-block"><span></span><code>defaults write TeXShop BringPdfFrontOnAutomaticUpdate NO
+</code></pre>
+
+<p>in the Terminal window this will disable the focus-stealing behavior and leave the window in the background so that it doesn't disrupt continuous editing.</p>
+</div>
+            </div>
+        </div>
+        <div class="post">
             <h1 class="title"><a href="posts/using-exoduspy-to-extract-data-from-fea-database/">Using Exodus.py to extract data from FEA database</a></h1>
             <div class="meta">
                 <div class="authordate">
@@ -55,9 +85,7 @@ MathJax.Hub.Config({
                 
             </div>
             <div class="body">
-                <div tabindex="-1" id="notebook" class="border-box-sizing">
-    <div class="container" id="notebook-container">
-
+                <div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -79,7 +107,7 @@ ln -sf /usr/local/netcdf/lib/libnetcdf.dylib /usr/local/trilinos/lib/.
 ln -sf /usr/local/trilinos/include /usr/local/trilinos/inc
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -104,7 +132,7 @@ ln -sf /usr/local/trilinos/include /usr/local/trilinos/inc
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'/usr/local/trilinos/bin'</span><span class="p">)</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -129,7 +157,7 @@ ln -sf /usr/local/trilinos/include /usr/local/trilinos/inc
 <span class="n">e</span> <span class="o">=</span> <span class="n">exodus</span><span class="p">(</span><span class="s1">'ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h'</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span> <span class="n">array_type</span><span class="o">=</span><span class="s1">'numpy'</span><span class="p">)</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -138,7 +166,9 @@ ln -sf /usr/local/trilinos/include /usr/local/trilinos/inc
 
 
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
@@ -173,7 +203,7 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">time_steps</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">get_times</span><span class="p">()</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -196,7 +226,7 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">e</span><span class="o">.</span><span class="n">get_global_variable_names</span><span class="p">()</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -205,7 +235,9 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[5]:</div>
+
+    <div class="prompt output_prompt">Out[5]:</div>
+
 
 
 
@@ -238,7 +270,7 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <span class="n">vm_min</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">get_global_variable_values</span><span class="p">(</span><span class="s1">'Min_Von_Mises_Stress'</span><span class="p">)</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -261,7 +293,7 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">eng_strain_Y</span> <span class="o">=</span> <span class="n">time_steps</span> <span class="o">*</span> <span class="mf">0.001</span> <span class="o">/</span> <span class="mf">1.0e-8</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -282,12 +314,12 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">eng_strain_Y</span><span class="p">,</span> <span class="n">vm_max</span><span class="p">,</span> <span class="n">eng_strain_Y</span><span class="p">,</span> <span class="n">vm_min</span><span class="p">);</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Max/Min von Mises Stress"</span><span class="p">);</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -296,7 +328,9 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 
 
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
 
 
 
@@ -330,14 +364,12 @@ rm /usr/local/trilinos/lib/libnetcdf.dylib
 rm /usr/local/trilinos/inc
 </pre></div>
 
-</div>
-</div>
-</div>
-
-</div>
     </div>
-  </div>
+</div>
+</div>
 
+</div>
+</div>
             </div>
         </div>
         <div class="post">
@@ -579,23 +611,20 @@ $$
 <h4>Commit changes to local repository and push to GitHub</h4>
 <p><a name="commit"></a></p>
 <p>There are so many great <code>git</code> and <a href="https://github.com">GitHub</a> resources out there, I'm going to assume you know or can find out about basic <code>git</code> usage.  There is one important think to note for the <em>first</em> commit to GitHub.  You may run into problems if there is not an alternate branch of the repository for Travis to push the build results to.  You can create a branch with the following command:</p>
-<pre class="code literal-block"><span></span>git checkout -b travis-build --orphan
-</pre>
-
+<pre class="code literal-block"><span></span><code>git checkout -b travis-build --orphan
+</code></pre>
 
 <p>This will create a new branch called <code>travis-build</code> with no history.  You should then remove all the files in this branch, commit, and push to GitHub</p>
-<pre class="code literal-block"><span></span>git rm -rf *
+<pre class="code literal-block"><span></span><code>git rm -rf *
 git commit -m <span class="s2">"First commit to travis-build branch"</span>
 git push origin travis-build
-</pre>
-
+</code></pre>
 
 <p>assuming the default <code>origin</code> name for your GitHub repository.  Now switch back to your <code>master</code> branch, and push to GitHub, the <code>travis.yml</code> file in your repository (details covered below) will instruct Travis on how to build the repository</p>
-<pre class="code literal-block"><span></span>git checkout master
+<pre class="code literal-block"><span></span><code>git checkout master
 git commit -am <span class="s2">"A commit message detailing changes"</span>
 git push origin master
-</pre>
-
+</code></pre>
 
 <h4>Travis builds CV in PDF and HTML versions</h4>
 <p><a name="builds"></a></p>
@@ -606,10 +635,9 @@ git push origin master
 <p>Upon committing, Travis reads the <code>travis.yml</code> file in the repository and performs a set of actions.  In this case, we want to build a LaTeX file which there is not a preinstalled Travis Ubuntu instance for LaTeX so we need to use <code>apt-get</code> to install all of the LaTeX dependencies and proper fonts for building the CV. The other commands just some basic Travis configuration, full details for Travis configuration can be found <a href="http://docs.travis-ci.com/">here</a></p>
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=0:16&amp;footer=minimal"></script><p>Once all of the dependencies are installed, Travis will build both the PDF and HTML versions of the CV with</p>
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=17:19&amp;footer=minimal"></script><p>After a successful build, Travis will clone the previously created <code>travis-build</code> branch, copy the newly created PDF and HTML files into this branch, commit them, and push them back to GitHub.  This requires setting up a few environment variables, that can be added to the Travis project page.  The variables are <code>GIT_EMAIL</code>, <code>GIT_NAME</code>, <code>GH_TOKEN</code>, and <code>TRAVIS_TOKEN</code>.  The first two just correspond to basic <code>git</code> configuration and are really just used to store the information of the person who make the commit in the <code>git</code> history.  Since it's actually Travis making the commit, I just define the variables as</p>
-<pre class="code literal-block"><span></span><span class="n">GIT_NAME</span><span class="o">=</span><span class="ss">"Travis CI"</span><span class="w"></span>
-<span class="n">GIT_EMAIL</span><span class="o">=</span><span class="n">travis</span><span class="o">-</span><span class="n">ci</span><span class="nv">@travis</span><span class="p">.</span><span class="n">org</span><span class="w"></span>
-</pre>
-
+<pre class="code literal-block"><span></span><code><span class="err">GIT_NAME="Travis CI"</span>
+<span class="err">GIT_EMAIL=travis-ci@travis.org</span>
+</code></pre>
 
 <p>The environment variables can be set on the Travis setting page as shown</p>
 <p><img src="files/settings.png"></p>
@@ -620,14 +648,12 @@ git push origin master
 <p>The other two environment variables, <code>GH_TOKEN</code> and <code>TRAVIS_TOKEN</code> are more critical as they allow the Travis the proper credentials to commit back to Github and to issue a new build of the website for which the CV will be included. The get a GitHub token, go to your GitHub settings page, click on Applications on the left-hand panel and then "Generate new token", give the token a name and copy or write down the token somewhere safely.  </p>
 <p><img src="files/github-settings.png"></p>
 <p><strong>This will be the only time you can actually see the token</strong> so make sure you have it copied somewhere.  You can use the same token form multiple Travis jobs, but you have to know what it is and cannot reveal it again later.  Use this token to set the <code>GH_TOKEN</code> environment variable back on the Travis site.  Finally, you can get a <code>TRAVIS_TOKEN</code> through the Ruby <a href="http://blog.travis-ci.com/2013-01-14-new-client/">Travis command line interface</a>.  If you have Ruby installed you can install Travis like any Ruby <code>gem</code> with</p>
-<pre class="code literal-block"><span></span>gem install travis
-</pre>
-
+<pre class="code literal-block"><span></span><code>gem install travis
+</code></pre>
 
 <p>Then you can find your Travis access token with </p>
-<pre class="code literal-block"><span></span>travis token
-</pre>
-
+<pre class="code literal-block"><span></span><code>travis token
+</code></pre>
 
 <p>copy the result and add the final environment variable into your Travis settings page just like the others before.  </p>
 <h4>Upon a successful build, Travis pushes new PDF and HTML versions to a branch on the CV repo</h4>
@@ -645,10 +671,9 @@ git push origin master
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/blob/master/.travis.yml?slice=0:9&amp;footer=minimal"></script><p>Nikola can be installed via <code>pip</code> in Python.  Because I also want to keep the option open to blog in IPython, there are also IPython and all the scientific Python stack dependencies that need to be installed.  To install all of these dependencies we use a <code>requirements.txt</code> file.</p>
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/blob/master/.travis.yml?slice=11:13&amp;footer=minimal"></script><p>Then we can build the website</p>
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/blob/master/.travis.yml?slice=13&amp;footer=minimal"></script><p>In order to get the PDF and HTML versions of the CV that was built and posted earlier to show as a page in this website, I use a ReStructured Text format document which Nikola can compile, using the raw html directive</p>
-<pre class="code literal-block"><span></span><span class="p">..</span> <span class="ow">raw</span><span class="p">::</span> html
-   <span class="nc">:url:</span> <span class="nf">https://raw.githubusercontent.com/johntfoster/CV/travis-build/cv.html</span>
-</pre>
-
+<pre class="code literal-block"><span></span><code><span class="p">..</span> <span class="ow">raw</span><span class="p">::</span> html
+   <span class="nc">:url:</span> https://raw.githubusercontent.com/johntfoster/CV/travis-build/cv.html
+</code></pre>
 
 <p>which produces <a href="http://johnfoster.pge.utexas.edu/cv/">this page</a> when compiled by Nikola.</p>
 <p>The last part of the <code>.travis.yml</code> is very similar to what was described previously for the CV, only now we push to a branch <code>gh-pages</code> because  we actually want GitHub to serve the website.  Details on using GitHub pages can be found <a href="https://pages.github.com/">here</a>.  The entire <code>.travis.yml</code> file is shown below.</p>

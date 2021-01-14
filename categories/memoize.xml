@@ -1,31 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster (Posts about Memoize)</title><link>http://johntfoster.github.io/</link><description></description><atom:link href="http://johntfoster.github.io/categories/memoize.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Thu, 14 Jan 2021 20:50:18 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Python/Numpy implementation of Bspline basis functions</title><link>http://johntfoster.github.io/posts/pythonnumpy-implementation-of-bspline-basis-functions/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div tabindex="-1" id="notebook" class="border-box-sizing"&gt;
-    &lt;div class="container" id="notebook-container"&gt;
-
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster (Posts about Memoize)</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description></description><atom:link href="https://johnfoster.pge.utexas.edu/blog/categories/memoize.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Thu, 14 Jan 2021 22:52:34 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Python/Numpy implementation of Bspline basis functions</title><link>https://johnfoster.pge.utexas.edu/blog/posts/pythonnumpy-implementation-of-bspline-basis-functions/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;I was recently helping a student with some preliminary concepts in isogemetric analysis (IGA) and after taking a look at his pure Python implementation of the Cox - de Boor algorithm for computing B-Spline basis functions, I decided to look around for a Numpy implementation that could possibly be a little faster.  While I found a few &lt;a href="https://github.com/scipy/scipy/blob/v0.15.1/scipy/signal/bsplines.py#L122"&gt;B-spline implementations&lt;/a&gt; in Python, I thought I might be able to sqeeze out a little more performance through &lt;a href="http://en.wikipedia.org/wiki/Array_programming"&gt;vectorization&lt;/a&gt; and &lt;a href="http://en.wikipedia.org/wiki/Memoization"&gt;memoization&lt;/a&gt; while maintaining readablity of the code.  I think I have something that accomplishes that, in the context of how basis functions are needed and used in IGA.  The main portion of the code is here:&lt;/p&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;&lt;script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/bspline/blob/master/bspline.py?slice=47:107&amp;amp;footer=minimal"&gt;&lt;/script&gt;&lt;/p&gt;
-
+&lt;script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/bspline/blob/master/bspline.py?slice=47:107&amp;amp;footer=minimal"&gt;&lt;/script&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;The full repository can be found/forked here: &lt;a href="https://github.com/johntfoster/bspline"&gt;johntfoster/bspline&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;An example use case is shown below.  This reproduces Fig. 2.6 in &lt;a href="http://www.amazon.com/Isogeometric-Analysis-Toward-Integration-CAD/dp/0470748737/ref=sr_1_1?ie=UTF8&amp;amp;qid=1432735651&amp;amp;sr=8-1&amp;amp;keywords=isogeometric+analysis+toward+integration+of+cad+and+fea"&gt;Isogeometric Analysis: Towards the integration of CAD and FEA&lt;/a&gt; by Contrell, Hughes, and Bazilevs.  With &lt;a href="https://github.com/johntfoster/bspline/blob/master/bspline.py"&gt;bspline.py&lt;/a&gt; in the working directory:&lt;/p&gt;
@@ -47,7 +37,7 @@
 &lt;span class="n"&gt;basis&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;plot&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;/div&gt;
+    &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
@@ -56,7 +46,9 @@
 
 
 &lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
+
+    &lt;div class="prompt"&gt;&lt;/div&gt;
+
 
 
 
@@ -70,10 +62,8 @@
 &lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;As mentioned above the recursive function that computes the basis has been memoized such that it caches repeated evaluations of the function.  This has a large impact on the evaluation speed.  We can use &lt;a href="https://jupyter.org/"&gt;Jupyter&lt;/a&gt;'s &lt;code&gt;%%timeit&lt;/code&gt; magic function to investigate this.  I've hidden the raw evaluation functions through Python's name mangaling, therefore the following function is not intended for general API usage, but for testing purposes, let's evalute the basis functions defined by the knot vector and basis order given above using the non-memoized code:&lt;/p&gt;
 
@@ -85,11 +75,11 @@
 &lt;div class="prompt input_prompt"&gt;In [2]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
 &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linspace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;/div&gt;
+    &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
@@ -99,11 +89,11 @@
 &lt;div class="prompt input_prompt"&gt;In [3]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;timeit&lt;/span&gt; 
-[ basis._Bspline__basis(i, basis.p) for i in x ]
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%time&lt;/span&gt;it 
+&lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;basis&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_Bspline__basis&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;basis&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;/div&gt;
+    &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
@@ -112,7 +102,9 @@
 
 
 &lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
+
+    &lt;div class="prompt"&gt;&lt;/div&gt;
+
 
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;1 loops, best of 3: 192 ms per loop
@@ -124,10 +116,8 @@
 &lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Now let's time the memoized code&lt;/p&gt;
 
@@ -139,11 +129,11 @@
 &lt;div class="prompt input_prompt"&gt;In [4]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;timeit&lt;/span&gt; 
-[ basis(i) for i in x ]
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%time&lt;/span&gt;it 
+&lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;basis&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;/div&gt;
+    &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
@@ -152,7 +142,9 @@
 
 
 &lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
+
+    &lt;div class="prompt"&gt;&lt;/div&gt;
+
 
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;100 loops, best of 3: 2.36 ms per loop
@@ -164,16 +156,11 @@
 &lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;A speedup of roughly two orders of magnitude!&lt;/p&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-</description><category>Cox-de Boor</category><category>IGA</category><category>Isogeometric Analysis</category><category>Memoization</category><category>Memoize</category><category>Numpy</category><category>Python</category><category>Recursion</category><guid>http://johntfoster.github.io/posts/pythonnumpy-implementation-of-bspline-basis-functions/</guid><pubDate>Wed, 27 May 2015 13:08:17 GMT</pubDate></item></channel></rss>
+&lt;/div&gt;&lt;/div&gt;</description><category>Cox-de Boor</category><category>IGA</category><category>Isogeometric Analysis</category><category>Memoization</category><category>Memoize</category><category>Numpy</category><category>Python</category><category>Recursion</category><guid>https://johnfoster.pge.utexas.edu/blog/posts/pythonnumpy-implementation-of-bspline-basis-functions/</guid><pubDate>Wed, 27 May 2015 13:08:17 GMT</pubDate></item></channel></rss>

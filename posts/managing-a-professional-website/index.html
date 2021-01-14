@@ -11,7 +11,7 @@
 <link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
-<link rel="canonical" href="http://johntfoster.github.io/posts/managing-a-professional-website/">
+<link rel="canonical" href="https://johnfoster.pge.utexas.edu/blog/posts/managing-a-professional-website/">
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
  tex2jax: {
@@ -26,7 +26,7 @@ MathJax.Hub.Config({
 </script><!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><meta name="author" content="John T. Foster">
 <meta property="og:site_name" content="John T. Foster">
 <meta property="og:title" content="Managing a professional website with Nikola, LaTeX, Github and Travis ">
-<meta property="og:url" content="http://johntfoster.github.io/posts/managing-a-professional-website/">
+<meta property="og:url" content="https://johnfoster.pge.utexas.edu/blog/posts/managing-a-professional-website/">
 <meta property="og:description" content='As an academic, ensuring that others are aware of and can easily access recent research results, papers, and other professional communications is an important part of the "branding" we are tasked with'>
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2014-10-09T22:34:25-05:00">
@@ -90,23 +90,20 @@ MathJax.Hub.Config({
 <h4>Commit changes to local repository and push to GitHub</h4>
 <p><a name="commit"></a></p>
 <p>There are so many great <code>git</code> and <a href="https://github.com">GitHub</a> resources out there, I'm going to assume you know or can find out about basic <code>git</code> usage.  There is one important think to note for the <em>first</em> commit to GitHub.  You may run into problems if there is not an alternate branch of the repository for Travis to push the build results to.  You can create a branch with the following command:</p>
-<pre class="code literal-block"><span></span>git checkout -b travis-build --orphan
-</pre>
-
+<pre class="code literal-block"><span></span><code>git checkout -b travis-build --orphan
+</code></pre>
 
 <p>This will create a new branch called <code>travis-build</code> with no history.  You should then remove all the files in this branch, commit, and push to GitHub</p>
-<pre class="code literal-block"><span></span>git rm -rf *
+<pre class="code literal-block"><span></span><code>git rm -rf *
 git commit -m <span class="s2">"First commit to travis-build branch"</span>
 git push origin travis-build
-</pre>
-
+</code></pre>
 
 <p>assuming the default <code>origin</code> name for your GitHub repository.  Now switch back to your <code>master</code> branch, and push to GitHub, the <code>travis.yml</code> file in your repository (details covered below) will instruct Travis on how to build the repository</p>
-<pre class="code literal-block"><span></span>git checkout master
+<pre class="code literal-block"><span></span><code>git checkout master
 git commit -am <span class="s2">"A commit message detailing changes"</span>
 git push origin master
-</pre>
-
+</code></pre>
 
 <h4>Travis builds CV in PDF and HTML versions</h4>
 <p><a name="builds"></a></p>
@@ -117,10 +114,9 @@ git push origin master
 <p>Upon committing, Travis reads the <code>travis.yml</code> file in the repository and performs a set of actions.  In this case, we want to build a LaTeX file which there is not a preinstalled Travis Ubuntu instance for LaTeX so we need to use <code>apt-get</code> to install all of the LaTeX dependencies and proper fonts for building the CV. The other commands just some basic Travis configuration, full details for Travis configuration can be found <a href="http://docs.travis-ci.com/">here</a></p>
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=0:16&amp;footer=minimal"></script><p>Once all of the dependencies are installed, Travis will build both the PDF and HTML versions of the CV with</p>
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=17:19&amp;footer=minimal"></script><p>After a successful build, Travis will clone the previously created <code>travis-build</code> branch, copy the newly created PDF and HTML files into this branch, commit them, and push them back to GitHub.  This requires setting up a few environment variables, that can be added to the Travis project page.  The variables are <code>GIT_EMAIL</code>, <code>GIT_NAME</code>, <code>GH_TOKEN</code>, and <code>TRAVIS_TOKEN</code>.  The first two just correspond to basic <code>git</code> configuration and are really just used to store the information of the person who make the commit in the <code>git</code> history.  Since it's actually Travis making the commit, I just define the variables as</p>
-<pre class="code literal-block"><span></span><span class="n">GIT_NAME</span><span class="o">=</span><span class="ss">"Travis CI"</span><span class="w"></span>
-<span class="n">GIT_EMAIL</span><span class="o">=</span><span class="n">travis</span><span class="o">-</span><span class="n">ci</span><span class="nv">@travis</span><span class="p">.</span><span class="n">org</span><span class="w"></span>
-</pre>
-
+<pre class="code literal-block"><span></span><code><span class="err">GIT_NAME="Travis CI"</span>
+<span class="err">GIT_EMAIL=travis-ci@travis.org</span>
+</code></pre>
 
 <p>The environment variables can be set on the Travis setting page as shown</p>
 <p><img src="../../files/settings.png"></p>
@@ -131,14 +127,12 @@ git push origin master
 <p>The other two environment variables, <code>GH_TOKEN</code> and <code>TRAVIS_TOKEN</code> are more critical as they allow the Travis the proper credentials to commit back to Github and to issue a new build of the website for which the CV will be included. The get a GitHub token, go to your GitHub settings page, click on Applications on the left-hand panel and then "Generate new token", give the token a name and copy or write down the token somewhere safely.  </p>
 <p><img src="../../files/github-settings.png"></p>
 <p><strong>This will be the only time you can actually see the token</strong> so make sure you have it copied somewhere.  You can use the same token form multiple Travis jobs, but you have to know what it is and cannot reveal it again later.  Use this token to set the <code>GH_TOKEN</code> environment variable back on the Travis site.  Finally, you can get a <code>TRAVIS_TOKEN</code> through the Ruby <a href="http://blog.travis-ci.com/2013-01-14-new-client/">Travis command line interface</a>.  If you have Ruby installed you can install Travis like any Ruby <code>gem</code> with</p>
-<pre class="code literal-block"><span></span>gem install travis
-</pre>
-
+<pre class="code literal-block"><span></span><code>gem install travis
+</code></pre>
 
 <p>Then you can find your Travis access token with </p>
-<pre class="code literal-block"><span></span>travis token
-</pre>
-
+<pre class="code literal-block"><span></span><code>travis token
+</code></pre>
 
 <p>copy the result and add the final environment variable into your Travis settings page just like the others before.  </p>
 <h4>Upon a successful build, Travis pushes new PDF and HTML versions to a branch on the CV repo</h4>
@@ -156,10 +150,9 @@ git push origin master
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/blob/master/.travis.yml?slice=0:9&amp;footer=minimal"></script><p>Nikola can be installed via <code>pip</code> in Python.  Because I also want to keep the option open to blog in IPython, there are also IPython and all the scientific Python stack dependencies that need to be installed.  To install all of these dependencies we use a <code>requirements.txt</code> file.</p>
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/blob/master/.travis.yml?slice=11:13&amp;footer=minimal"></script><p>Then we can build the website</p>
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/blob/master/.travis.yml?slice=13&amp;footer=minimal"></script><p>In order to get the PDF and HTML versions of the CV that was built and posted earlier to show as a page in this website, I use a ReStructured Text format document which Nikola can compile, using the raw html directive</p>
-<pre class="code literal-block"><span></span><span class="p">..</span> <span class="ow">raw</span><span class="p">::</span> html
-   <span class="nc">:url:</span> <span class="nf">https://raw.githubusercontent.com/johntfoster/CV/travis-build/cv.html</span>
-</pre>
-
+<pre class="code literal-block"><span></span><code><span class="p">..</span> <span class="ow">raw</span><span class="p">::</span> html
+   <span class="nc">:url:</span> https://raw.githubusercontent.com/johntfoster/CV/travis-build/cv.html
+</code></pre>
 
 <p>which produces <a href="http://johnfoster.pge.utexas.edu/cv/">this page</a> when compiled by Nikola.</p>
 <p>The last part of the <code>.travis.yml</code> is very similar to what was described previously for the CV, only now we push to a branch <code>gh-pages</code> because  we actually want GitHub to serve the website.  Details on using GitHub pages can be found <a href="https://pages.github.com/">here</a>.  The entire <code>.travis.yml</code> file is shown below.</p>
@@ -174,7 +167,7 @@ git push origin master
 <div id="disqus_thread"></div>
         <script>
         var disqus_shortname ="johntfoster",
-            disqus_url="http://johntfoster.github.io/posts/managing-a-professional-website/",
+            disqus_url="https://johnfoster.pge.utexas.edu/blog/posts/managing-a-professional-website/",
         disqus_title="Managing a professional website with Nikola, LaTeX, Github and Travis CI",
         disqus_identifier="cache/posts/managing-a-professional-website.html",
         disqus_config = function () {

@@ -11,7 +11,7 @@
 <link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
-<link rel="canonical" href="http://johntfoster.github.io/posts/using-exoduspy-to-extract-data-from-fea-database/">
+<link rel="canonical" href="https://johnfoster.pge.utexas.edu/blog/posts/using-exoduspy-to-extract-data-from-fea-database/">
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
  tex2jax: {
@@ -26,7 +26,7 @@ MathJax.Hub.Config({
 </script><!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><meta name="author" content="John T. Foster">
 <meta property="og:site_name" content="John T. Foster">
 <meta property="og:title" content="Using Exodus.py to extract data from FEA database">
-<meta property="og:url" content="http://johntfoster.github.io/posts/using-exoduspy-to-extract-data-from-fea-database/">
+<meta property="og:url" content="https://johnfoster.pge.utexas.edu/blog/posts/using-exoduspy-to-extract-data-from-fea-database/">
 <meta property="og:description" content="This post will briefly show how you can use the exodus.py script distributed with Trilinos to extract data directly from an Exodus database.  Exodus is a wrapper API on NetCDF that is specifically sui">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2015-02-16T10:41:59-06:00">
@@ -56,9 +56,7 @@ MathJax.Hub.Config({
             
         </div>
         <div class="body">
-            <div tabindex="-1" id="notebook" class="border-box-sizing">
-    <div class="container" id="notebook-container">
-
+            <div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -80,7 +78,7 @@ ln -sf /usr/local/netcdf/lib/libnetcdf.dylib /usr/local/trilinos/lib/.
 ln -sf /usr/local/trilinos/include /usr/local/trilinos/inc
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -105,7 +103,7 @@ ln -sf /usr/local/trilinos/include /usr/local/trilinos/inc
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'/usr/local/trilinos/bin'</span><span class="p">)</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -130,7 +128,7 @@ ln -sf /usr/local/trilinos/include /usr/local/trilinos/inc
 <span class="n">e</span> <span class="o">=</span> <span class="n">exodus</span><span class="p">(</span><span class="s1">'ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h'</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span> <span class="n">array_type</span><span class="o">=</span><span class="s1">'numpy'</span><span class="p">)</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -139,7 +137,9 @@ ln -sf /usr/local/trilinos/include /usr/local/trilinos/inc
 
 
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
@@ -174,7 +174,7 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">time_steps</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">get_times</span><span class="p">()</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -197,7 +197,7 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">e</span><span class="o">.</span><span class="n">get_global_variable_names</span><span class="p">()</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -206,7 +206,9 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[5]:</div>
+
+    <div class="prompt output_prompt">Out[5]:</div>
+
 
 
 
@@ -239,7 +241,7 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <span class="n">vm_min</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">get_global_variable_values</span><span class="p">(</span><span class="s1">'Min_Von_Mises_Stress'</span><span class="p">)</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -262,7 +264,7 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">eng_strain_Y</span> <span class="o">=</span> <span class="n">time_steps</span> <span class="o">*</span> <span class="mf">0.001</span> <span class="o">/</span> <span class="mf">1.0e-8</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -283,12 +285,12 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">eng_strain_Y</span><span class="p">,</span> <span class="n">vm_max</span><span class="p">,</span> <span class="n">eng_strain_Y</span><span class="p">,</span> <span class="n">vm_min</span><span class="p">);</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Max/Min von Mises Stress"</span><span class="p">);</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -297,7 +299,9 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 
 
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
 
 
 
@@ -331,14 +335,12 @@ rm /usr/local/trilinos/lib/libnetcdf.dylib
 rm /usr/local/trilinos/inc
 </pre></div>
 
-</div>
-</div>
-</div>
-
-</div>
     </div>
-  </div>
+</div>
+</div>
 
+</div>
+</div>
         </div>
                 <ul class="pager hidden-print">
 <li class="previous">
@@ -351,7 +353,7 @@ rm /usr/local/trilinos/inc
 <div id="disqus_thread"></div>
         <script>
         var disqus_shortname ="johntfoster",
-            disqus_url="http://johntfoster.github.io/posts/using-exoduspy-to-extract-data-from-fea-database/",
+            disqus_url="https://johnfoster.pge.utexas.edu/blog/posts/using-exoduspy-to-extract-data-from-fea-database/",
         disqus_title="Using Exodus.py to extract data from FEA database",
         disqus_identifier="cache/posts/using-exoduspy-to-extract-data-from-fea-database.html",
         disqus_config = function () {

@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>JAX implementation of FEA and efficient inverse problem solving with neural networks | John T. Foster</title>
+<link href="../../assets/css/bitter.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/main.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<link rel="canonical" href="https://johnfoster.pge.utexas.edu/blog/posts/jax-fea/">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+ tex2jax: {
+     inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+     displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
+ },
+ displayAlign: 'left', // Change this to 'center' to center equations.
+ "HTML-CSS": {
+     styles: {'.MathJax_Display': {"margin": 0}}
+ }
+});
+</script><!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><meta name="author" content="John T. Foster">
+<meta property="og:site_name" content="John T. Foster">
+<meta property="og:title" content="JAX implementation of FEA and efficient inverse problem solving with n">
+<meta property="og:url" content="https://johnfoster.pge.utexas.edu/blog/posts/jax-fea/">
+<meta property="og:description" content="JAX implementation of FEA and efficient inverse problem solving with neural networks¶If you haven't heard by now JAX is getting a lot of attention online as a &quot;NumPy on steroids&quot;.  At it's core, it ca">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-01-14T16:48:00-06:00">
+<meta property="article:tag" content="jax">
+</head>
+<body>
+    <section class="social"><ul>
+<li><a href="../../index.html" title="Home"><i class="icon-home"></i></a></li>
+            <li><a href="http://johnfoster.pge.utexas.edu" title="About me"><i class="icon-user"></i></a></li>
+            <li><a href="https://github.com/johntfoster" title="My Github"><i class="icon-github"></i></a></li>
+            <li><a href="https://twitter.com/johntfoster" title="My Twitter"><i class="icon-twitter"></i></a></li>
+            <li><a href="../../archive.html" title="Archives"><i class="icon-folder-open-alt"></i></a></li>
+            <li><a href="../../categories/index.html" title="Tags"><i class="icon-tags"></i></a></li>
+            <li><a href="../../rss.xml" title="RSS"><i class="icon-rss"></i></a></li>
+
+        </ul></section><section class="page-content"><div class="content" rel="main">
+    <div class="post">
+        <h1 class="p-name entry-title" itemprop="headline name">JAX implementation of FEA and efficient inverse problem solving with neural networks</h1>
+
+        <div class="meta">
+            <div class="authordate">
+                <time class="timeago" datetime="2021-01-14T16:48:00-06:00">2021-01-14 16:48</time>
+            
+                      |  
+        <a href="index.ipynb" id="sourcelink">Source</a>
+
+            </div>
+                    <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="../../categories/jax/" rel="tag">jax</a></li>
+        </ul>
+</div>
+
+        </div>
+        <div class="body">
+            <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="JAX-implementation-of-FEA-and-efficient-inverse-problem-solving-with-neural-networks">JAX implementation of FEA and efficient inverse problem solving with neural networks<a class="anchor-link" href="#JAX-implementation-of-FEA-and-efficient-inverse-problem-solving-with-neural-networks">¶</a>
+</h2>
+<p>If you haven't heard by now <a href="https://jax.readthedocs.io/en/latest/index.html">JAX</a> is getting a lot of attention online as a "<a href="https://iaml.it/blog/jax-intro-english">NumPy on steroids</a>".  At it's core, it can be thought of as a drop-in replacement for <a href="https://numpy.org/">NumPy</a> where the array calculations can be accelerated on GPUs or TPUs when available.  This alone makes it worth looking at, especially if you have a lot of NumPy code that you would like to potentially speed up with GPU acceleration.  Currently, most of the <a href="https://jax.readthedocs.io/en/latest/jax.numpy.html">NumPy API is implemented</a> in one-to-one correspondence, as well of some of the most used functions in <a href="https://jax.readthedocs.io/en/latest/jax.scipy.html">SciPy</a>.</p>
+<p>The accelerated NumPy is just the beginning of the utility of JAX.  All of the JAX NumPy data structures can be used in combination with most pure Python code to create functions which can be automatically differentiated.  This includes computing the gradient of scalar functions, as well as Jacobian matrices of vector functions.  These operations can be composed to compute gradients-of-gradients, etc.  More information of the automatic differentiation capabilities are documented <a href="https://jax.readthedocs.io/en/latest/notebooks/autodiff_cookbook.html">here</a>.</p>
+<p>Additionally, there is a built-in <a href="https://jax.readthedocs.io/en/latest/notebooks/quickstart.html#Using-jit-to-speed-up-functions">just-in-time compiler</a> for compiling functions to be executed on CPUs/GPUs/TPUs, and support for <a href="https://jax.readthedocs.io/en/latest/notebooks/quickstart.html#Auto-vectorization-with-vmap">automatic vectorization</a>, i.e. functions written for scalar arguments can be easily mapped across arrays.  These can be used with the automatic differentiation functions previously mentioned.</p>
+<p>Finally, there is a very thin neural network library associated with JAX called <a href="https://jax.readthedocs.io/en/latest/jax.experimental.stax.html">stax</a>.  Other, more fully-featured libraries like <a href="https://github.com/deepmind/dm-haiku">Haiku</a>, <a href="https://github.com/google/flax">Flax</a>, or <a href="https://github.com/google/trax">Trax</a> are under development on top of JAX technologies.</p>
+<p>In what follows, I'll highlight most of these features of JAX by implementing a finite element analysis (FEA) model and then using the finite element residual as part of the objective function when training a neural network in an inverse solution to a potentially unknown constitutive model.</p>
+<h3 id="Problem-definition">Problem definition<a class="anchor-link" href="#Problem-definition">¶</a>
+</h3>
+<p>As a model problem, we'll start with the one-dimensional pressure diffusivity equation which governs single phase fluid flow in a porous media with fluid density $\rho$ and small compressibility $c$.</p>
+$$
+\rho c \frac{\partial p}{\partial t} = \frac{\partial}{\partial x}\left(\frac{\kappa}{\mu} \frac{\partial p}{\partial x}\right)
+$$<p>Assuming steady state, multiplying by a test function $\delta p$ on the left and integrating by parts over the domain $(0, L)$ we have</p>
+\begin{align}
+0 =&amp; \int_0^L \lambda(x) \frac{\partial \left(\delta p\right)}{\partial x} \frac{\partial p}{\partial x} \textrm{d}x - \left[ \lambda(x)  \frac{\partial p}{\partial x} \right]_0^L \\
+  =&amp; \int_0^L \lambda(x) \frac{\partial \left(\delta p\right)}{\partial x} \frac{\partial p}{\partial x} \textrm{d}x - \left[ q \right]_0^L
+\end{align}<p>where</p>
+$$
+\lambda(x) = \frac{\kappa}{\mu},
+$$<p>$\kappa$ is the porous medium's permeability and $\mu$ is the fluid viscosity.  $\lambda$ is known as the <em>mobility</em> and is assumed to be spatially varying.</p>
+<p>Using a Galerkin appoximation, i.e. $p = N_J p_J$ and $\delta p = N_I$ for $I,J = 1, 2, \ldots$ basis functions and splitting the domain into $n$ intervals, we now have</p>
+\begin{align}
+  0 =&amp; \sum_{k=0}^n p_J \left(\int_{x_k}^{x_{k+1}} \lambda(x) \frac{\partial N_I}{\partial x} \frac{\partial N_J}{\partial x} \textrm{d}x  - \left[ q \right]_{x_k}^{x_{k+1}} \right)
+\end{align}<p>where summation over the $J$ basis functions are implied for those that have support on the $I^{th}$ node.  The right-hand side above is our residual, i.e. $\vec{R}$</p>
+\begin{align}
+  R_I \equiv \sum_{k=0}^n p_J \left(\int_{x_k}^{x_{k+1}} \lambda(x) \frac{\partial N_I}{\partial x} \frac{\partial N_J}{\partial x} \textrm{d}x  - \left[ q \right]_{x_k}^{x_{k+1}} \right)
+\end{align}<p>below, we'll integrate this residual vector using Gauss integration and solve for the unknown nodal pressures $p_J$.  Without loss of generality we'll only consider Dirchelet boundary conditions, i.e. $q(x) = 0$.</p>
+<p>While this model problem is linear, we'll implement the FEA model to use the residual form of the equations, and solve for the unknowns using a nonlinear Newton-Raphson solver where the Jacobian matrix at each iteration is computed via automatic-differentiation with JAX.  All of the computations are written in a way that they could be accelerated on GPUs/TPUs and are just-in-time compiled.</p>
+<h3 id="FEA-implementation">FEA implementation<a class="anchor-link" href="#FEA-implementation">¶</a>
+</h3>
+<p>Below are the imports we need, note that we explicitly enable 64-bit floating point numbers for JAX as 32-bit is the default.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span><span class="p">,</span> <span class="n">partialmethod</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">vmap</span><span class="p">,</span> <span class="n">value_and_grad</span><span class="p">,</span> <span class="n">random</span><span class="p">,</span> <span class="n">flatten_util</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">import</span> <span class="nn">jax.scipy.optimize</span>
+<span class="kn">import</span> <span class="nn">jax.ops</span>
+<span class="kn">from</span> <span class="nn">jax.config</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">"jax_enable_x64"</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">FEAProblem</span><span class="p">():</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">mobility</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">left_bc</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">right_bc</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="sd">"""FEAProblem class</span>
+<span class="sd">           </span>
+<span class="sd">        Args:</span>
+<span class="sd">        </span>
+<span class="sd">            nodes (array-like): nodal spatial locations of unknowns</span>
+<span class="sd">            mobility (callable): function defining the mobility function in space</span>
+<span class="sd">            left_bc (real): Dirchelet boundary on the left of the domain </span>
+<span class="sd">            right_bc (real): Dirchelet boundary on the right of the domain </span>
+<span class="sd">        """</span>
+    
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'float64'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span> 
+                                   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lbc</span> <span class="o">=</span> <span class="n">left_bc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__rbc</span> <span class="o">=</span> <span class="n">right_bc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mobility</span> <span class="o">=</span> <span class="n">mobility</span>
+        
+        <span class="k">return</span>
+
+
+    <span class="k">def</span> <span class="nf">setup_element_matrices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Integrates the element stiffness matrices for linear basis functions</span>
+<span class="sd">           with 2 points Guass integration</span>
+<span class="sd">        """</span>
+        
+        <span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span>
+        
+        <span class="c1">#We will use Gauss integration at the following points</span>
+        <span class="n">t1</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mf">3.0</span><span class="p">)</span>
+        <span class="n">t2</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mf">3.0</span><span class="p">)</span>
+        
+        <span class="c1"># Because the points above are defined on the domain -1 &lt; x &lt; 1 and our</span>
+        <span class="c1"># elements are defined on arbitrary domains, we can use a change of variables</span>
+        <span class="c1"># to rescale the integration bounds</span>
+        <span class="n">ξ1</span> <span class="o">=</span> <span class="p">((</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">nodes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">t1</span> <span class="o">+</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">nodes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="n">ξ2</span> <span class="o">=</span> <span class="p">((</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">nodes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">t2</span> <span class="o">+</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">nodes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span>
+        
+        <span class="c1"># Compute the function 𝜆, at the integration points</span>
+        <span class="n">𝜆ξ1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mobility</span><span class="p">(</span><span class="n">ξ1</span><span class="p">)</span>
+        <span class="n">𝜆ξ2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mobility</span><span class="p">(</span><span class="n">ξ2</span><span class="p">)</span>
+        
+        <span class="c1"># Since the derivatives of the shape functions are not dependent on ξ, we can</span>
+        <span class="c1"># create an array containing all of the element stiffness matrices at once</span>
+        <span class="n">dNdξ</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">nodes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])])</span>
+        <span class="c1"># Computes the matrix dN_i * dN_j for every element (each will be identical for</span>
+        <span class="c1"># equally spaced nodes)</span>
+        <span class="n">ke_temp</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'i...,j...'</span><span class="p">,</span> <span class="n">dNdξ</span><span class="p">,</span> <span class="n">dNdξ</span><span class="p">)</span>
+        
+        <span class="c1"># Now we perform the Gauss integration computing the integrand for each element</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">nodes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">𝜆ξ1</span> <span class="o">+</span> <span class="n">𝜆ξ2</span><span class="p">)</span>
+        
+        <span class="c1"># We have to add two axis so the broadcasting is performed correctly,</span>
+        <span class="c1"># the result here is the fully integrated element matrix array</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ke</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">ke_temp</span>
+        
+        <span class="k">return</span>
+
+
+    <span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span>
+    <span class="k">def</span> <span class="nf">residual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="sd">"""Compute the FE residual vector</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            p (array-like): possible solution to residual equations</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            (array-like): the residual vector</span>
+<span class="sd">        """</span>
+        
+        <span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span>
+        <span class="n">connect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect</span>
+        <span class="n">ke</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ke</span>
+        
+        <span class="c1"># Initialize the residual </span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+        
+        <span class="c1"># Compute the residual, i.e. sum all of the element</span>
+        <span class="c1"># matrices with the nodal values, p</span>
+        <span class="n">res_temp</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'...ij, ...j'</span><span class="p">,</span> <span class="n">ke</span><span class="p">,</span> <span class="n">p</span><span class="p">[</span><span class="n">connect</span><span class="p">])</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        
+        <span class="c1"># This is the JAX equivalent of</span>
+        <span class="c1"># res[-1:1] = ...,  i.e. in place assignment</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">res_temp</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="c1"># Fix the residual values at the boundaries</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lbc</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__rbc</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">res</span>
+
+
+    <span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span>
+    <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="sd">"""Compute the loss function, i.e. the </span>
+<span class="sd">           l2 norm of the residual vector.</span>
+<span class="sd">           </span>
+<span class="sd">        Args:</span>
+<span class="sd">            p (array-like): possible solution to the residual equations</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            (real): discrete 2-norm of residual vector</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">residual</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+
+
+    <span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span>
+    <span class="k">def</span> <span class="nf">newton_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="sd">"""Compute one step of a Newton-Raphson iteration, uses</span>
+<span class="sd">           JAX to compute the exact Jacobian via automatic differentiation</span>
+<span class="sd">           </span>
+<span class="sd">        Args:</span>
+<span class="sd">            p (array-like): possible solution to the residual equations</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            p (array-like): updated solution to the residual equations after</span>
+<span class="sd">                          a single Newton-Raphson step</span>
+<span class="sd">        """</span>
+        
+        <span class="c1"># The jacobian</span>
+        <span class="n">K</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jacfwd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">residual</span><span class="p">)(</span><span class="n">p</span><span class="p">)</span>
+            
+        <span class="c1"># Compute the update direction </span>
+        <span class="n">Δp</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">gmres</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">K</span> <span class="o">@</span> <span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">residual</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+        
+        <span class="c1"># Update the unknowns and return </span>
+        <span class="n">p</span> <span class="o">+=</span> <span class="n">Δp</span>
+        
+        <span class="k">return</span> <span class="n">p</span>
+
+
+    <span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span>
+    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-4</span><span class="p">):</span>
+        <span class="sd">""" Solve via Newton-Raphson iteration </span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            tolerance (float): the tolerence at which the Newton-Raphson iteration</span>
+<span class="sd">                               stops</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            p (array-like): the converged solution to the residual equations</span>
+<span class="sd">        """</span>
+        
+        <span class="c1"># Integrate the shape functions over each element</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_element_matrices</span><span class="p">()</span>
+        
+        <span class="c1"># Initial guess is linear between the boundary conditions</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__lbc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__rbc</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        
+        <span class="c1"># The Newton-Raphson loop, can be compiled and automatically differentiated </span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">tolerance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">newton_step</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+
+        <span class="c1"># Return the solution</span>
+        <span class="k">return</span> <span class="n">p</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Generate-reference-data">Generate reference data<a class="anchor-link" href="#Generate-reference-data">¶</a>
+</h3>
+<p>Below we'll solve the forward problem via FEA using the implementation above to verify things are working correctly as well as generate some reference data that we'll use in the inverse problem in the sequal.  Here, the mobility function is</p>
+$$
+\lambda(x) = x^3 + 0.001
+$$
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nodes</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">problem1</span> <span class="o">=</span> <span class="n">FEAProblem</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">mobility</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">+</span> <span class="mf">0.001</span><span class="p">,</span> <span class="n">left_bc</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">right_bc</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">p1</span> <span class="o">=</span> <span class="n">problem1</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-4</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>WARNING:absl:No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="s1">'k'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">nodes</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">+</span> <span class="mf">0.001</span><span class="p">,</span> <span class="s1">'r-.'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$x$'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$p(x)$'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'k'</span><span class="p">);</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$\lambda(x)$'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'r'</span><span class="p">);</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">'y'</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">'r'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">'right'</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">'r'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaoAAAEGCAYAAAA0UdFjAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjMuMywgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy/Il7ecAAAACXBIWXMAAAsTAAALEwEAmpwYAAAuh0lEQVR4nO3deXxU1f3/8dcnG4EAgrKICLKDipAAIlIVC9UM+nXpt9qKtFpcqF93f65dkFrbSuvSimsp4tJW3K3YKthKsVoWQQRkL4IsyioQIEDIcn5/nAkMISELmbmzvJ+Px33MzL03M59LQt459557jjnnEBERiVdpQRcgIiJyOAoqERGJawoqERGJawoqERGJawoqERGJaxlBF1AXaWlprmHDhkGXISKSUE7cvdvNcS7hGigJGVQNGzaksLAw6DJERBLKQrM9QddQFwmXrCIikloUVCIiEtcUVCIiEtcUVCIiEtcUVCIiEtcUVCIi4plNwGwTZgur2G6YjcVsBWYLMOsTi7IUVCIiUu45IHSY7UOBruFlJPBUDGpKraB65513GDNmTNBliIjUXkkJRHtaJuf+DWw9zB4XAS/gnMO5mUAzzNpEt6gUC6qpU6dy3333UVJSEnQpIiK18/DD8I1vwK5ddX6LoyEDszkRy8havkVbYG3E63XhdVGVUkGVm5vL3r17Wb58edCliIjU3Nat8MADcPTR0Lhx3d8GSnCuX8QyrpZvYZWsi/rsuykXVADz5s0LtA4RkVr59a9hxw4fVsFaB7SLeH088FW0PzSlgqp79+40aNBAQSUiiWP1anjsMbjySjjllKCrmQRcEe79NwAowLn10f7QhByUtq4yMzPp2bOngkpEEsfo0WAG990X/c8ymwicDbTAbB0wGsgEwLmngXeA84AVwG5gRPSLSrGgAn/6b9KkSTjnMKvsdKuISJxYsABeeAHuuAPat4/+5zk3rJrtDrgh+oUcLKVO/YEPqs2bN7N+fdRbqyIiR+bHP4ajjvKPKSwlgwrg008/DbYQEZHDKS6G44+He++F5s2DriZQKXfqr1evXoDv+Xf++ecHXI2ISBUyM+EPfwi6iriQci2qpk2b0rlzZ3WoEJH4NXUqzJgRdBVxI+VaVOBP/ymoRCRujR4N27fD/PmQlnLtiUOk5L9Abm4uK1asYOfOnUGXIiJyqHffhddeU0iFpeS/Ql5eHgALFiwIuBIRkQh79/pOFI0bQ/fuQVcTN1IyqDSUkojEpTFjoGdP0Nmeg6RkUB133HG0aNFCQSUi8WPjRnjoIejVC5o0CbqauJKSQWVm6lAhIvHlF7/wp/5+9augK4k7KRlU4E//ffbZZ5qbSkSC99//wrhxMHIkdOsWdDVxJ2ZBZWYTzGyTmS2sZNsdZubMrEWs6snNzaWoqIhly5bF6iNFRCr3059CgwZ+FAo5RCxbVM8BoYorzawdcA6wJoa1qEOFiMSHjz+GV1+F22+HY48Nupq4FLOgcs79G9hayabfAXcRg1kiI2luKhEJnHNw113QsqUfIV0qFejIFGZ2IfClc25+dVNumNlIYCRAVlbWEX92RkYGp5xyiganFZHgvPsufPCBnxhRPf2qFFhnCjNrBPwUqNFJWefcOOdcP+dcv4yM+snX8p5/fooVEZEYS0uDc87xnSikSkH2+usMdATmm9kXwPHAXDOL2Una3Nxcvv76a7788stYfaSIyAGhELz3HtTDWaJkFlhQOec+c861cs51cM51ANYBfZxzG2JVgzpUiEgg9u6FRx+FPXuCriQhxLJ7+kRgBtDdzNaZ2dWx+uyq9OrVCzNTUIlIbP3973DrrTBrVtCVJISYdaZwzg2rZnuHGJWyX5MmTejSpYuCSkRi6zvf8VN4hCdylcNL2ZEpymkoJRGJqYIC/6iQqjEFVW4un3/+OTt27Ai6FBFJdmvXQrt28Oc/B11JQlFQhTtUaG4qEYm60aOhqAjOPDPoShKKgko9/0QkFhYsgOefhxtvhBNOCLqahJLyQdWmTRtatmypoBKR6HEObrgBmjf3A9BKrQQ6hFI80NxUIhJ1L7wAH30E48fD0UcHXU3CSfkWFfjTfwsXLqS4uDjoUkQk2WzbBnfeCaefDiNGBF1NQlJQcWBuqqVLlwZdiogkm5/9DL7+Gp580o/tJ7WmfzXUoUJEouSTT+Cpp/z1qfDvGak9BRXQrVs3srOzFVQiUr+OO86PjH7//UFXktBSvjMFHJibSkElIvWqTRt4+umgq0h4alGFaW4qEak3W7bAxRfDsmVBV1I7ZiHMlmG2ArN7Ktl+FGZvYzYfs0WYxaR3iIIqLC8vj61bt7Ju3bqgSxGRRLd4McycCYnUk9gsHXgCGAqcBAzD7KQKe90ALMa53sDZwMOYRX0yLQVVmDpUiEi9OessWL0aevYMupLa6A+swLmVOLcPeAm4qMI+DmiCmQGNga1ASbQLU1CFnXLKKZqbSkSOTGkpvPiif2zQIOhqDnE0ZGA2J2IZGbG5LbA24vW68LpIjwMnAl8BnwG34FxZVItGnSn2a9y4MV27dlVQiUjdPfUU3HQTHHUUnH9+0NUcYiuUHOdcvyo2WyXrKl60zwfmAYOBzsA/MPsQ56I6/YRaVBE0lJKI1NnGjf7m3m99C847L+hq6mId0C7i9fH4llOkEcAbOOdwbgWwCugR7cIUVBFyc3NZuXIlBeUTm4mI1NRdd8Hu3fD442CVNU7i3mygK2Ydwx0kLgMmVdhnDTAEALPWQHdgZbQLU1BF0NxUIlInH37oB5694w7o3j3oaurGuRLgRmAKsAR4BecWYXYdZteF97ofGIjZZ8D7wN04tyXapVki3jeUk5PjCgsL6/19169fz3HHHcfYsWO56aab6v39RSQJFRdDnz6wY4fvlp6TE3RFVVpotrunc/FbYBXUmSLCscceS6tWrfj000+DLkVEEsVjj8HChfDmm3EdUolMp/4iaG4qEamVL7/008sPHQoXVbzlSOqLgqqC3NxcFi1axL59+4IuRUTi3dNP+1N/jz2WqB0oEoKCqoLc3Fz27dunualEpHr33QfTp0PnzkFXktQUVBVoKCURqda+fbB5s58IsU+foKtJegqqCrp160bDhg0VVCJStUcegW7d/DUqiTr1+qsgPT2dXr16KahEpGoXXuhbVW0rDoUn0aAWVSU0N5WIHNZJJ8G99wZdRcpQUFUiNzeXbdu2sXbt2up3FpHUMXkyXHopbN0adCUpRUFVCXWoEJFD7N0LN94In30GjRsHXU1KiVlQmdkEM9tkZgsj1j1oZkvNbIGZvWlmzWJVz+FobioROcTPfw6ff+4Hnc2K+qS2EiGWLarngFCFdf8AejrnegHLgR/HsJ4q5eTk0K1bNwWViHjTp8ODD8K11/ppPCSmYhZUzrl/46ctjlz3nvMj9gLMxM9/Ehc0lJKIAFBYCFdeCe3bw8MPB11NSoqna1RXAe8GXUS53NxcVq1axfbt24MuRUSCdM89sGIFPPccNGkSdDUpKS6Cysx+CpQAfznMPiPNbI6ZzSkpKalqt3pT3qFi/vz5Uf8sEYlT77/vr0ndeisMGhR0NSkr8KAysyuB/wGGu8PcuOScG+ec6+ec65eREf37lNXzTyTFFRTAiBF+IsRf/zroalJaoCNTmFkIuBsY5JzbHWQtFR177LG0bt1aQSWSqrKz4fLL4dvfhoYNg64mpcUsqMxsInA20MLM1gGj8b38GgD/MD9E/kzn3HVVvkmMqUOFSIpyDho0gDFjgq5EiG2vv2HOuTbOuUzn3PHOuWecc12cc+2cc7nhJW5CCiAvL09zU4mkmq+/hoEDYcaMoCuRsMCvUcWz3NxciouLWbJkSdCliEisbNgAO3dCo0ZBVyJhCqrDUIcKkRR08smwYAH07h10JRKmoDqMLl260KhRIwWVSCrYsAHuvht27/YTIkrc0HfjMDQ3lUiKcM4PjzR2LGjWhLijoKqG5qYSSQHPPQd/+xs88IC/b0riioKqGrm5uWzfvp01a9YEXYqIRMPq1XDLLX7kiZtvDroaqYSCqhrqUCGSxMrK4Kqr/Km/Z5/Vtak4pe9KNU455RTS0tL49NNPgy5FROrbU0/B1KnwyCPQsWPQ1UgVFFTVaNSokeamEklG//0v3HUXhEJwzTVBVyOHoaCqAQ2lJJJkSkvhhz/0M/WOHw9+CDeJUwqqGsjNzWX16tVs27Yt6FJEpD7s3QudOvkpPNq2DboaqYaCqgY0N5VIksnJgT/9CYYPD7qS+GIWwmwZZiswu6eKfc7GbB5mizD7IBZlKahqQD3/RJJEcbE/5bdwYdCVxB+zdOAJYChwEjAMs5Mq7NMMeBK4EOdOBi6NRWkKqhpo3bo1bdq0UVCJJLrly+Gdd/zU8lJRf2AFzq3EuX3AS8BFFfa5HHgD5/yNpc5tikVhgU6cmEjUoUIkCZx8sg+ppk2DriQetQUix49aB5xWYZ9uQCZm04AmwKM490K0C1OLqoZyc3NZvHix5qYSSURbtsDDD/sbfFM4pI6GDMzmRCwjIzZX1vWx4thxGUBf4HwgHxiFWbcolXvQh0oNlM9NtXjx4v3XrEQkAZSW+k4TH3wA558PPXoEXVFgtkLJcc71q2LzOqBdxOvjga8q2WcLzhUChZj9G+gNLK/3YiOoRVVD6lAhkqDuvx/eew8eeyylQ6oGZgNdMeuIWRZwGTCpwj5vAWdiloFZI/ypwajPLKsWVQ117tyZnJwcBZVIIpk8GX7xC7jySo0+UR3nSjC7EZgCpAMTcG4RZteFtz+Nc0swmwwsAMqA8TgX9S6UlojTV+Tk5LjCwsKYf+7AgQPJyspi2rRpMf9sEaml1auhTx84/niYMUNTywMLzXb3dC4n6DpqS6f+aiEvL4+5c+dSUlISdCkicjhFRXDppVBSAq+/rpBKcAqqWhg8eDA7d+5k1qxZQZciIodz220we7afELFLl6CrkSOkoKqFIUOGkJ6ezuTJk4MuRUSq8tJLfvqOO++Eb3876GqkHiioaqFZs2YMGDBAQSUSz846y7eofv3roCuReqKgqqVQKMQnn3zC5s2bgy5FRCLt3u3vmTruOD8RYoY6NScLBVUthUIhnHP84x//CLoUESnnnO+CfsEFfvQJSSq1DiozyzE/ym5K6tOnDy1atNDpP5F4EwrBuedCmv7+jltmOdQhP6ptG5tZGv4O5eHAqUAR0MDMNgPvAOOcc/+t7QcnqrS0NM4991ymTJlCWVkZafpPIRKs4mLIzISrrw66EqmoivwgIj+oQX7U5Lfsv4DOwI+BY51z7ZxzrYAzgZnAGDP7ft2OIjGFQiE2bdqkUSpEgrZxox8R/a23gq5EKndQfuBcOyrkBzXIj5pcbfyWc6644krn3FbgdeB1M8usVekJ7txzzwVgypQp9OnTJ+BqRFJUSQlcdhmsWwcdOwZdjVTuW1SSH0TkBzXIj2pbVOUhZWa/N7PKhoGnsiBLZq1btyYvL0/XqUSCNGoUTJvm75nq1SvoaqQy5dlg9nuqyI9Kg6yC2lxg2QVMMrMc/7l2rpn9p6ZfbGYTzGyTmS2MWHe0mf3DzP4bfmxei3oCFQqFmD59OgUFBUGXIpJ6Jk2CMWPg2mt9bz+Jd7uASYTzA7NzqUV+1DionHM/AyYC08zsI+B24J5aFPocEKqw7h7gfedcV+D9Wr5foEKhECUlJUydOjXoUkRSy+efwxVX+AFnx44NuhqpiYj8oA75UeOgMrMhwLVAIdASuNk592HN63T/BrZWWH0R8Hz4+fPAxTV9v6CdfvrpNGnShClTpgRdikjq2LMHLrkEzOC11yA7O+iKpCYqyQ9qkR+1OfX3U2CUc+5s4BLgZTMbXIuvr0xr59x6gPBjq6p2NLORZjbHzObEw+jlmZmZDBkyhMmTJ5OIU6WIJKSbboJ58+DPf1YHisTyU2AUEflBLfKjNqf+BjvnPgo//wwYCvyydrXWnXNunHOun3OuX0acDI0SCoVYvXo1y5YtC7oUkeT3xRfw4ovwk5/4KeUlcTg3mHB+UIf8qMkNv+YqaTI459aHTwdWuU8NbDSzNuH3agNsqsN7BCY/Px+AyZMn00NTXItEV4cOfuoO/V9LHGZW6Skn59aHTwdWvU+EGt3wa2Y3mVn7Cp+fBZxuZs8Dde12Mynia68EEuquvQ4dOtCjRw9dpxKJppkzYfx4//zkkyE9ZUdwS0T/wuwmKuQH4fyghvlRk6AKAaXARDNbb2aLzWwV8F9gGPA759xz1b2JmU0EZgDdzWydmV0NjAHOMbP/AueEXyeU/Px8pk2bxp49e4IuRSQ5PfGE74q+e3fQlUjt7c8PzL7CbDFmK4nID2qSH7U5YxcegaIFsMc5t70uVdeHnJwcV1hYGNTHH2Ty5MkMHTqUyZMn7z8VKCL1qLgYNm2Ctm2DriThLTTb3dO5nEA+PCI/qGV+1KZ7+lDgQ2AaMM7MBtTmg5LVoEGDyM7O1igVIvVp92740Y/8WH6ZmQqpZOBcMc6tr21IQe26pz+Jv0lrADAOeMjMhtX2A5NNw4YNGTRokK5TidSX0lK4/HL44x9hzpygq5H6YtYOsxBmd2D2PGY1/ubWJqg2Ouf+45zb5pz7J5CP7xuf8vLz81myZAmrV68OuhSRxOYc3HyzHw39scfUDT3Rmf0Is+mYbQeWA9cAjfEd6S6v6dvUJqi+MLNfhnv7ARQDO2vx9UkrFPIjQ6lVJXKEHnwQnnwS7rwTbrgh6GrkyP0YuA3oC/wNyAYm4NzrOLe8pm9Sm6BywP8Ca8Nj/a3Aj/vXtRbvkZR69OhB+/btdZ1K5EhMnAh33+2n7hiTcB2ApXL/g3OzcO5znLsUeBx4G7PbwpMq1khtRqYY5pw7CTgBuBW4D8gBxpvZ2trVnlzMjPz8fN5//32Ki1NqxhOR+jFtmh8FfdAgeO45TSefLJxbWOH1ZKA/cDRQ/6OnH/gct9c5N8c594xz7mbn3CDnXLvavk+yCYVC7Nixg5kzZwZdikhiWbQILr4YunaFN9+EBg2CrkiiybkinBtFLQaK0J8t9WTIkCGkp6fr9J9IbY0bB40awbvvQvOEmZJOjlQtrlHV6obfeBFPN/xGOuussygsLOSTTz4JuhSRxFFW5qeTb9+++n3liAR6w+8RUIuqHuXn5zN37lw2bUqosXVFYq+42PfqW7PGX49SSMlhKKjqUXk39ffeey/gSkTi3LJl8Je/wIc1njtPUpiCqh7l5eXRsmVLXacSqU7PnrBiBQwfHnQlEsmPHLEMsxWYVT1VvNmpmJVidkksylJQ1aO0tDTy8/OZMmUKZWVlQZcjEn/Gj/c39ToHLVoEXY1EMksHnsBPangSMAyzk6rY7zdAzEY4UFDVs/z8fLZs2cLcuXODLkUkvrz5Jlx3HUyd6jtQSLzpD6zAuZU4tw94Cbiokv1uAl4nhhPdKqjq2bnnngtoOCWRg7z6Klx6KfTvD6+8oskPA3I0ZGA2J2IZGbG5LRA5eMO68LoDzNoC3waejnqxERRU9axVq1b07dtX16lEyr30EgwbBqefDlOmQJMmQVeUsrZCCc71i1jGRWy2Sr6k4v1LvwfuxrnSqBVZCQVVFIRCIWbMmMH27duDLkUkWH/+s+8w8Y1v+Bt6FVLxbB0QOcrQ8cBXFfbpB7yE2RfAJcCTmF0c7cIUVFGQn59PaWkp77//ftCliATn+efhiivg7LPhnXegceOgK5LDmw10xawjfpaMy/DTcRzgXEec64BzHYDXgOtx7q/RLkxBFQUDBgygadOmuk4lqeuFF2DECPjWt+DttyEn4QZDSD3OlQA34nvzLQFewblFmF2H2XVBlqYhlKLkO9/5DrNnz2b16tWYVXbqVySJzZsHv/0tPPMMNGwYdDUSpiGU5CChUIi1a9eyZMmSoEsRiZ3Zs/1jbi68+KJCSuqFgipK8vPzAdT7T1LHP//pu5+//HLQlUiSUVBFSfv27TnxxBN1nUpSx+DB8Pjj8O1vB12JJBkFVRSFQiE++OADdu/eHXQpItHzhz8cGAX9hhsgKyvoiiTJKKiiKBQKUVRUxAcffBB0KSLR8etf+2GRxo4NuhJJYgqqKDrzzDPJzs7WdSpJTr/4Bfz0p/6G3jFjgq5GkpiCKooaNmzI2WefretUklycg3vvhdGj/Q29zz8PGRlBVyVJTEEVZaFQiGXLlrFq1aqgSxE5cs7Bz34G998PV10FEyZogFmJOgVVlJXP+qtWlSQ85+Cee/x1qZEj4Y9/VEhJTCiooqxbt26ccMIJuk4lia20FK691o82cf318NRTvpefSAzExU+amd1mZovMbKGZTTSz7KBrqi9mRigUYurUqezbty/ockTqJi3NX4f62c/8vVIKKYmhwH/azE/EdTPQzznXE0jHj9qbNEKhEDt37mTGjBlBlyJSO8uXw+LFYOZbUfff75+LxFDgQRWWATQ0swygEYfOgZLQBg8eTEZGhk7/SWIpK/OjTIwY4a9PKaAkIIEHlXPuS+AhYA2wHihwzr0XbFX1q2nTpgwcOFBBJYnDOX96709/8jP0KqQkQIEHlZk1By4COgLHATlm9v1K9htpZnPMbE5JSUmsyzxioVCIefPmsWHDhqBLEalaaSnccQfcfbd/3acPdOwYbE2S8gIPKuBbwCrn3GbnXDHwBjCw4k7OuXHOuX7OuX4ZCXhzYXk39ffeS6rGoiSTXbv8qb6HH4a9e32rSiQOxENQrQEGmFkj8zMMDsHPLplUevfuTatWrXT6T+LTmjVwxhl+yvjHH/dj9+l0n8SJwJsmzrlZZvYaMBcoAT4FxgVbVf1LS0sjPz+ft99+m4KCAo466qigSxLxPv4YLrwQ9uyBv/8dwnOpicSLeGhR4Zwb7Zzr4Zzr6Zz7gXOuKOiaouGWW26hoKCAUaNGBV2KiPfKKzBoEDRqBDNmKKQkLsVFUKWKvn37cv311/PEE08wd+7coMuRVOacvyfqe9+Dvn1h1iw46aSgqxKplLkEvGCak5PjCgsLgy6jTrZv306PHj044YQTmD59OukaK02CsG0b5OXBmWfC+PHQoEHQFUkMLDTb3dO5nKDrqC21qGKsWbNmPPzww3z88ceMHz8+6HIk1WzZAsXF0Ly5b0W98IJCSuKeWlQBcM4xePBg5s+fz9KlS2nVqlXQJUkqKCyEU07xHSd+//ugq5EAqEUlNWZmPPnkk+zcuZO7y2+sFIm2nBw/HNLw4UFXIlIrCqqAnHjiidxxxx0899xzfPjhh0GXI8nqyy8hFIKZM/3rUaPg1FODrUmklhRUARo1ahQnnHAC//d//0dxcXHQ5Uiy+etfoVcv+PBDf0OvSIJSUAWoUaNGjB07lkWLFvHoo48GXY4ki8JC+NGP/HBIHTvC3Lnw3e8GXZVInakzRRy48MILmTp1KkuWLKFdu3ZBlyOJ7NNPYdgwP4/UnXf6e6WysoKuSuKEOlNInY0dO5aysjJuvfXWoEuRRFVWBg89BKed5geX/ec/4Te/UUhJUlBQxYEOHTowatQo3njjDd55552gy5FENGyYb0FdcAHMnw+DBwddkUi90am/OLFv3z569+7Nvn37WLhwIQ0bNgy6JEkE5TPvvvUWbN4MV1+tUc+lStWe+jMLAY8C6cB4nBtTYftwoPyeml3A/+Hc/OhUe4BaVHEiKyuLJ554gpUrV/LAAw8EXY7Eu+Ji32Hi4Yf964sugmuuUUhJ3ZmlA08AQ4GTgGGYVRwAchUwCOd6AfcTo5kuFFRxZPDgwQwfPpzf/OY3LF++POhyJJ5lZMDWrVBQEHQlkjz6AytwbiXO7QNews++foBz03FuW/jVTOD4WBSmoIozDz30ENnZ2dxwww0k4mlZiaKyMnjkEVixwrecXn7Z9+oTqR9tgbURr9eF11XlauDdqFYUpqCKM8ceeyy/+tWv+Oc//8mrr74adDkSL2bPhgED4Pbb4bnn/Lo0/feV2jkaMjCbE7GMjNhc2Xnjyv9aNvsmPqhiMgacOlPEodLSUvr378/69etZunQpTZs2DbokCcqWLfDjH8Mzz0Dr1vDgg36sPl2Lkjo4bGcKs9OBn+Ncfvj1jwFw7oEK+/UC3gSG4lxMrlHoT7I4lJ6ezlNPPcWGDRsYPXp00OVIEEpL4cknoVs334L6f/8Pli2D739fISXRMhvoillHzLKAy4BJB+1h1h54A/hBrEIKFFRxq3///vzoRz9i7NixzJs3L+hyJJamT4d+/eCGG/zkhvPn+5t51bKWaHKuBLgRmAIsAV7BuUWYXYfZdeG97gWOAZ7EbB5mc2JRmk79xbFt27bRvXt3unTpwkcffUSarkkkv+3boV07aNbMd5y45BK1oKTeaAglqXfNmzfnoYceYsaMGUyYMCHociRaSkp8Dz7nfED97W+wZAlceqlCSgS1qOKec45BgwaxaNEili1bRosWLYIuSerbn/8MP/gBvP++hj6SqFKLSqKifDbgHTt2cM899wRdjtSXL7+EqVP982HDYMoU+OY3g61JJE4pqBJAz549ue2223jmmWeYPn160OXIkdi3z3cx79EDrrzSD4WUng7nnqvTfCJVUFAliHvvvZd27dpxzTXXsEaztSaesjJ44w3o3Rvuusuf4vvgA8jMDLoykbinoEoQjRs35tlnn2XdunXk5eXxt7/9LeiSpCZKS2HiRD8l/He+4wPr73/3o5136hR0dSIJQUGVQIYMGcInn3xC+/btueCCC7jzzjspLi4OuiypTFkZPP88nHQSXH6579H34ouweDGcd17Q1YkkFAVVgunatSszZszg+uuv56GHHuKss85i9erVQZcl5cp70ZrBH/4ADRvCa6/BZ5/5ThPp6cHWJ5KAFFQJKDs7myeeeIKXX36ZRYsWkZeXx9tvvx10WfL++3DiibBpkw+qSZPg00/9KT/drC1SZ/rfk8C++93vMnfuXDp27MiFF17I7bffzr59+4IuK7UUFvqu5uBHlDj2WPj6a/+6RQv15BOpBwqqBNelSxemT5/OjTfeyCOPPMKZZ57JF198EXRZyW/HDnjgAejQAW680a/r1g2mTfOtKhGpN3ERVGbWzMxeM7OlZrbE/HDzUkMNGjTgscce49VXX2Xp0qXk5eXx1ltvBV1Wctq2DX7+czjhBPjJT+DUU+HOO4OuSiSpxUVQAY8Ck51zPYDe+JF7pZYuueQS5s6dS+fOnbn44ou57bbbdCqwvsyfDzfd5APqvvtg0CA/meE778DAgUFXJ5LUAh/rz8yaAvOBTq6GxaTSWH91UVRUxF133cXYsWM59dRTefnll+nYsWPQZSWmBQvg6qthzhxo0MB3jLj7bn9flEiC0Vh/ddcJ2Aw8a2afmtl4MzvkH9LMRprZHDObU1JSEvsqE0iDBg149NFHef3111m+fDl5eXm8+eabQZeVGJyD//wHPvrIv27Txq8bOxa++gr+8heFlEiMxUOLqh8wE/iGc26WmT0K7HDOjarqa9SiqrlVq1bxve99j9mzZ3PzzTfz29/+lgYNGgRdVvzZuxeys30ode8OHTv6gWJFkohaVHW3DljnnJsVfv0a0CfAepJKx44d+eijj7j11lv3nwr84x//yI4dO4IuLXilpT6MLr3U997bs8d3J3/9db+ISFwIPKiccxuAtWbWPbxqCLA4wJKSTlZWFr/73e/461//SmlpKSNHjuTYY4/liiuuYNq0aZSVlQVdYmytWeM7RHTqBKEQ/OtfMHy4b1UBnHIKNG4cbI0isl/gp/4AzCwXGA9kASuBEc65bVXtr1N/deecY/bs2UyYMIGJEyeyY8cOOnXqxA9/+EOuvPJK2rdvH3SJ0bF5sx8M9uWXD5zSO+ccuOYauPBC31FCJMkl6qm/uAiq2lJQ1Y/du3fz5ptvMmHCBKZOnYqZcc4553DVVVdx0UUXkZ2dHXSJdecc7N4NOTl+5Ih27fy6du1gxAi/dOgQdJUiMaWgiiEFVf1btWoVzz//PM8++yxr1qyhefPmXH755Vx11VXk5eVhiTAUkHMHhiw66yw/nNErr/jXY8fCmWdCbq6GNZKUpaCKIQVV9JSVlTF16lSeffZZXn/9dYqKiujduzcjRoxg+PDhtGjRIugSD1ZQ4E/lTZrkRyifN88H0eOPQ5MmfhZdEQEUVDGloIqNbdu28dJLLzFhwgTmzJlDZmYmQ4cO5YwzzmDAgAH07duXRo0axb6wL76At9/2y7Rpfjr3Y46B//kfeOwxH1AicggFVQwpqGLvs88+Y8KECbz11lusWrUKgPT0dHr16sVpp53GgAEDOO200+jWrRtp0ZjSYulSP7/T1Kl+tAiAHj18R4gLLoDTT9dcTyLVUFDFkIIqWJs2bWLWrFnMmjWLmTNn8vHHH7Nz504AmjVrxmmnnbY/vPr3788xxxxT+w/ZsAFuv90PXzR4MHz4IZx7LgwY4FtOF1zgRysXkRpTUMWQgiq+lJWVsXTpUmbOnLk/vBYuXLj//qyuXbvuD65+/frRpUsXjj76aN9Bo6AAZs3ywxZNn+47QYwa5W++PfFE+OUv4fvfh5ISP717VlbARyuSuBRUMaSgin+7du1izpw5+4Nr5syZbNiwgY7AQOCbmZmcmZ5Ol717SQPKzNjVsSNFl13GUaNHk6VAEql3CqoYUlAliOnTYe1a+N73cM6xLy+PBvPnA7A3M5PFRx3Ff4B3Cwr4qLiYneEvS0tLo127dnTq1InOnTvTqVOn/UuHDh045phjonMdTCTJKahiSEEVJ0pLYeVKWLwYlizxj198AR984LuIjxgBkyfD+vV+//Hj/Sm8gQPh5JP3d34oKytj/fr1rFy5kpUrV/L555/vf75y5Uo2btx40Memp6fTsmVLWrVqRevWrQ95jHzesmVLDcIrEqagiiEFVQzt2eOHF0pL8xMFTp7sA2nxYli2DIqKDux7/PFw0knw2mu+i/hXX/mvrUtnigi7du1i1apVrFy5ktWrV7Nx40Y2bdp00OPGjRvZs2dPpV/frFmzg4KrWbNmHHXUUQc9VrauadOmpKsnoSQRBVUMKajqSWEhrFt36HLbbb5H3Z/+BFdcAatW+eGGfvtbP2lghw4+kCKXE0+Epk0DPZxdu3YdEmAVHzdv3kxBQQHbt2+nJj9DTZo0OSS8GjduTE5OzkFLZeuqWq/TlhIUBVUMKagqsWcPbNvml5YtoVUrPxDriy/C+edDly5+ltpRow4E0vbth75Pixbw0kswZIhvNb35Jlx7rX+/nTt9yyon4X7OK1VSUkJBQcH+4Nq+ffv+5xUfy58XFBRQWFhIYWEhu3btorCwkOLi4lp9blZWFtnZ2WRnZ9OwYcP9zyu+rup5VlYWDRo0ICsr66Dnla2r+DwrK4vMzMyDlvT09MQYIkuOWLVBZRYCHgXSgfE4N6bCdgtvPw/YDfwQ5+ZGreCwjGh/QMor/yWWmenHovv6az+dxJ49B5aKr7t1g379/PoHH/ShMXCgv9Zz990HAmnbNti61T9GnoL7/e/hlltgyxa49VZo3doHVUmJD6/OnWHQIH+qLnJp2xYaNjzwPuWtpXJJNuJDRkYGxxxzTN3u84pQXFy8P7wiA6ziUr6+qKiIPXv2sHfvXvbu3XvQ87179/L1119Xum3Pnj2UlpbW09EfrGJ4VbZkZGQcFG4ZGRlVLlVtT09P37+t/Pnh1h1ufVpa2kGPVT2val1VS3XbKy5mtv8xoZmlA08A5+DnCZyN2SSci5x2aSjQNbycBjwVfoyq1AuqCy+EFSt8aIB/jHwO0LcvTJzonw8d6n/JP/aYf52b68OhtNQvJSUHnpcv//u/viUDvnVz5ZXw6KM+hFq2rL7GW27xQeUc3Huvv3do4EDYt8/f+Nq8uV9OPPHA88ilb1//Pl27+rBq1sy/HjDAt6qkXmVmZu6/zhVtJSUl7Nu3b/9SVFRU7fPI10VFRRQXF9d6KSkpOeh5SUkJRUVF7N69e//rypbS0tIq1yXjPGiVBVhVoVZxn6q2Vdxn3LhxnHHGGdEovz+wAudWAmD2EnARB88PeBHwAv5U3EzMmmHWBufWR6OgcqkXVF26+CnH4cAo2mYHP48c8aBXL9/SKHf66b6lk54OGRn+seLSq9eB/e+9F3r29M+zsnxgNWx48JKdffDr8oFfs7N9iywj/G064QR/vaimMjKOuCODxJfylkkgYyzWM+ccZWVllJaW7l/Kg6y6deVfF/n1lT2val1VS022l9cduVS2rqr15esqPh5uW+Q+jY9gUs+jIQOzyL9Wx+HcuPDztsDaiG3rOLS1VNk+bYGoBpWuUYmIpIjDXqMyuxTIx7lrwq9/APTHuZsi9vk78ADOfRR+/T5wF859Es261f1IRETAt47aRbw+HviqDvvUOwWViIgAzAa6YtYRsyzgMmBShX0mAVdgZpgNAAqifX0KUvEalYiIHMq5EsxuBKbgu6dPwLlFmF0X3v408A6+a/oKfPf0EbEoTdeoRERSRKLe8KtTfyIiEtcUVCIiEtcUVCIiEtcUVCIiEtcSsjOFmZUBlc/pUL0MoKQey0kEOubUoGNODXU+5r7QcI5zCddAScigOhJmNsc51y/oOmJJx5wadMypIRWPOeGSVUREUouCSkRE4loqBtW46ndJOjrm1KBjTg0pd8wpd41KREQSSyq2qEREJIEoqEREJK4lbVCZWcjMlpnZCjO7p5LtZmZjw9sXmFmfIOqsTzU45uHhY11gZtPNrHcQddan6o45Yr9TzazUzC6JZX31rSbHa2Znm9k8M1tkZh/Eusb6VoOf66PM7G0zmx8+5piM6B1NZjbBzDaZ2cIqtifd76/Dcs4l3YIfov5zoBOQBcwHTqqwz3nAu4ABA4BZQdcdg2MeCDQPPx+aCsccsd9U/BQFlwRdd5S/x82AxUD78OtWQdcdg2P+CfCb8POWwFYgK+jaj/C4zwL6AAur2J5Uv7+qW5K1RdUfWOGcW+mc2we8BFxUYZ+LgBecNxNoZmZtYl1oPar2mJ1z051z28IvZ+Jn50xkNfk+A9wEvA5simVxUVCT470ceMM5twbAOZcKx+yAJmZmQGN8UCX0aBXOuX/jj6Mqyfb767CSNajaAmsjXq8Lr6vtPomktsdzNf4vskRW7TGbWVvg28DTMawrWmryPe4GNDezaWb2iZldEbPqoqMmx/w4cCJ+SvTPgFucc2WxKS8wyfb767CSdYZfq2RdxX74NdknkdT4eMzsm/igOiOqFUVfTY7598DdzrlS/wd3QqvJ8WYAfYEhQENghpnNdM4tj3ZxUVKTY84H5gGDgc7AP8zsQ+fcjijXFqRk+/11WMkaVOuAdhGvj8f/tVXbfRJJjY7HzHoB44GhzrmvY1RbtNTkmPsBL4VDqgVwnpmVOOf+GpMK61dNf663OOcKgUIz+zfQG0jUoKrJMY8Axjh/8WaFma0CegAfx6bEQCTb76/DStZTf7OBrmbW0cyygMuASRX2mQRcEe49MwAocM6tj3Wh9ajaYzaz9sAbwA8S+C/sSNUes3Ouo3Oug3OuA/AacH2ChhTU7Of6LeBMM8sws0bAacCSGNdZn2pyzGvwLUjMrDXQHVgZ0ypjL9l+fx1WUraonHMlZnYjMAXfa2iCc26RmV0X3v40vgfYecAKYDf+r7KEVcNjvhc4Bngy3MIocQk8CnMNjzlp1OR4nXNLzGwysAAoA8Y75yrt4pwIavg9vh94zsw+w58Su9s5tyWwouuBmU0EzgZamNk6YDSQCcn5+6s6GkJJRETiWrKe+hMRkSShoBIRkbimoBIRkbimoBIRkbimoBIRkbimoBIRkbimoBIRkbimoBKpB2b2LzM7J/z8l2Y2NuiaRJJFUo5MIRKA0cAvzKwVkAdcGHA9IklDI1OI1JPwbLqNgbOdczuDrkckWejUn0g9MLNTgDZAkUJKpH4pqESOUHhm1b/gZ10tNLP8gEsSSSoKKpEjEJ5K4w3gdufcEvxI3j8PtCiRJKNrVCIiEtfUohIRkbimoBIRkbimoBIRkbimoBIRkbimoBIRkbimoBIRkbimoBIRkbj2/wEimUISyLszrgAAAABJRU5ErkJggg==">
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Inverse-problem-implementation">Inverse problem implementation<a class="anchor-link" href="#Inverse-problem-implementation">¶</a>
+</h2>
+<p>Here we will write our inverse problem solver.  We will inherit from the <code>FEAProblem</code> class above so we can reuse some of the functions already defined.</p>
+<p>Our objective function here will be the $l_2$-norm of the finite element residual when the "known data" is supplied as training data.  Because the problem we are solving is a steady-state problem, we'll need to provide the endpoints of consitutive model to the objective function, otherwise there are infinite valid solutions to learning the constitutive model that only differ by a constant.  If we extended this technique to time-dependent problems, I believe the need to provide the boundary constraints can be avoided.</p>
+<p>We'll use a few functions from the <code>jax.experimental.stax</code> module, just to make the neural network construction easier.  Our minimizer here will use the second-order <code>"BFGS"</code> method from <code>jax.scipy.optimize.minimize</code>.</p>
+<p>Here we assume our data is supplied at the nodes of the FE model, but this restriction could be easily generalized by evaulating the residuals at any given spatial location via the FE shape functions.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">jax.experimental</span> <span class="kn">import</span> <span class="n">stax</span>
+<span class="kn">from</span> <span class="nn">jax.experimental.stax</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Tanh</span>
+<span class="kn">from</span> <span class="nn">jax.nn.initializers</span> <span class="kn">import</span> <span class="n">glorot_normal</span><span class="p">,</span> <span class="n">normal</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">InverseProblem</span><span class="p">(</span><span class="n">FEAProblem</span><span class="p">):</span>
+   
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">mobility</span> <span class="o">=</span> <span class="n">stax</span><span class="o">.</span><span class="n">serial</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span> 
+                 <span class="n">mobility_left_bc</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">mobility_right_bc</span><span class="o">=</span><span class="mf">1.001</span><span class="p">):</span>
+        <span class="sd">"""Class to solve for (i.e. learn) the constitutive model of </span>
+<span class="sd">           the steady-state pressure diffusivity equation using a </span>
+<span class="sd">           neural network (nn).</span>
+<span class="sd">           </span>
+<span class="sd">        Args:</span>
+<span class="sd">            nodes (array-like): the spatial locations corresponding to the data points</span>
+<span class="sd">            mobility (stax.nn): a stax neural network definition</span>
+<span class="sd">            mobility_left_bc (real): the left boundary value of the mobility function</span>
+<span class="sd">            mobility_right_bc (real): the right boundary value of the mobility function</span>
+<span class="sd">        """</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">mobility</span> <span class="o">=</span> <span class="n">mobility</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">__mlbc</span> <span class="o">=</span> <span class="n">mobility_left_bc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__mrbc</span> <span class="o">=</span> <span class="n">mobility_right_bc</span>
+        
+        <span class="c1"># unpack the functions to initialize and apply the network parameters</span>
+        <span class="n">net_init</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">net_apply</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mobility</span>
+        
+        <span class="c1"># initialize the network parameters with random numbers</span>
+        <span class="n">seed</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">net_params</span> <span class="o">=</span> <span class="n">net_init</span><span class="p">(</span><span class="n">seed</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        
+        <span class="c1"># flatten the nn parameters into an single array</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_net_params_flat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">unravel_pytree</span> <span class="o">=</span> <span class="n">flatten_util</span><span class="o">.</span><span class="n">ravel_pytree</span><span class="p">(</span><span class="n">net_params</span><span class="p">)</span>
+    
+    <span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span>
+    <span class="k">def</span> <span class="nf">residual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">"""Compute the FE residual vector </span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            u (array-like): the unknown parameters of the nn</span>
+<span class="sd">            data (array-like): the user supplied data (i.e. pressures) at the nodes</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            (array-like): residual vector</span>
+<span class="sd">        """</span>
+        
+        <span class="c1"># Put the parameters back into the stax nn data structure </span>
+        <span class="n">net_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unravel_pytree</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+        
+        <span class="c1"># Set the mobility function to be the current nn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mobility</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predict</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">net_params</span><span class="p">)</span>
+        <span class="n">mobility</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mobility</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+        
+        <span class="c1"># Integrate the element shape functions with the current</span>
+        <span class="c1"># mobility function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_element_matrices</span><span class="p">()</span>
+        
+        <span class="c1"># Return the FE residual vector with the supplied data</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">residual</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    
+    <span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span>
+    <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">"""Compute the squared error of the FE residual vector </span>
+<span class="sd">           along with the mobility at the end points</span>
+<span class="sd">           </span>
+<span class="sd">        Args:</span>
+<span class="sd">            u (array-like): the unknown parameters of the nn</span>
+<span class="sd">            data (array-like): the user supplied data (i.e. pressures) at the nodes</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            (real): squared error of the FE residual and mobility function end points</span>
+<span class="sd">        """</span>
+        
+        <span class="c1"># Compute FE residual with supplied data</span>
+        <span class="n">residual</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">residual</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        
+        <span class="c1"># Put the unknowns back into the stax nn data structure</span>
+        <span class="n">net_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unravel_pytree</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+        
+        <span class="c1"># Use the nn parameters to compute the mobility at the nodes </span>
+        <span class="n">mobility</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predict</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">net_params</span><span class="p">)</span>
+        
+        <span class="c1"># Compute squared error norm of mobility end points</span>
+        <span class="n">mobility_squared_error</span> <span class="o">=</span> <span class="p">(</span><span class="n">mobility</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__mlbc</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">mobility</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__mrbc</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        
+        <span class="c1"># Return FE + mobility squared error</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">residual</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">mobility_squared_error</span>
+    
+    <span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">"""Fit the parameters of the nuerual network representing the mobility</span>
+<span class="sd">           function</span>
+<span class="sd">           </span>
+<span class="sd">        Args:</span>
+<span class="sd">            data (array-like): known pressure data at the nodal locations</span>
+<span class="sd">        """</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lbc</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__rbc</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        
+        <span class="n">u0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_net_params_flat</span>
+        
+        <span class="c1"># minimize the loss function w.r.t. the uknown parameters of the nn</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">u</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span>  <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">data</span><span class="p">,),</span> 
+                                                            <span class="n">method</span><span class="o">=</span><span class="s1">'BFGS'</span><span class="p">)</span><span class="o">.</span><span class="n">x</span><span class="p">)(</span><span class="n">u0</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        
+        <span class="c1"># assign the final nn params, such that we can use if for predicting </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">net_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unravel_pytree</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+            
+        <span class="k">return</span>
+        
+    <span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span>
+    <span class="k">def</span> <span class="nf">_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="sd">"""Used internal to the class only - evaluates the nn function at x with</span>
+<span class="sd">           the given parameters</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="n">vmap</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">net_apply</span><span class="p">,</span> <span class="n">params</span><span class="p">))(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    
+    <span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="sd">"""Evaluates the nn function at x with the fit parameters</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            x (array-like): spatial locations to evalute the neural network</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predict</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">net_params</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Solve-inverse-problem-using-NN">Solve inverse problem using NN<a class="anchor-link" href="#Solve-inverse-problem-using-NN">¶</a>
+</h2>
+<p>Below we'll test out our inverse problem solver using the data generated earlier from the forward finite element solution.  First we define our neural network architecture.  This is a fairly simple function, so we don't need a large and/or complex nueral network.  Here we have an input layer with only 4 nodes and a $\tanh$ activation function feeding to a single node output.  More complicated architectures also work, yielding the same result at more computational cost.</p>
+<p>We also need to define the layer <code>Dense64</code> which is the same as <code>stax.Dense</code>, but initialized to use 64-bit floats to be consistant with our data structures in the FEA residual calculation.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Dense64</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">Dense</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">W_init</span><span class="o">=</span><span class="n">glorot_normal</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="s1">'float64'</span><span class="p">),</span> 
+                             <span class="n">b_init</span><span class="o">=</span><span class="n">normal</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="s1">'float64'</span><span class="p">))</span>
+
+<span class="n">nn</span> <span class="o">=</span> <span class="n">stax</span><span class="o">.</span><span class="n">serial</span><span class="p">(</span>
+    <span class="n">Dense64</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">Tanh</span><span class="p">,</span>
+    <span class="n">Dense64</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we instantiate the model and solve the inverse problem, i.e. train the network.  We do have to supply the endpoints of the consitutive model.  Given the problem is parabolic, there are infinite solutions to the inverse problem (they all have the same shape, but differ by a a constant scale factor).  We could remove this restriction by considering a time-dependent problem and supplying the time depended training data which we'll leave for future work.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">iproblem1</span> <span class="o">=</span> <span class="n">InverseProblem</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">mobility</span> <span class="o">=</span> <span class="n">nn</span><span class="p">,</span> <span class="n">mobility_left_bc</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">,</span> <span class="n">mobility_right_bc</span> <span class="o">=</span> <span class="mf">1.001</span><span class="p">)</span>
+<span class="n">iproblem1</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Plotting the neural network function over the range of the domain and comparing with the reference, we can see that the inverse solver has "learned" the mobility function well.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">nodes</span> 
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">+</span> <span class="mf">0.001</span><span class="p">,</span> <span class="s1">'k-'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">iproblem1</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">'r-.'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$x$'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$\lambda(x)$'</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="sa">r</span><span class="s1">'$\lambda(x) = x^3 + 0.001$'</span><span class="p">,</span> <span class="sa">r</span><span class="s1">'$\lambda(x) = \mathcal</span><span class="si">{NN}</span><span class="s1">(x)$'</span><span class="p">]);</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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">
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Use-the-trained-NN-in-the-forward-problem-(verification)">Use the trained NN in the forward problem (verification)<a class="anchor-link" href="#Use-the-trained-NN-in-the-forward-problem-(verification)">¶</a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Just to verify, we'll use our nueral network as the mobility function in our forward finite element solver to demonstrate the resulting pressures are also accurate.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">vproblem1</span> <span class="o">=</span> <span class="n">FEAProblem</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">mobility</span> <span class="o">=</span> <span class="n">iproblem1</span><span class="o">.</span><span class="n">predict</span><span class="p">,</span> <span class="n">left_bc</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">right_bc</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">v1</span> <span class="o">=</span> <span class="n">vproblem1</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$x$'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$p(x)$'</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="s1">'k-'</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="s1">'r-.'</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="sa">r</span><span class="s1">'$\lambda(x) = x^3 + 0.001$'</span><span class="p">,</span> <span class="sa">r</span><span class="s1">'$\lambda(x) = \mathcal</span><span class="si">{NN}</span><span class="s1">(x)$'</span><span class="p">]);</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYIAAAEGCAYAAABo25JHAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjMuMywgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy/Il7ecAAAACXBIWXMAAAsTAAALEwEAmpwYAAAmIUlEQVR4nO3deXxU9b3/8dcnMxmysSchSgIhgIiCAiKgRRaxgFQRrW1d6lL9Xaq31traa+292upP617rrUtbaxX1WmzdLlgrSi0BlEJZBIGwCQgEkB0C2TPzvX8k0BCWTGBmTibzfj4e8yBz5ntm3ofkMe85M3PO15xziIhI4kryOoCIiHhLRSAikuBUBCIiCU5FICKS4FQEIiIJzu91gBORmZnp8vPzvY4hIhJXFi5cuNM5l9VweVwWQX5+PgsWLPA6hohIXDGzDUdbrreGREQSnIpARCTBqQhERBJcXH5GICInrrq6muLiYioqKryOIlGSkpJCbm4uycnJYY1XEYgkmOLiYlq3bk1+fj5m5nUciTDnHLt27aK4uJhu3bqFtY7eGhJJMBUVFXTs2FEl0EKZGR07dmzSHp+KQCQBqQRatqb+fhOqCP7617/yyCOPeB1DRKRZSagi2PPss3z1P/+TGn1IJiJySEIVQX5eHuc4xxcffuh1FBGRZiOhiiB79GgAtn3wgcdJRKQ5WrFiBbfccgtXXnklv/nNb7yOEzMJVQT5Y8dSAdTMn+91FJGEt3TpUrp27XrEE255eTnDhw8nGAwec92qqiqGDRtGTU1NRDP17t2b3/72t/z5z38+qfOZTZs2jV69etGjR4/jfi55rHHHW/+mm24iOzubPn36nHC+hhKqCJLT0liXlkbrtWu9jiKS8Pr27cvrr7/OK6+8ctjyF198kSuuuAKfz3fMdQOBAKNGjeJPf/pTxHNNnTqVoUOHMmrUqGOOKSws5MYbbzzqbcFgkO9973u8//77FBUVMXnyZIqKisIe19j6N954I9OmTTvp7awvoYoAYFduLl327MGFQl5HEUl42dnZLF++/LBlr732Gpdddtmh6yNHjmT69OkA3HPPPdx+++0ATJgwgddee+2EH/tY9zt+/HjmzJlzwvf9z3/+kx49elBQUEAgEOCqq65iypQpYY9rbP1hw4bRoUOHE8p2LAl3ZHHorLPIXL2aLz/9lJxzzvE6join7rjjDhYvXhzR++zXrx9PPfVUWGPvvvtuKisr2bBhA127dqWqqop169ZRf76R+++/n5/97Gds376dTz/9lKlTpwLQp08f5h/lbd4LLriA/fv3H7H8iSee4KKLLjru/RYWFvL2229TWVnJuHHjmrbhdTZv3kxeXt6h67m5ucybNy/sceGuH0kJVwTtR46EN99k07vvqghEPDRt2jRKS0v52te+xvLly+natSs7d+6kXbt2h40bNmwYzjmefPJJCgsLD71l5PP5CAQC7N+/n9atWx8aP3v27LAe/2j3O2LECEaMGHHMdQYPHkxlZSUHDhxg9+7d9OvXD4BHH32UMWPGALWneGjoaAd4HWtcuOtHUsIVQf748fC971H6ySdeRxHxXLiv3COtoqKCu+66i6lTp/LSSy+xbNkyxo0bR2pq6hGnRli6dClbt24lMzPzsCd8gMrKSlJSUg5bFu4ewfHu91gOvjIvLCxk0qRJTJo06Ygxubm5bNq06dD14uJiTj311LDHhbt+JCXcZwRtcnP5S0YGRXv2eB1FJGE9+OCDXH/99eTn59O3b1+WLVsGQPv27QkGg4fKYOvWrVx77bVMmTKF9PR0Pqj31e9du3aRlZV1xBk2Z8+ezeLFi4+41C+B493vyTr33HNZs2YN69evp6qqitdff53x48eHPS7c9SPKORd3l3POOcedjK9//euuR48eJ3UfIvGqqKjI08dfuXKlGzRokKuurj50vX///oduv+mmm9z06dNdaWmpGzJkiPvwww+dc87NnDnTDRky5NC4N954w/3oRz9q8uM3dr/hmDFjhrvhhhuOeft7773nevbs6QoKCtyDDz542G0XX3yx27x583HHHW/9q666yuXk5Di/3+86d+7sXnjhhaNmONrvGVjgjvKc6vmT+olcTrYIHnjgAecHV7J790ndj0g88roIGrNo0SL37W9/u9Fxl19+uVu5cmUMEsWnphRBwr01BDDK7+cAsP71172OIiIN9O/fn5EjRzZ6QNmECRPo1atXDJO1XAlZBPljxvDfwNKtW72OIiJHcdNNNzV6QNn1118fw0QtW0IWQU6/fjyemUmhikBEJDGLwMwY1LcvJf/4h9dRREQ8l3DHERz0H/v3M2T5cmrKy/GnpnodR0TEMzHbIzCzF81su5ktO8ptPzYzZ2aZscqTfO65pABf6JTUIpLg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">
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Validate-for-different-BCs">Validate for different BCs<a class="anchor-link" href="#Validate-for-different-BCs">¶</a>
+</h2>
+<p>A major advantage of this approach over say, physics-informed nueral networks, is that we have only "learned" the consitutive model, i.e. the mobility function, not the solution of the partial differential equation with the supplied bounadary conditions.  Instead, we rely on our finite element implementation to compute the solution.  Which means we can now use our "learned" constitutive model to solve problems with different boundary conditions accurately.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">problem2</span> <span class="o">=</span> <span class="n">FEAProblem</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">mobility</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">+</span> <span class="mf">0.001</span><span class="p">,</span> <span class="n">left_bc</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">right_bc</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="n">problem2</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-4</span><span class="p">)</span>
+<span class="n">problem3</span> <span class="o">=</span> <span class="n">FEAProblem</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">mobility</span> <span class="o">=</span> <span class="n">iproblem1</span><span class="o">.</span><span class="n">predict</span><span class="p">,</span> <span class="n">left_bc</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">right_bc</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">p3</span> <span class="o">=</span> <span class="n">problem3</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-4</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="s1">'k-'</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="s1">'r-.'</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="sa">r</span><span class="s1">'$\lambda(x) = x^3 + 0.001$'</span><span class="p">,</span> <span class="sa">r</span><span class="s1">'$\lambda(x) = \mathcal</span><span class="si">{NN}</span><span class="s1">(x)$'</span><span class="p">]);</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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3XZmdouZLTGzJUVFRc1P2oAtb7/NKcCAgQPD/t4iIu1ZSw6hpAFXAAOBvkAnM7u+bjvn3LPOuRznXE56enrzkzagODcXgD4XXxz29xYRac9acgjlfGCLc67IOVcNvA6cFZ5YodMc4CISq1pSwPOBcWbW0cwMmASsDU+s0KVu3crmLl2Ii4+KMyJFRELW7KrnnFtsZq8CSwE/sAx4NlzBQhH0+xl44ADLR4xoy92KeKK6upqCggIqKiq8jiKtJCkpiYyMDBISEkJq36Jhq3PufuD+lrxHSxTMn08mYKed5lUEkTZTUFBAly5dyMrKouaPXokmzjlKSkooKChgYIgnZUT0XCg73nkHgO6TJnmcRKT1VVRU0L17dxXvKGVmdO/evUl/YUV0Aa9YtAg/MFCzEEqMUPGObk39+UZ0AV914ABvpaaS3K2b11FERNpcRBfwX5eW8uqll3odQ0TEExFbwEt27WLX9u2M1gyEIhKjIraAb/vLXygDztEcKCIxb+3atdx6661cffXVPP30017HaTMRW8BXFBXxG2DghRd6HUUkpqxatYoBAwYcVyjLy8s555xzCAQCDb62qqqKCRMm4Pf7w5pp2LBhPPPMM7z88sssWbKk2e/z3nvvMXToUAYPHsyDDz7Y5HYnev1NN91Ez549GRHG61YitoB/tGMHT/brR4+hQ72OIhJTRo4cyaxZs3jxxRe/tn3GjBlMnjwZn8/X4GsTExOZNGkSf/vb38Kea/bs2YwfP55JJziteO7cudx44431PhcIBLj99tt59913WbNmDS+99BJr1qwJuV1jr7/xxht57733WtzPY0VsAS9fuJCxugJTxBM9e/YkLy/va9tmzpzJFVdccfTxueeeS27tZHP33Xcfd955JwBXXnklM2fObPa+G3rfyy+/nAULFjT7vT///HMGDx5MdnY2iYmJTJ06lTfeeCPkdo29fsKECXQL8xlzETmBSMW+fcz66ivm9+7tdRQRT9x1110sX748rO85evRoHnvssZDa/vSnP6WyspJt27YxYMAAqqqq2Lx5M1lZWUfbPPDAA/z85z9nz549LFu2jNmzZwMwYsQIvvjii+Pe85vf/CYHDx48bvsjjzzC+eeff8L3nTt3Lq+//jqVlZVccsklTet4rcLCQvr373/0cUZGBosXLw65XaivD6eILOBb3nqLYUCSVqEX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">
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="License">License<a class="anchor-link" href="#License">¶</a>
+</h2>
+<p>Copyright 2021 John T. Foster</p>
+<p>Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<p><a href="https://www.apache.org/licenses/LICENSE-2.0">https://www.apache.org/licenses/LICENSE-2.0</a></p>
+</blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+
+</div>
+</div>
+</div>
+</div>
+        </div>
+                <ul class="pager hidden-print">
+<li class="previous">
+                <a href="../matlab-vs-python/" rel="prev" title="Matlab vs. Python -- A rebuttal">Previous post</a>
+            </li>
+        </ul>
+<div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="johntfoster",
+            disqus_url="https://johnfoster.pge.utexas.edu/blog/posts/jax-fea/",
+        disqus_title="JAX implementation of FEA and efficient inverse problem solving with neural networks",
+        disqus_identifier="cache/posts/jax-fea.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+    </div>
+                    <footer id="footer"><p>Contents © 2021         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
+            
+        </footer>
+</div>
+    </section><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+   ga('create', 'UA-25324596-7', 'auto');
+   ga('send', 'pageview');
+</script><script src="../../assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="../../assets/js/jquery.timeago.js" type="text/javascript"></script><script src="../../assets/js/mathjax.js" type="text/javascript"></script><script type="text/javascript">
+            $(function(){
+                $('.timeago').timeago();
+            });
+        </script>
+</body>
+</html>

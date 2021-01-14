@@ -11,7 +11,7 @@
 <link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
-<link rel="canonical" href="http://johntfoster.github.io/posts/extracting-exodus-information-with-netcdf-python/">
+<link rel="canonical" href="https://johnfoster.pge.utexas.edu/blog/posts/extracting-exodus-information-with-netcdf-python/">
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
  tex2jax: {
@@ -26,7 +26,7 @@ MathJax.Hub.Config({
 </script><!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><meta name="author" content="John T. Foster">
 <meta property="og:site_name" content="John T. Foster">
 <meta property="og:title" content="Extracting Exodus information with netcdf-python">
-<meta property="og:url" content="http://johntfoster.github.io/posts/extracting-exodus-information-with-netcdf-python/">
+<meta property="og:url" content="https://johnfoster.pge.utexas.edu/blog/posts/extracting-exodus-information-with-netcdf-python/">
 <meta property="og:description" content="In an earlier post I demonstrated how to use a set of ctypes wrappers of Sandia's Exodus database format, i.e. the exodus.py script that is distributed with Trilinos, to extract information from an Ex">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2015-07-20T15:37:39-05:00">
@@ -71,9 +71,7 @@ MathJax.Hub.Config({
 
         </div>
         <div class="body">
-            <div tabindex="-1" id="notebook" class="border-box-sizing">
-    <div class="container" id="notebook-container">
-
+            <div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -97,10 +95,10 @@ MathJax.Hub.Config({
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">netCDF4</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -123,7 +121,7 @@ MathJax.Hub.Config({
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">nc</span> <span class="o">=</span> <span class="n">netCDF4</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="s1">'../files/s_curve.g'</span><span class="p">)</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -144,10 +142,10 @@ MathJax.Hub.Config({
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span> <span class="n">nc</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="nb">print</span> <span class="n">nc</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -156,7 +154,9 @@ MathJax.Hub.Config({
 
 
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>&lt;type 'netCDF4._netCDF4.Dataset'&gt;
@@ -167,7 +167,7 @@ root group (NETCDF3_64BIT data model, file format NETCDF3):
     file_size: 1
     title: cubit(/Users/john/Desktop/s_curve.g): 07/20/2015: 14:53:37
     dimensions(sizes): len_string(33), len_line(81), four(4), time_step(0), num_dim(3), num_nodes(468), num_elem(437), num_el_blk(1), num_qa_rec(1), num_node_sets(5), num_nod_ns1(21), num_nod_ns2(15), num_nod_ns3(17), num_nod_ns4(15), num_nod_ns5(17), num_el_in_blk1(437), num_nod_per_el1(4), num_att_in_blk1(1)
-    variables(dimensions): float64 time_whole(time_step), |S1 qa_records(num_qa_rec,four,len_string), |S1 coor_names(num_dim,len_string), |S1 eb_names(num_el_blk,len_string), int32 ns_status(num_node_sets), int32 ns_prop1(num_node_sets), |S1 ns_names(num_node_sets,len_string), int32 node_ns1(num_nod_ns1), float64 dist_fact_ns1(num_nod_ns1), int32 node_ns2(num_nod_ns2), float64 dist_fact_ns2(num_nod_ns2), int32 node_ns3(num_nod_ns3), float64 dist_fact_ns3(num_nod_ns3), int32 node_ns4(num_nod_ns4), float64 dist_fact_ns4(num_nod_ns4), int32 node_ns5(num_nod_ns5), float64 dist_fact_ns5(num_nod_ns5), int32 elem_map(num_elem), int32 eb_status(num_el_blk), int32 eb_prop1(num_el_blk), float64 attrib1(num_el_in_blk1,num_att_in_blk1), int32 connect1(num_el_in_blk1,num_nod_per_el1), float64 coordx(num_nodes), float64 coordy(num_nodes), float64 coordz(num_nodes)
+    variables(dimensions): float64 <span class="ansi-underline">time_whole</span>(time_step), |S1 <span class="ansi-underline">qa_records</span>(num_qa_rec,four,len_string), |S1 <span class="ansi-underline">coor_names</span>(num_dim,len_string), |S1 <span class="ansi-underline">eb_names</span>(num_el_blk,len_string), int32 <span class="ansi-underline">ns_status</span>(num_node_sets), int32 <span class="ansi-underline">ns_prop1</span>(num_node_sets), |S1 <span class="ansi-underline">ns_names</span>(num_node_sets,len_string), int32 <span class="ansi-underline">node_ns1</span>(num_nod_ns1), float64 <span class="ansi-underline">dist_fact_ns1</span>(num_nod_ns1), int32 <span class="ansi-underline">node_ns2</span>(num_nod_ns2), float64 <span class="ansi-underline">dist_fact_ns2</span>(num_nod_ns2), int32 <span class="ansi-underline">node_ns3</span>(num_nod_ns3), float64 <span class="ansi-underline">dist_fact_ns3</span>(num_nod_ns3), int32 <span class="ansi-underline">node_ns4</span>(num_nod_ns4), float64 <span class="ansi-underline">dist_fact_ns4</span>(num_nod_ns4), int32 <span class="ansi-underline">node_ns5</span>(num_nod_ns5), float64 <span class="ansi-underline">dist_fact_ns5</span>(num_nod_ns5), int32 <span class="ansi-underline">elem_map</span>(num_elem), int32 <span class="ansi-underline">eb_status</span>(num_el_blk), int32 <span class="ansi-underline">eb_prop1</span>(num_el_blk), float64 <span class="ansi-underline">attrib1</span>(num_el_in_blk1,num_att_in_blk1), int32 <span class="ansi-underline">connect1</span>(num_el_in_blk1,num_nod_per_el1), float64 <span class="ansi-underline">coordx</span>(num_nodes), float64 <span class="ansi-underline">coordy</span>(num_nodes), float64 <span class="ansi-underline">coordz</span>(num_nodes)
     groups: 
 
 </pre>
@@ -196,7 +196,7 @@ root group (NETCDF3_64BIT data model, file format NETCDF3):
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">nc</span><span class="o">.</span><span class="n">variables</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -205,7 +205,9 @@ root group (NETCDF3_64BIT data model, file format NETCDF3):
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[4]:</div>
+
+    <div class="prompt output_prompt">Out[4]:</div>
+
 
 
 
@@ -365,10 +367,10 @@ filling off
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'coordx'</span><span class="p">]</span>
 <span class="n">Y</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'coordy'</span><span class="p">]</span>
 <span class="n">connect</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'connect1'</span><span class="p">]</span>
-<span class="k">print</span> <span class="n">connect</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
+<span class="nb">print</span> <span class="n">connect</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -377,7 +379,9 @@ filling off
 
 
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[[ 1  2  3  4]
@@ -416,11 +420,11 @@ filling off
 <div class=" highlight hl-ipython2"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Polygon</span>
 <span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="kn">import</span> <span class="n">PatchCollection</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -444,7 +448,7 @@ filling off
 
 <span class="n">patches</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">coords</span> <span class="ow">in</span> <span class="n">xy</span><span class="p">[</span><span class="n">connect</span><span class="p">[:]</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-    <span class="n">quad</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">quad</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
     <span class="n">patches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">quad</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
@@ -458,7 +462,7 @@ filling off
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -467,7 +471,9 @@ filling off
 
 
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
 
 
 
@@ -499,14 +505,12 @@ filling off
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">nc</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 
-</div>
-</div>
-</div>
-
-</div>
     </div>
-  </div>
+</div>
+</div>
 
+</div>
+</div>
         </div>
                 <ul class="pager hidden-print">
 <li class="previous">
@@ -519,7 +523,7 @@ filling off
 <div id="disqus_thread"></div>
         <script>
         var disqus_shortname ="johntfoster",
-            disqus_url="http://johntfoster.github.io/posts/extracting-exodus-information-with-netcdf-python/",
+            disqus_url="https://johnfoster.pge.utexas.edu/blog/posts/extracting-exodus-information-with-netcdf-python/",
         disqus_title="Extracting Exodus information with netcdf-python",
         disqus_identifier="cache/posts/extracting-exodus-information-with-netcdf-python.html",
         disqus_config = function () {

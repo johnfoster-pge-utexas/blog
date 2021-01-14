@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster (Posts about netcdf)</title><link>http://johntfoster.github.io/</link><description></description><atom:link href="http://johntfoster.github.io/categories/netcdf.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Thu, 14 Jan 2021 20:50:18 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Extracting Exodus information with netcdf-python</title><link>http://johntfoster.github.io/posts/extracting-exodus-information-with-netcdf-python/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div tabindex="-1" id="notebook" class="border-box-sizing"&gt;
-    &lt;div class="container" id="notebook-container"&gt;
-
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster (Posts about netcdf)</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description></description><atom:link href="https://johnfoster.pge.utexas.edu/blog/categories/netcdf.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Thu, 14 Jan 2021 22:52:33 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Extracting Exodus information with netcdf-python</title><link>https://johnfoster.pge.utexas.edu/blog/posts/extracting-exodus-information-with-netcdf-python/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;In an &lt;a href="http://johntfoster.github.io/posts/using-exoduspy-to-extract-data-from-fea-database.html"&gt;earlier post&lt;/a&gt; I demonstrated how to use a set of &lt;a href="https://docs.python.org/2/library/ctypes.html"&gt;ctypes&lt;/a&gt; wrappers of Sandia's Exodus database format, i.e. the &lt;code&gt;exodus.py&lt;/code&gt; script that is distributed with &lt;a href="http://trilinos.org"&gt;Trilinos&lt;/a&gt;, to extract information from an Exodus database.  Exodus is a finite element format library that is build upon NetCDF4 and HDF5.  While the use of &lt;code&gt;exodus.py&lt;/code&gt; makes for a straightforward and intuitive interface to the database, it requires that Trilinos (at least the SEACAS packages) be installed as shared libraries with an &lt;code&gt;$ACCESS&lt;/code&gt; environment variable in your &lt;code&gt;$PATH&lt;/code&gt; pointing to the library root.  This setup is cumbersome if you don't have any other reason to have Trilinos installed.  Thankfully, since Exodus files are NetCDF files are HDF files, we can use other tools to access the data.  One of those, that is mature and available in the &lt;a href="https://pypi.python.org/pypi"&gt;Python Package Index&lt;/a&gt; is &lt;a href="https://github.com/Unidata/netcdf4-python"&gt;netcdf4-python&lt;/a&gt;.  It can easily be installed via &lt;code&gt;pip&lt;/code&gt; i.e.&lt;/p&gt;
 
@@ -13,7 +8,7 @@
 &lt;p&gt;or if your using the popular &lt;a href="https://store.continuum.io/cshop/anaconda/"&gt;Anaconda Python distribution&lt;/a&gt; then&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;conda install netcdf4&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;should do the trick.  This is all we need to have installed to read from an Exodus database.  The simple 2D finite element mesh I will be using in the following example can be downloaded &lt;a href="http://johntfoster.github.io/posts/extracting-exodus-information-with-netcdf-python/s_curve.g"&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;should do the trick.  This is all we need to have installed to read from an Exodus database.  The simple 2D finite element mesh I will be using in the following example can be downloaded &lt;a href="https://johnfoster.pge.utexas.edu/blog/posts/extracting-exodus-information-with-netcdf-python/s_curve.g"&gt;here&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;First we'll import the netCDF4 module and of course Numpy.&lt;/p&gt;
 
 &lt;/div&gt;
@@ -25,18 +20,16 @@
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
 &lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;netCDF4&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;/div&gt;
+    &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;To open the Exodus file for reading we use the following command.&lt;/p&gt;
 
@@ -51,15 +44,13 @@
 &lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;nc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;netCDF4&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Dataset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'../files/s_curve.g'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;/div&gt;
+    &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Here we are using a "Genesis" file which is a Exodus file used for finite element model &lt;em&gt;input&lt;/em&gt;.  It typically contains information about the nodal coordinates, mesh connectivity, nodesets for boundary condition application, etc.  A common source of creation for these forms of Exodus files is the mesh generation tool &lt;a href="https://cubit.sandia.gov/"&gt;Cubit&lt;/a&gt;.  We could access the &lt;em&gt;output&lt;/em&gt; variant of an Exodus file (i.e. a &lt;code&gt;*.e&lt;/code&gt; file) in the same manner.&lt;/p&gt;
 &lt;p&gt;Unless you take a lot of time carefully naming all your variables, nodesets, blocks, etc. during the creation of the database, the variables will be given default names which we can use to access that data.  The default names are intuitive enough so that with a little investigation of thier properties, you can usually figure out what they refer to.  To see all of the information of the database we can simply&lt;/p&gt;
@@ -72,10 +63,10 @@
 &lt;div class="prompt input_prompt"&gt;In [3]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
     &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;nc&lt;/span&gt;
+&lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="n"&gt;nc&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;/div&gt;
+    &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
@@ -84,7 +75,9 @@
 
 
 &lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
+
+    &lt;div class="prompt"&gt;&lt;/div&gt;
+
 
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;&amp;lt;type 'netCDF4._netCDF4.Dataset'&amp;gt;
@@ -95,7 +88,7 @@ root group (NETCDF3_64BIT data model, file format NETCDF3):
     file_size: 1
     title: cubit(/Users/john/Desktop/s_curve.g): 07/20/2015: 14:53:37
     dimensions(sizes): len_string(33), len_line(81), four(4), time_step(0), num_dim(3), num_nodes(468), num_elem(437), num_el_blk(1), num_qa_rec(1), num_node_sets(5), num_nod_ns1(21), num_nod_ns2(15), num_nod_ns3(17), num_nod_ns4(15), num_nod_ns5(17), num_el_in_blk1(437), num_nod_per_el1(4), num_att_in_blk1(1)
-    variables(dimensions): float64 time_whole(time_step), |S1 qa_records(num_qa_rec,four,len_string), |S1 coor_names(num_dim,len_string), |S1 eb_names(num_el_blk,len_string), int32 ns_status(num_node_sets), int32 ns_prop1(num_node_sets), |S1 ns_names(num_node_sets,len_string), int32 node_ns1(num_nod_ns1), float64 dist_fact_ns1(num_nod_ns1), int32 node_ns2(num_nod_ns2), float64 dist_fact_ns2(num_nod_ns2), int32 node_ns3(num_nod_ns3), float64 dist_fact_ns3(num_nod_ns3), int32 node_ns4(num_nod_ns4), float64 dist_fact_ns4(num_nod_ns4), int32 node_ns5(num_nod_ns5), float64 dist_fact_ns5(num_nod_ns5), int32 elem_map(num_elem), int32 eb_status(num_el_blk), int32 eb_prop1(num_el_blk), float64 attrib1(num_el_in_blk1,num_att_in_blk1), int32 connect1(num_el_in_blk1,num_nod_per_el1), float64 coordx(num_nodes), float64 coordy(num_nodes), float64 coordz(num_nodes)
+    variables(dimensions): float64 &lt;span class="ansi-underline"&gt;time_whole&lt;/span&gt;(time_step), |S1 &lt;span class="ansi-underline"&gt;qa_records&lt;/span&gt;(num_qa_rec,four,len_string), |S1 &lt;span class="ansi-underline"&gt;coor_names&lt;/span&gt;(num_dim,len_string), |S1 &lt;span class="ansi-underline"&gt;eb_names&lt;/span&gt;(num_el_blk,len_string), int32 &lt;span class="ansi-underline"&gt;ns_status&lt;/span&gt;(num_node_sets), int32 &lt;span class="ansi-underline"&gt;ns_prop1&lt;/span&gt;(num_node_sets), |S1 &lt;span class="ansi-underline"&gt;ns_names&lt;/span&gt;(num_node_sets,len_string), int32 &lt;span class="ansi-underline"&gt;node_ns1&lt;/span&gt;(num_nod_ns1), float64 &lt;span class="ansi-underline"&gt;dist_fact_ns1&lt;/span&gt;(num_nod_ns1), int32 &lt;span class="ansi-underline"&gt;node_ns2&lt;/span&gt;(num_nod_ns2), float64 &lt;span class="ansi-underline"&gt;dist_fact_ns2&lt;/span&gt;(num_nod_ns2), int32 &lt;span class="ansi-underline"&gt;node_ns3&lt;/span&gt;(num_nod_ns3), float64 &lt;span class="ansi-underline"&gt;dist_fact_ns3&lt;/span&gt;(num_nod_ns3), int32 &lt;span class="ansi-underline"&gt;node_ns4&lt;/span&gt;(num_nod_ns4), float64 &lt;span class="ansi-underline"&gt;dist_fact_ns4&lt;/span&gt;(num_nod_ns4), int32 &lt;span class="ansi-underline"&gt;node_ns5&lt;/span&gt;(num_nod_ns5), float64 &lt;span class="ansi-underline"&gt;dist_fact_ns5&lt;/span&gt;(num_nod_ns5), int32 &lt;span class="ansi-underline"&gt;elem_map&lt;/span&gt;(num_elem), int32 &lt;span class="ansi-underline"&gt;eb_status&lt;/span&gt;(num_el_blk), int32 &lt;span class="ansi-underline"&gt;eb_prop1&lt;/span&gt;(num_el_blk), float64 &lt;span class="ansi-underline"&gt;attrib1&lt;/span&gt;(num_el_in_blk1,num_att_in_blk1), int32 &lt;span class="ansi-underline"&gt;connect1&lt;/span&gt;(num_el_in_blk1,num_nod_per_el1), float64 &lt;span class="ansi-underline"&gt;coordx&lt;/span&gt;(num_nodes), float64 &lt;span class="ansi-underline"&gt;coordy&lt;/span&gt;(num_nodes), float64 &lt;span class="ansi-underline"&gt;coordz&lt;/span&gt;(num_nodes)
     groups: 
 
 &lt;/pre&gt;
@@ -106,10 +99,8 @@ root group (NETCDF3_64BIT data model, file format NETCDF3):
 &lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Or to get even more information about the variables&lt;/p&gt;
 
@@ -124,7 +115,7 @@ root group (NETCDF3_64BIT data model, file format NETCDF3):
 &lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;nc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;variables&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;/div&gt;
+    &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
@@ -133,7 +124,9 @@ root group (NETCDF3_64BIT data model, file format NETCDF3):
 
 
 &lt;div class="output_area"&gt;
-&lt;div class="prompt output_prompt"&gt;Out[4]:&lt;/div&gt;
+
+    &lt;div class="prompt output_prompt"&gt;Out[4]:&lt;/div&gt;
+
 
 
 
@@ -275,10 +268,8 @@ filling off
 &lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;I won't attempt to decipher all the information in the database as you can use the &lt;a href="http://prod.sandia.gov/techlib/access-control.cgi/1992/922137.pdf"&gt;Exodus API reference&lt;/a&gt; for that.  Below, I'll show a short example of how we might do something useful.  First we will extract the &lt;code&gt;X&lt;/code&gt; and &lt;code&gt;Y&lt;/code&gt; nodal coordinate locations from and the connectivity array.  The first 10 entries of the connectivity array are shown.&lt;/p&gt;
 
@@ -293,10 +284,10 @@ filling off
 &lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;variables&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'coordx'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="n"&gt;Y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;variables&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'coordy'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="n"&gt;connect&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;variables&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'connect1'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;connect&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="n"&gt;connect&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;/div&gt;
+    &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
@@ -305,7 +296,9 @@ filling off
 
 
 &lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
+
+    &lt;div class="prompt"&gt;&lt;/div&gt;
+
 
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;[[ 1  2  3  4]
@@ -326,10 +319,8 @@ filling off
 &lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Now we'll use the nodal locations and the connectivity array to plot a visualization of the mesh.  First, we upload the required libraries from matplotlib.&lt;/p&gt;
 
@@ -344,19 +335,17 @@ filling off
 &lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="k"&gt;matplotlib&lt;/span&gt; inline
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.patches&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Polygon&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.collections&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;PatchCollection&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;/div&gt;
+    &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Now we'll create an array that contains the $x,y$ nodal coordinate location pairs and extract, via Numpy fancy indexing, the coordinates for each quadralateral in the mesh creating polygons with them for visualization.&lt;/p&gt;
 
@@ -372,7 +361,7 @@ filling off
 
 &lt;span class="n"&gt;patches&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
 &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;coords&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;xy&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;connect&lt;/span&gt;&lt;span class="p"&gt;[:]&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt;
-    &lt;span class="n"&gt;quad&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Polygon&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;coords&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;quad&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Polygon&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;coords&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="n"&gt;patches&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;quad&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
 &lt;span class="n"&gt;fig&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ax&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;subplots&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
@@ -386,7 +375,7 @@ filling off
 &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;/div&gt;
+    &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
@@ -395,7 +384,9 @@ filling off
 
 
 &lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
+
+    &lt;div class="prompt"&gt;&lt;/div&gt;
+
 
 
 
@@ -409,10 +400,8 @@ filling off
 &lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;The colors have no meaning other than to give each element a random color.  Now we'll close the Exodus file, completing our analysis.&lt;/p&gt;
 
@@ -427,11 +416,8 @@ filling off
 &lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;nc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;/div&gt;
+    &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-</description><category>exodus</category><category>hdf5</category><category>netcdf</category><category>Numpy</category><category>Python</category><guid>http://johntfoster.github.io/posts/extracting-exodus-information-with-netcdf-python/</guid><pubDate>Mon, 20 Jul 2015 20:37:39 GMT</pubDate></item></channel></rss>
+&lt;/div&gt;&lt;/div&gt;</description><category>exodus</category><category>hdf5</category><category>netcdf</category><category>Numpy</category><category>Python</category><guid>https://johnfoster.pge.utexas.edu/blog/posts/extracting-exodus-information-with-netcdf-python/</guid><pubDate>Mon, 20 Jul 2015 20:37:39 GMT</pubDate></item></channel></rss>

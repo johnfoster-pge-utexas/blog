@@ -1,4 +1,4 @@
-Sitemap: http://johntfoster.github.io/sitemapindex.xml
+Sitemap: https://johnfoster.pge.utexas.edu/blog/sitemapindex.xml
 
 User-Agent: *
-Host: johntfoster.github.io
+Host: johnfoster.pge.utexas.edu

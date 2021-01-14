@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Managing a professional website with Nikola, LaTeX, Github and Travis CI | John T. Foster</title>
+<link href="../../assets/css/bitter.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/main.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<link rel="canonical" href="http://johntfoster.github.io/posts/managing-a-professional-website/">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+ tex2jax: {
+     inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+     displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
+ },
+ displayAlign: 'left', // Change this to 'center' to center equations.
+ "HTML-CSS": {
+     styles: {'.MathJax_Display': {"margin": 0}}
+ }
+});
+</script><!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><meta name="author" content="John T. Foster">
+<meta property="og:site_name" content="John T. Foster">
+<meta property="og:title" content="Managing a professional website with Nikola, LaTeX, Github and Travis ">
+<meta property="og:url" content="http://johntfoster.github.io/posts/managing-a-professional-website/">
+<meta property="og:description" content='As an academic, ensuring that others are aware of and can easily access recent research results, papers, and other professional communications is an important part of the "branding" we are tasked with'>
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2014-10-09T22:34:25-05:00">
+<meta property="article:tag" content="Github">
+<meta property="article:tag" content="LaTeX">
+<meta property="article:tag" content="Nikola">
+<meta property="article:tag" content="Travis CI">
+</head>
+<body>
+    <section class="social"><ul>
+<li><a href="../../index.html" title="Home"><i class="icon-home"></i></a></li>
+            <li><a href="http://johnfoster.pge.utexas.edu" title="About me"><i class="icon-user"></i></a></li>
+            <li><a href="https://github.com/johntfoster" title="My Github"><i class="icon-github"></i></a></li>
+            <li><a href="https://twitter.com/johntfoster" title="My Twitter"><i class="icon-twitter"></i></a></li>
+            <li><a href="../../archive.html" title="Archives"><i class="icon-folder-open-alt"></i></a></li>
+            <li><a href="../../categories/index.html" title="Tags"><i class="icon-tags"></i></a></li>
+            <li><a href="../../rss.xml" title="RSS"><i class="icon-rss"></i></a></li>
+
+        </ul></section><section class="page-content"><div class="content" rel="main">
+    <div class="post">
+        <h1 class="p-name entry-title" itemprop="headline name">Managing a professional website with Nikola, LaTeX, Github and Travis CI</h1>
+
+        <div class="meta">
+            <div class="authordate">
+                <time class="timeago" datetime="2014-10-09T22:34:25-05:00">2014-10-09 22:34</time>
+            
+                      |  
+        <a href="index.md" id="sourcelink">Source</a>
+
+            </div>
+                    <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="../../categories/github/" rel="tag">Github</a></li>
+           <li><a class="tag p-category" href="../../categories/latex/" rel="tag">LaTeX</a></li>
+           <li><a class="tag p-category" href="../../categories/nikola/" rel="tag">Nikola</a></li>
+           <li><a class="tag p-category" href="../../categories/travis-ci/" rel="tag">Travis CI</a></li>
+        </ul>
+</div>
+
+        </div>
+        <div class="body">
+            <div>
+<p>As an academic, ensuring that others are aware of and can easily access recent research results, papers, and other professional communications is an important part of the "branding" we are tasked with as quasi-<em>business managers</em> in running our research programs.  Most of us keep an up-to-date Curriculum Vita (CV) for purposes of annual performance reviews, proposal submissions, etc.  I maintain my own CV judiciously, updating it in near real-time after any new paper is published, talk is delivered, or award is given.  </p>
+<p>For several years, I have maintained my CV using the <a href="http://www.latex-project.org/">LaTeX</a> typesetting system.  I prefer the elegant typesetting of LaTeX, but mostly I prefer to keep my published papers stored in a <a href="http://www.bibtex.org/">BibTeX</a> database and use the citations not only in my CV, but also in journal articles, and other forms of communication.  Maintaining only one BibTeX database with all my papers reduces reproduction of work from paper-to-paper.  I also learned at some point that I could use the <code>htlatex</code> utility distributed with <a href="https://www.tug.org/texlive/">TeXLive</a> to convert my LaTeX CV into HTML for posting on the web.  </p>
+<p>I have recently designed a <a href="http://johnfoster.pge.utexas.edu">professional website</a> to introduce myself, advertise my research, and include professional information and resources, one of them being my <a href="http://johnfoster.pge.utexas.edu/cv/">CV</a>.  After being a <a href="http://www.wordpress.com">Wordpress</a> user for many years, for this website I switched to the great static blog/website generator <a href="http://getnikola.com/">Nikola</a>. I love the ability to edit plain text files in <a href="http://www.vim.org">Vim</a> using Markdown, ReST, or even a mix of Markdown, LaTeX, and HTML through <a href="http://johnmacfarlane.net/pandoc/">pandoc</a> integration.  The icing-on-the-cake is the ability to create blog posts with the nascent <a href="http://www.ipython.org">IPython Notebook</a>.  Nikola also has built-in support for deploying to <a href="https://pages.github.com/">GitHub Pages</a>, which while it's not difficult to home-roll a deployment scheme, this additional feature is nice for beginners using GitHub Pages.</p>
+<p>Because I update my CV much more frequently than I would need to update the website in general, and have for sometime utilized <code>git</code> as a version control tool, I decided to push the <a href="https://github.com/johntfoster/CV">CV repository</a> to <a href="https://github.com">GitHub</a> and see if I could devise a scheme to automate the workflow of keeping not only my CV up-to-date, but also regenerating my professional website automatically upon a <code>git push</code> to the CV repository.  I found this to be pretty straightforward with the help of <a href="https://travis-ci.org/">Travis CI</a>.  If your not familiar with Travis, it is a <em>continuous integration</em> system, typically used in software testing.  It integrates seamlessly with GitHub, such that upon any <code>git push</code> to GitHub, Travis will <code>pull</code> a current version of the repository and run a set of commands specified in a <code>travis.yml</code> file.  In summary, here is my workflow for keeping everything updated:</p>
+<ol>
+<li><a href="#editcv">Edit CV</a></li>
+<li><a href="#commit">Commit changes to local repository and push to GitHub</a></li>
+<li><a href="#builds">Travis builds CV in PDF and HTML versions</a></li>
+<li><a href="#push">Upon a successful build, Travis pushes new PDF and HTML versions to a branch on the CV repo</a></li>
+<li><a href="#trigger">Travis then triggers a rebuild of the professional website which is stored in it's own repo</a></li>
+<li><a href="#rebuilds">Travis then rebuilds the professional website with Nikola and includes the new HTML CV as a page</a></li>
+</ol>
+<p>I'll now walk through the key parts of each step of the workflow:</p>
+<h4>Edit CV</h4>
+<p><a name="editcv"></a></p>
+<p>I am assuming you have a LaTeX CV to edit or a template your working from.  Feel free to use <a href="https://github.com/johntfoster/CV">my own</a> and modify it in anyway you like to suit your own needs/preferences.  It's a good idea to ensure the CV builds locally first, I prefer to use <code>latexmk</code> for this.  The following <code>.latexmkrc</code> works for me both locally on Mac OS X as well as on the Linux Ubuntu machines that Travis CI utilizes.</p>
+<script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.latexmkrc?slice=0:3&amp;footer=minimal"></script><p>The <code>\\\def\\\ispdf{1}</code> part is because my <code>cv.tex</code> file has a definition statement in it that modifies the output slightly (regarding fonts) depending on whether you are requesting a PDF output or the HTML output.  The extra backslash characters are to escape correctly in the <code>bash</code> shell.  A default run of <code>latexmk</code> with this <code>.latexmkrc</code> file should create a PDF version of the CV.  While counter-intuitive, a run of <code>latexmk -pdf</code> will actually produce an HTML version of the CV, this is because the <code>pdflatex</code> command has actually been redefined to <code>htlatex</code> on the second line of the <code>.latexmkrc</code> file.  Even if the desire is to build an HTML version, <code>latexmk</code> must be run first to produce the correct cross-references and <code>.aux</code> file.</p>
+<h4>Commit changes to local repository and push to GitHub</h4>
+<p><a name="commit"></a></p>
+<p>There are so many great <code>git</code> and <a href="https://github.com">GitHub</a> resources out there, I'm going to assume you know or can find out about basic <code>git</code> usage.  There is one important think to note for the <em>first</em> commit to GitHub.  You may run into problems if there is not an alternate branch of the repository for Travis to push the build results to.  You can create a branch with the following command:</p>
+<pre class="code literal-block"><span></span>git checkout -b travis-build --orphan
+</pre>
+
+
+<p>This will create a new branch called <code>travis-build</code> with no history.  You should then remove all the files in this branch, commit, and push to GitHub</p>
+<pre class="code literal-block"><span></span>git rm -rf *
+git commit -m <span class="s2">"First commit to travis-build branch"</span>
+git push origin travis-build
+</pre>
+
+
+<p>assuming the default <code>origin</code> name for your GitHub repository.  Now switch back to your <code>master</code> branch, and push to GitHub, the <code>travis.yml</code> file in your repository (details covered below) will instruct Travis on how to build the repository</p>
+<pre class="code literal-block"><span></span>git checkout master
+git commit -am <span class="s2">"A commit message detailing changes"</span>
+git push origin master
+</pre>
+
+
+<h4>Travis builds CV in PDF and HTML versions</h4>
+<p><a name="builds"></a></p>
+<p>You will need to enable Travis CI for your repository.  After signing into Travis via your GitHub username, you can add any public GitHub repository for free continuous integration services.  You can add a repository by clicking on the <code>+</code> arrow in the left-hand panel of Travis as shown</p>
+<p><img src="../../files/add-repo.png"></p>
+<p>Then click the <code>ON</code> button to enable Travis.</p>
+<p><img src="../../files/enable-travis.png"></p>
+<p>Upon committing, Travis reads the <code>travis.yml</code> file in the repository and performs a set of actions.  In this case, we want to build a LaTeX file which there is not a preinstalled Travis Ubuntu instance for LaTeX so we need to use <code>apt-get</code> to install all of the LaTeX dependencies and proper fonts for building the CV. The other commands just some basic Travis configuration, full details for Travis configuration can be found <a href="http://docs.travis-ci.com/">here</a></p>
+<script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=0:16&amp;footer=minimal"></script><p>Once all of the dependencies are installed, Travis will build both the PDF and HTML versions of the CV with</p>
+<script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=17:19&amp;footer=minimal"></script><p>After a successful build, Travis will clone the previously created <code>travis-build</code> branch, copy the newly created PDF and HTML files into this branch, commit them, and push them back to GitHub.  This requires setting up a few environment variables, that can be added to the Travis project page.  The variables are <code>GIT_EMAIL</code>, <code>GIT_NAME</code>, <code>GH_TOKEN</code>, and <code>TRAVIS_TOKEN</code>.  The first two just correspond to basic <code>git</code> configuration and are really just used to store the information of the person who make the commit in the <code>git</code> history.  Since it's actually Travis making the commit, I just define the variables as</p>
+<pre class="code literal-block"><span></span><span class="n">GIT_NAME</span><span class="o">=</span><span class="ss">"Travis CI"</span><span class="w"></span>
+<span class="n">GIT_EMAIL</span><span class="o">=</span><span class="n">travis</span><span class="o">-</span><span class="n">ci</span><span class="nv">@travis</span><span class="p">.</span><span class="n">org</span><span class="w"></span>
+</pre>
+
+
+<p>The environment variables can be set on the Travis setting page as shown</p>
+<p><img src="../../files/settings.png"></p>
+<p>then click on the environment variables tab and select "Add a new variable"</p>
+<p><img src="../../files/env-variables.png"></p>
+<p>while on the settings page, it is also useful to select "Build only if .travis.yml is present" this will prevent Travis from automatically attempting to build on repository branches that do not have a <code>.travis.yml</code> file, as is the case with the <code>travis-build</code> branch we created earlier.  These environment variables are stored encrypted on the Travis servers.</p>
+<p><img src="../../files/build-only.png"></p>
+<p>The other two environment variables, <code>GH_TOKEN</code> and <code>TRAVIS_TOKEN</code> are more critical as they allow the Travis the proper credentials to commit back to Github and to issue a new build of the website for which the CV will be included. The get a GitHub token, go to your GitHub settings page, click on Applications on the left-hand panel and then "Generate new token", give the token a name and copy or write down the token somewhere safely.  </p>
+<p><img src="../../files/github-settings.png"></p>
+<p><strong>This will be the only time you can actually see the token</strong> so make sure you have it copied somewhere.  You can use the same token form multiple Travis jobs, but you have to know what it is and cannot reveal it again later.  Use this token to set the <code>GH_TOKEN</code> environment variable back on the Travis site.  Finally, you can get a <code>TRAVIS_TOKEN</code> through the Ruby <a href="http://blog.travis-ci.com/2013-01-14-new-client/">Travis command line interface</a>.  If you have Ruby installed you can install Travis like any Ruby <code>gem</code> with</p>
+<pre class="code literal-block"><span></span>gem install travis
+</pre>
+
+
+<p>Then you can find your Travis access token with </p>
+<pre class="code literal-block"><span></span>travis token
+</pre>
+
+
+<p>copy the result and add the final environment variable into your Travis settings page just like the others before.  </p>
+<h4>Upon a successful build, Travis pushes new PDF and HTML versions to a branch on the CV repo</h4>
+<p><a name="push"></a></p>
+<p>Now with the environment variables set, the last part of the <code>.travis.yml</code> file can be executed to publish the built PDF and HTML files to the <code>travis-build</code> branch.  </p>
+<script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=22:29&amp;footer=minimal"></script><p>This issues a <code>git commit</code> with a message that includes the current Travis build number via the default <code>${TRAVIS_BUILD_NUMBER}</code> environment variable. The <code>${GH_TOKEN}</code> environment variable establishes the ability to push back to <code>origin</code>, i.e. GitHub without an explicit login.</p>
+<h4>Travis then triggers a rebuild of the professional website which is stored in it's own repo</h4>
+<p><a name="trigger"></a></p>
+<p>The trigger is what occurs in the last two lines of the <code>.travis.yml</code> file.  First we have to install the Travis command line client on Travis via Ruby <code>gem</code>.  We are ensured that Ruby is installed by specifying <code>language: ruby</code> in the first line of <code>.travis.yml</code>.  Then we execute the trigger.  The entry following the <code>-r</code> option specifies the GitHub repository to trigger a Travis rebuild on, in this case <code>johnfoster-pge-utexas/johnfoster-pge-utexas.github.io</code>.</p>
+<script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=30:32&amp;footer=minimal"></script><p>This completes the process of automatically having Travis build the CV and publishing back to GitHub.  The complete <code>.travis.yml</code> file is now shown</p>
+<script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?footer=minimal"></script><p>Because of the need to install all of the large LaTeX dependencies into the Travis Ubuntu image before compiling, this whole process takes about 10 minute on Travis, a little long to just compile a simple LaTeX file, but if one needs a speedy deployment the steps can always be completed manually.  Hopefully, one day Travis will consider adding a LaTeX image to their pre-installed language images.  This would likely cut down the compile time to only a minute or two at most.</p>
+<h4>Travis then rebuilds the professional website with Nikola and includes the new HTML CV as a page</h4>
+<p><a name="rebuilds"></a></p>
+<p>As mentioned earlier, I recently moved to the static site generator <a href="http://getnikola.com">Nikola</a>.  After many years using <a href="http://www.wordpress.com">Wordpress</a>,  I got tired of unnecessary database configurations (unnecessary because I mostly just had static pages) and the inability to edit posts in plain text.  After a little searching, and having a preference for a static blog site that was extendable through my favorite programming language Python, I narrowed it down to <a href="http://docs.getpelican.com/">Pelican</a> and <a href="http://getnikola.com">Nikola</a>.  I experimented with each of them and decided on Nikola because I felt like the codebase was a little easier to understand in the case I would want to extend it in some way, and did not have the <a href="http://sphinx-doc.org/">Sphinx</a> dependence that Pelican has.  There are several good tutorials on Nikola use, so I will not address this here; however, one nice feature of Nikola is that is has the ability to use the nascent <a href="http://johnmacfarlane.net/pandoc/">pandoc</a> as a document compiler.  Pandoc's Markdown is a superset of standard markdown and is quite a bit more flexible than standard Markdown allowing you to mix standard Markdown, LaTeX math, and raw HTML markup.  Nikola doesn't require pandoc, but I would like the ability to use it, so we first need to install it as a dependency.  Pandoc is written in Haskell, so it would require several steps and a lengthy install, thankfully the guys at <a href="http://www.rstudio.com/">RStudio</a> have a set of compiled binaries that will work when installed into Travis, these are what the first few lines of <code>.travis.yml</code> in the <a href="https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/"><code>johnfoster-pge-utexas.github.io</code></a> repository are doing.</p>
+<script src="http://gist-it.sudarmuthu.com/https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/blob/master/.travis.yml?slice=0:9&amp;footer=minimal"></script><p>Nikola can be installed via <code>pip</code> in Python.  Because I also want to keep the option open to blog in IPython, there are also IPython and all the scientific Python stack dependencies that need to be installed.  To install all of these dependencies we use a <code>requirements.txt</code> file.</p>
+<script src="http://gist-it.sudarmuthu.com/https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/blob/master/.travis.yml?slice=11:13&amp;footer=minimal"></script><p>Then we can build the website</p>
+<script src="http://gist-it.sudarmuthu.com/https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/blob/master/.travis.yml?slice=13&amp;footer=minimal"></script><p>In order to get the PDF and HTML versions of the CV that was built and posted earlier to show as a page in this website, I use a ReStructured Text format document which Nikola can compile, using the raw html directive</p>
+<pre class="code literal-block"><span></span><span class="p">..</span> <span class="ow">raw</span><span class="p">::</span> html
+   <span class="nc">:url:</span> <span class="nf">https://raw.githubusercontent.com/johntfoster/CV/travis-build/cv.html</span>
+</pre>
+
+
+<p>which produces <a href="http://johnfoster.pge.utexas.edu/cv/">this page</a> when compiled by Nikola.</p>
+<p>The last part of the <code>.travis.yml</code> is very similar to what was described previously for the CV, only now we push to a branch <code>gh-pages</code> because  we actually want GitHub to serve the website.  Details on using GitHub pages can be found <a href="https://pages.github.com/">here</a>.  The entire <code>.travis.yml</code> file is shown below.</p>
+<script src="http://gist-it.sudarmuthu.com/https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/blob/master/.travis.yml?footer=minimal"></script><p>After this file is run successfully by Travis, the website will be served on GitHub.  My site can be seen <a href="http://johnfoster.pge.utexas.edu/">here</a>.  The entire process from pushing a change on the CV, to the professional website being completely rebuilt and updated usually takes around 10-15 minutes.  Again, if there were ever a need to have an instant update, there is always the option to push the changes by hand.  Please feel free to use any or all of the tips/code presented in your own workflow.</p>
+</div>
+        </div>
+                <ul class="pager hidden-print">
+<li class="next">
+                <a href="../discrete-error-and-convergence/" rel="next" title="Discrete error and convergence">Next post</a>
+            </li>
+        </ul>
+<div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="johntfoster",
+            disqus_url="http://johntfoster.github.io/posts/managing-a-professional-website/",
+        disqus_title="Managing a professional website with Nikola, LaTeX, Github and Travis CI",
+        disqus_identifier="cache/posts/managing-a-professional-website.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+    </div>
+                    <footer id="footer"><p>Contents © 2021         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
+            
+        </footer>
+</div>
+    </section><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+   ga('create', 'UA-25324596-7', 'auto');
+   ga('send', 'pageview');
+</script><script src="../../assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="../../assets/js/jquery.timeago.js" type="text/javascript"></script><script src="../../assets/js/mathjax.js" type="text/javascript"></script><script type="text/javascript">
+            $(function(){
+                $('.timeago').timeago();
+            });
+        </script>
+</body>
+</html>

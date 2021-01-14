@@ -94,13 +94,6 @@ TRANSLATIONS_PATTERN = "{path}.{lang}.{ext}"
 # Links for the sidebar / navigation bar.
 # You should provide a key-value pair for each used language.
 # (the same way you would do with a (translatable) setting.)
-NAVIGATION_LINKS = {
-    DEFAULT_LANG: (
-        ("/archive.html", "Archive"),
-        ("/categories/index.html", "Tags"),
-        ("/rss.xml", "RSS feed"),
-    ),
-}
 
 # Name of the theme to use.
 THEME = "zen-jinja"
@@ -729,7 +722,7 @@ FILE_METADATA_UNSLUGIFY_TITLES = True
 USE_BUNDLES = False
 
 # Plugins you don't want to use. Be careful :-)
-# DISABLED_PLUGINS = ["render_galleries"]
+DISABLED_PLUGINS = ["robots"]
 
 # Add the absolute paths to directories containing plugins to use them.
 # For example, the `plugins` directory of your clone of the Nikola plugins
@@ -773,13 +766,13 @@ LOGGING_HANDLERS = {
 
 NAVIGATION_LINKS = {
         DEFAULT_LANG: (
-            ('/index.html', 'Home', 'icon-home'),
-            ('http://johnfoster.pge.utexas.edu', 'About me', 'icon-user'),
-            ('https://github.com/johntfoster', 'My Github', 'icon-github'),
-            ('https://twitter.com/johntfoster', 'My Twitter', 'icon-twitter'),
-            ('/archive.html', 'Archives', 'icon-folder-open-alt'),
-            ('/categories/index.html', 'Tags', 'icon-tags'),
-            ('/rss.xml', 'RSS', 'icon-rss'),
+            ('/index.html', 'Home', 'fa fa-home'),
+            ('http://johnfoster.pge.utexas.edu', 'Professional Website', 'fa fa-user'),
+            ('https://github.com/johntfoster', 'My Github', 'fab fa-github'),
+            ('https://twitter.com/johntfoster', 'My Twitter', 'fab fa-twitter'),
+            ('/archive.html', 'Archives', 'fa fa-folder-open'),
+            ('/categories/index.html', 'Tags', 'fa fa-tags'),
+            ('/rss.xml', 'RSS', 'fa fa-rss'),
         )
 }
 

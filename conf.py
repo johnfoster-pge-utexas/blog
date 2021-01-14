@@ -29,6 +29,7 @@ BLOG_EMAIL = "johntfosterjr@gmail.com"
 BLOG_DESCRIPTION = "mechanics and the mechanics of coding"  # (translatable)
 GITHUB_DEPLOY_BRANCH = "master"
 GITHUB_SOURCE_BRANCH = "source"
+DATE_FANCINESS = 2
 
 # Nikola is multilingual!
 #
@@ -102,7 +103,7 @@ NAVIGATION_LINKS = {
 }
 
 # Name of the theme to use.
-THEME = "ut-zen-ipython"
+THEME = "zen-jinja"
 
 # Below this point, everything is optional
 

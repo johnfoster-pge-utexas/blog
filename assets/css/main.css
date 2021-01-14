@@ -236,15 +236,10 @@ section {
   margin: 0;
   padding: 0;
 }
-p {
-  text-align: justify;
-  margin-top: 0.5em !important;
-  margin-bottom: 0.5em !important;
-}
 .social {
   float: left;
   min-height: 100%;
-  background: #BF5700;
+  background: url('../images/blue-mocha-grunge.jpg') #192029;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -2085,19 +2080,19 @@ body {
   font-size: 16px;
   font-size: 15px;
   line-height: 24px;
-  color: #666E75;
+  color: #333333;
 }
 a {
-  color: #BF5700;
+  color: #0088cc;
   text-decoration: none;
 }
 a:hover,
 a:focus {
-  color: #BF5700;
+  color: #005580;
   text-decoration: underline;
 }
 .social a {
-  color: #D6D2C4;
+  color: #ffffff;
   line-height: 44.400000000000006px;
   -webkit-transition: text-shadow 0.5s;
   -moz-transition: text-shadow 0.5s;
@@ -2157,8 +2152,7 @@ a:focus {
   font-size: 26.25px;
 }
 .page-content {
-  font-family: "Open Sans", sans-serif;
-  /*font-family: "Bitter", "Georgia", "Times New Roman", serif;*/
+  font-family: "Bitter", "Georgia", "Times New Roman", serif;
 }
 .page-content > .content {
   text-rendering: optimizeLegibility;
@@ -2179,7 +2173,7 @@ a:focus {
   font-family: inherit;
   font-weight: bold;
   line-height: 24px;
-  color: #666E75 ;
+  color: #2e2e2e;
   text-rendering: optimizelegibility;
 }
 .page-content > .content h1 small,
@@ -2196,7 +2190,7 @@ a:focus {
 .page-content > .content .h6 small {
   font-weight: normal;
   line-height: 1;
-  color: #666E75;
+  color: #999999;
 }
 .page-content > .content h1,
 .page-content > .content .h1,
@@ -2373,8 +2367,7 @@ pre {
 }
 code {
   padding: 2px 4px;
-  /*background-color: #D6D2C4 !important;*/
-  background-color: #DDDDDD;
+  background-color: #f7f7f9;
   border: 1px solid #e1e1e8;
   white-space: nowrap;
 }
@@ -2450,7 +2443,7 @@ pre.code {
 }
 .post .meta {
   *zoom: 1;
-  color: #666E75;
+  color: #999999;
   margin-bottom: 12px;
   margin-top: -6px;
 }
@@ -2480,10 +2473,9 @@ pre.code {
   *margin-right: .3em;
   content: "\f017";
   margin-left: 5px;
-  color: #666E75;
 }
 .post .meta .authordate:hover {
-  color: #333F48;
+  color: #333333;
 }
 .post .meta .stats {
   float: right;
@@ -2584,5 +2576,4 @@ pre.code {
 }
 .post + .post {
   margin-top: 48px;
-
 }

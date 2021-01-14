@@ -1,76 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html prefix="
+        og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+    " vocab="http://ogp.me/ns" lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 <title>JAX implementation of FEA and efficient inverse problem solving with neural networks | John T. Foster</title>
-<link href="../../assets/css/bitter.css" rel="stylesheet" type="text/css">
-<link href="../../assets/css/main.css" rel="stylesheet" type="text/css">
-<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst_base.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_rst.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
-<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
 <link rel="canonical" href="https://johnfoster.pge.utexas.edu/blog/posts/jax-fea/">
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
- tex2jax: {
-     inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-     displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
- },
- displayAlign: 'left', // Change this to 'center' to center equations.
- "HTML-CSS": {
-     styles: {'.MathJax_Display': {"margin": 0}}
- }
-});
-</script><!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><meta name="author" content="John T. Foster">
+<!--[if lt IE 9]><script src="../../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><meta name="author" content="John T. Foster">
+<link rel="prev" href="../matlab-vs-python/" title="Matlab vs. Python -- A rebuttal" type="text/html">
 <meta property="og:site_name" content="John T. Foster">
 <meta property="og:title" content="JAX implementation of FEA and efficient inverse problem solving with n">
 <meta property="og:url" content="https://johnfoster.pge.utexas.edu/blog/posts/jax-fea/">
-<meta property="og:description" content="JAX implementation of FEA and efficient inverse problem solving with neural networks¶If you haven't heard by now JAX is getting a lot of attention online as a &quot;NumPy on steroids&quot;.  At it's core, it ca">
+<meta property="og:description" content="If you haven't heard by now JAX is getting a lot of attention online as a &quot;NumPy on steroids&quot;.  At it's core, it can be thought of as a drop-in replacement for NumPy where the array calculations can b">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2021-01-14T16:48:00-06:00">
+<meta property="article:published_time" content="2021-01-14T17:10:11-06:00">
+<meta property="article:tag" content="fea">
 <meta property="article:tag" content="jax">
 </head>
 <body>
+    <a href="#page-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    
     <section class="social"><ul>
-<li><a href="../../index.html" title="Home"><i class="icon-home"></i></a></li>
-            <li><a href="http://johnfoster.pge.utexas.edu" title="About me"><i class="icon-user"></i></a></li>
-            <li><a href="https://github.com/johntfoster" title="My Github"><i class="icon-github"></i></a></li>
-            <li><a href="https://twitter.com/johntfoster" title="My Twitter"><i class="icon-twitter"></i></a></li>
-            <li><a href="../../archive.html" title="Archives"><i class="icon-folder-open-alt"></i></a></li>
-            <li><a href="../../categories/index.html" title="Tags"><i class="icon-tags"></i></a></li>
-            <li><a href="../../rss.xml" title="RSS"><i class="icon-rss"></i></a></li>
+<li><a href="../../index.html" title="Home"><i class="fa fa-home"></i></a></li>
+            <li><a href="http://johnfoster.pge.utexas.edu" title="Professional Website"><i class="fa fa-user"></i></a></li>
+            <li><a href="https://github.com/johntfoster" title="My Github"><i class="fab fa-github"></i></a></li>
+            <li><a href="https://twitter.com/johntfoster" title="My Twitter"><i class="fab fa-twitter"></i></a></li>
+            <li><a href="../../archive.html" title="Archives"><i class="fa fa-folder-open"></i></a></li>
+            <li><a href="../../categories/index.html" title="Tags"><i class="fa fa-tags"></i></a></li>
+            <li><a href="../../rss.xml" title="RSS"><i class="fa fa-rss"></i></a></li>
+    
+    
 
         </ul></section><section class="page-content"><div class="content" rel="main">
-    <div class="post">
-        <h1 class="p-name entry-title" itemprop="headline name">JAX implementation of FEA and efficient inverse problem solving with neural networks</h1>
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">JAX implementation of FEA and efficient inverse problem solving with neural networks</a></h1>
 
-        <div class="meta">
-            <div class="authordate">
-                <time class="timeago" datetime="2021-01-14T16:48:00-06:00">2021-01-14 16:48</time>
+        <div class="metadata">
+            <p class="dateline"><a href="." rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2021-01-14T17:10:11-06:00" itemprop="datePublished" title="2021-01-14 17:10">2021-01-14 17:10</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                    John T. Foster
+            </span></p>
+                <p class="commentline"><i class="far fa-comment"></i>            <a href="#disqus_thread" data-disqus-identifier="cache/posts/jax-fea.html">Comments</a>
+
+
+                    </p>
+<p class="sourceline"><a href="index.ipynb" class="sourcelink"><i class="fa fa-file-code"></i> Source</a></p>
+
             
-                      |  
-        <a href="index.ipynb" id="sourcelink">Source</a>
-
-            </div>
-                    <div itemprop="keywords" class="tags">
-        <ul>
-        Tags : 
-           <li><a class="tag p-category" href="../../categories/jax/" rel="tag">jax</a></li>
+                <div class="tags">
+<h3 class="metadata-title">
+<i class="fa fa-tags"></i> Tags:</h3>
+        <ul itemprop="keywords" class="tags-ul">
+<li><a class="tag p-category" href="../../categories/fea/" rel="tag">fea</a></li>
+            <li><a class="tag p-category" href="../../categories/jax/" rel="tag">jax</a></li>
         </ul>
 </div>
 
         </div>
-        <div class="body">
-            <div>
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="JAX-implementation-of-FEA-and-efficient-inverse-problem-solving-with-neural-networks">JAX implementation of FEA and efficient inverse problem solving with neural networks<a class="anchor-link" href="#JAX-implementation-of-FEA-and-efficient-inverse-problem-solving-with-neural-networks">¶</a>
-</h2>
 <p>If you haven't heard by now <a href="https://jax.readthedocs.io/en/latest/index.html">JAX</a> is getting a lot of attention online as a "<a href="https://iaml.it/blog/jax-intro-english">NumPy on steroids</a>".  At it's core, it can be thought of as a drop-in replacement for <a href="https://numpy.org/">NumPy</a> where the array calculations can be accelerated on GPUs or TPUs when available.  This alone makes it worth looking at, especially if you have a lot of NumPy code that you would like to potentially speed up with GPU acceleration.  Currently, most of the <a href="https://jax.readthedocs.io/en/latest/jax.numpy.html">NumPy API is implemented</a> in one-to-one correspondence, as well of some of the most used functions in <a href="https://jax.readthedocs.io/en/latest/jax.scipy.html">SciPy</a>.</p>
 <p>The accelerated NumPy is just the beginning of the utility of JAX.  All of the JAX NumPy data structures can be used in combination with most pure Python code to create functions which can be automatically differentiated.  This includes computing the gradient of scalar functions, as well as Jacobian matrices of vector functions.  These operations can be composed to compute gradients-of-gradients, etc.  More information of the automatic differentiation capabilities are documented <a href="https://jax.readthedocs.io/en/latest/notebooks/autodiff_cookbook.html">here</a>.</p>
 <p>Additionally, there is a built-in <a href="https://jax.readthedocs.io/en/latest/notebooks/quickstart.html#Using-jit-to-speed-up-functions">just-in-time compiler</a> for compiling functions to be executed on CPUs/GPUs/TPUs, and support for <a href="https://jax.readthedocs.io/en/latest/notebooks/quickstart.html#Auto-vectorization-with-vmap">automatic vectorization</a>, i.e. functions written for scalar arguments can be easily mapped across arrays.  These can be used with the automatic differentiation functions previously mentioned.</p>
@@ -169,8 +174,8 @@ $$<p>$\kappa$ is the porous medium's permeability and $\mu$ is the fluid viscosi
         <span class="n">t2</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mf">3.0</span><span class="p">)</span>
         
         <span class="c1"># Because the points above are defined on the domain -1 &lt; x &lt; 1 and our</span>
-        <span class="c1"># elements are defined on arbitrary domains, we can use a change of variables</span>
-        <span class="c1"># to rescale the integration bounds</span>
+        <span class="c1"># elements are defined on arbitrary domains, we can use a change of </span>
+        <span class="c1"># variables to rescale the integration bounds</span>
         <span class="n">ξ1</span> <span class="o">=</span> <span class="p">((</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">nodes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">t1</span> <span class="o">+</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">nodes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span>
         <span class="n">ξ2</span> <span class="o">=</span> <span class="p">((</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">nodes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">t2</span> <span class="o">+</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">nodes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span>
         
@@ -178,14 +183,17 @@ $$<p>$\kappa$ is the porous medium's permeability and $\mu$ is the fluid viscosi
         <span class="n">𝜆ξ1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mobility</span><span class="p">(</span><span class="n">ξ1</span><span class="p">)</span>
         <span class="n">𝜆ξ2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mobility</span><span class="p">(</span><span class="n">ξ2</span><span class="p">)</span>
         
-        <span class="c1"># Since the derivatives of the shape functions are not dependent on ξ, we can</span>
-        <span class="c1"># create an array containing all of the element stiffness matrices at once</span>
-        <span class="n">dNdξ</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">nodes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])])</span>
-        <span class="c1"># Computes the matrix dN_i * dN_j for every element (each will be identical for</span>
-        <span class="c1"># equally spaced nodes)</span>
+        <span class="c1"># Since the derivatives of the shape functions are not dependent on ξ, </span>
+        <span class="c1"># we can # create an array containing all of the element stiffness </span>
+        <span class="c1"># matrices at once</span>
+        <span class="n">dNdξ</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span> 
+                          <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">nodes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])])</span>
+        <span class="c1"># Computes the matrix dN_i * dN_j for every element (each will be </span>
+        <span class="c1"># identical for equally spaced nodes)</span>
         <span class="n">ke_temp</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'i...,j...'</span><span class="p">,</span> <span class="n">dNdξ</span><span class="p">,</span> <span class="n">dNdξ</span><span class="p">)</span>
         
-        <span class="c1"># Now we perform the Gauss integration computing the integrand for each element</span>
+        <span class="c1"># Now we perform the Gauss integration computing the integrand for each </span>
+        <span class="c1"># element</span>
         <span class="n">temp</span> <span class="o">=</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">nodes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">𝜆ξ1</span> <span class="o">+</span> <span class="n">𝜆ξ2</span><span class="p">)</span>
         
         <span class="c1"># We have to add two axis so the broadcasting is performed correctly,</span>
@@ -258,7 +266,8 @@ $$<p>$\kappa$ is the porous medium's permeability and $\mu$ is the fluid viscosi
         <span class="n">K</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jacfwd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">residual</span><span class="p">)(</span><span class="n">p</span><span class="p">)</span>
             
         <span class="c1"># Compute the update direction </span>
-        <span class="n">Δp</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">gmres</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">K</span> <span class="o">@</span> <span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">residual</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+        <span class="n">Δp</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">gmres</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">K</span> <span class="o">@</span> <span class="n">x</span><span class="p">,</span> 
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">residual</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
         
         <span class="c1"># Update the unknowns and return </span>
         <span class="n">p</span> <span class="o">+=</span> <span class="n">Δp</span>
@@ -271,8 +280,8 @@ $$<p>$\kappa$ is the porous medium's permeability and $\mu$ is the fluid viscosi
         <span class="sd">""" Solve via Newton-Raphson iteration </span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
-<span class="sd">            tolerance (float): the tolerence at which the Newton-Raphson iteration</span>
-<span class="sd">                               stops</span>
+<span class="sd">            tolerance (float): the tolerence at which the Newton-Raphson </span>
+<span class="sd">                               iteration stops</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
 <span class="sd">            p (array-like): the converged solution to the residual equations</span>
@@ -284,8 +293,10 @@ $$<p>$\kappa$ is the porous medium's permeability and $\mu$ is the fluid viscosi
         <span class="c1"># Initial guess is linear between the boundary conditions</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__lbc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__rbc</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         
-        <span class="c1"># The Newton-Raphson loop, can be compiled and automatically differentiated </span>
-        <span class="n">p</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">tolerance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">newton_step</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+        <span class="c1"># The Newton-Raphson loop, can be compiled and automatically </span>
+        <span class="c1"># differentiated </span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">tolerance</span><span class="p">,</span> 
+                               <span class="bp">self</span><span class="o">.</span><span class="n">newton_step</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
 
         <span class="c1"># Return the solution</span>
         <span class="k">return</span> <span class="n">p</span>
@@ -316,7 +327,8 @@ $$
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">nodes</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">problem1</span> <span class="o">=</span> <span class="n">FEAProblem</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">mobility</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">+</span> <span class="mf">0.001</span><span class="p">,</span> <span class="n">left_bc</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">right_bc</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">problem1</span> <span class="o">=</span> <span class="n">FEAProblem</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">mobility</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">+</span> <span class="mf">0.001</span><span class="p">,</span> 
+                      <span class="n">left_bc</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">right_bc</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">p1</span> <span class="o">=</span> <span class="n">problem1</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-4</span><span class="p">)</span>
 </pre></div>
 
@@ -389,8 +401,8 @@ $$
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Inverse-problem-implementation">Inverse problem implementation<a class="anchor-link" href="#Inverse-problem-implementation">¶</a>
-</h2>
+<h3 id="Inverse-problem-implementation">Inverse problem implementation<a class="anchor-link" href="#Inverse-problem-implementation">¶</a>
+</h3>
 <p>Here we will write our inverse problem solver.  We will inherit from the <code>FEAProblem</code> class above so we can reuse some of the functions already defined.</p>
 <p>Our objective function here will be the $l_2$-norm of the finite element residual when the "known data" is supplied as training data.  Because the problem we are solving is a steady-state problem, we'll need to provide the endpoints of consitutive model to the objective function, otherwise there are infinite valid solutions to learning the constitutive model that only differ by a constant.  If we extended this technique to time-dependent problems, I believe the need to provide the boundary constraints can be avoided.</p>
 <p>We'll use a few functions from the <code>jax.experimental.stax</code> module, just to make the neural network construction easier.  Our minimizer here will use the second-order <code>"BFGS"</code> method from <code>jax.scipy.optimize.minimize</code>.</p>
@@ -428,10 +440,13 @@ $$
 <span class="sd">           neural network (nn).</span>
 <span class="sd">           </span>
 <span class="sd">        Args:</span>
-<span class="sd">            nodes (array-like): the spatial locations corresponding to the data points</span>
+<span class="sd">            nodes (array-like): the spatial locations corresponding to the </span>
+<span class="sd">                                data points</span>
 <span class="sd">            mobility (stax.nn): a stax neural network definition</span>
-<span class="sd">            mobility_left_bc (real): the left boundary value of the mobility function</span>
-<span class="sd">            mobility_right_bc (real): the right boundary value of the mobility function</span>
+<span class="sd">            mobility_left_bc (real): the left boundary value of the </span>
+<span class="sd">                                     mobility function</span>
+<span class="sd">            mobility_right_bc (real): the right boundary value of the </span>
+<span class="sd">                                      mobility function</span>
 <span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">mobility</span> <span class="o">=</span> <span class="n">mobility</span><span class="p">)</span>
         
@@ -454,7 +469,8 @@ $$
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
 <span class="sd">            u (array-like): the unknown parameters of the nn</span>
-<span class="sd">            data (array-like): the user supplied data (i.e. pressures) at the nodes</span>
+<span class="sd">            data (array-like): the user supplied data (i.e. pressures) </span>
+<span class="sd">                               at the nodes</span>
 <span class="sd">            </span>
 <span class="sd">        Returns:</span>
 <span class="sd">            (array-like): residual vector</span>
@@ -481,10 +497,12 @@ $$
 <span class="sd">           </span>
 <span class="sd">        Args:</span>
 <span class="sd">            u (array-like): the unknown parameters of the nn</span>
-<span class="sd">            data (array-like): the user supplied data (i.e. pressures) at the nodes</span>
+<span class="sd">            data (array-like): the user supplied data (i.e. pressures) at </span>
+<span class="sd">                               the nodes</span>
 <span class="sd">            </span>
 <span class="sd">        Returns:</span>
-<span class="sd">            (real): squared error of the FE residual and mobility function end points</span>
+<span class="sd">            (real): squared error of the FE residual and mobility function </span>
+<span class="sd">                    end points</span>
 <span class="sd">        """</span>
         
         <span class="c1"># Compute FE residual with supplied data</span>
@@ -497,7 +515,8 @@ $$
         <span class="n">mobility</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predict</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">net_params</span><span class="p">)</span>
         
         <span class="c1"># Compute squared error norm of mobility end points</span>
-        <span class="n">mobility_squared_error</span> <span class="o">=</span> <span class="p">(</span><span class="n">mobility</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__mlbc</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">mobility</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__mrbc</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">mobility_squared_error</span> <span class="o">=</span> <span class="p">((</span><span class="n">mobility</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__mlbc</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> 
+                                  <span class="p">(</span><span class="n">mobility</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__mrbc</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
         
         <span class="c1"># Return FE + mobility squared error</span>
         <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">residual</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">mobility_squared_error</span>
@@ -517,7 +536,8 @@ $$
         <span class="n">u0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_net_params_flat</span>
         
         <span class="c1"># minimize the loss function w.r.t. the uknown parameters of the nn</span>
-        <span class="n">u</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">u</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span>  <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">data</span><span class="p">,),</span> 
+        <span class="n">u</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">u</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span>  
+                                                            <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">data</span><span class="p">,),</span> 
                                                             <span class="n">method</span><span class="o">=</span><span class="s1">'BFGS'</span><span class="p">)</span><span class="o">.</span><span class="n">x</span><span class="p">)(</span><span class="n">u0</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
         
         <span class="c1"># assign the final nn params, such that we can use if for predicting </span>
@@ -527,8 +547,8 @@ $$
         
     <span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span>
     <span class="k">def</span> <span class="nf">_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-        <span class="sd">"""Used internal to the class only - evaluates the nn function at x with</span>
-<span class="sd">           the given parameters</span>
+        <span class="sd">"""Used internal to the class only - evaluates the nn function </span>
+<span class="sd">           at x with the given parameters</span>
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="n">vmap</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">net_apply</span><span class="p">,</span> <span class="n">params</span><span class="p">))(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
     
@@ -552,8 +572,8 @@ $$
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Solve-inverse-problem-using-NN">Solve inverse problem using NN<a class="anchor-link" href="#Solve-inverse-problem-using-NN">¶</a>
-</h2>
+<h3 id="Solve-inverse-problem-using-NN">Solve inverse problem using NN<a class="anchor-link" href="#Solve-inverse-problem-using-NN">¶</a>
+</h3>
 <p>Below we'll test out our inverse problem solver using the data generated earlier from the forward finite element solution.  First we define our neural network architecture.  This is a fairly simple function, so we don't need a large and/or complex nueral network.  Here we have an input layer with only 4 nodes and a $\tanh$ activation function feeding to a single node output.  More complicated architectures also work, yielding the same result at more computational cost.</p>
 <p>We also need to define the layer <code>Dense64</code> which is the same as <code>stax.Dense</code>, but initialized to use 64-bit floats to be consistant with our data structures in the FEA residual calculation.</p>
 
@@ -594,7 +614,8 @@ $$
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">iproblem1</span> <span class="o">=</span> <span class="n">InverseProblem</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">mobility</span> <span class="o">=</span> <span class="n">nn</span><span class="p">,</span> <span class="n">mobility_left_bc</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">,</span> <span class="n">mobility_right_bc</span> <span class="o">=</span> <span class="mf">1.001</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">iproblem1</span> <span class="o">=</span> <span class="n">InverseProblem</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">mobility</span> <span class="o">=</span> <span class="n">nn</span><span class="p">,</span> 
+                           <span class="n">mobility_left_bc</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">,</span> <span class="n">mobility_right_bc</span> <span class="o">=</span> <span class="mf">1.001</span><span class="p">)</span>
 <span class="n">iproblem1</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span>
 </pre></div>
 
@@ -657,8 +678,8 @@ $$
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Use-the-trained-NN-in-the-forward-problem-(verification)">Use the trained NN in the forward problem (verification)<a class="anchor-link" href="#Use-the-trained-NN-in-the-forward-problem-(verification)">¶</a>
-</h2>
+<h3 id="Use-the-trained-NN-in-the-forward-problem-(verification)">Use the trained NN in the forward problem (verification)<a class="anchor-link" href="#Use-the-trained-NN-in-the-forward-problem-(verification)">¶</a>
+</h3>
 </div>
 </div>
 </div>
@@ -677,7 +698,8 @@ $$
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">vproblem1</span> <span class="o">=</span> <span class="n">FEAProblem</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">mobility</span> <span class="o">=</span> <span class="n">iproblem1</span><span class="o">.</span><span class="n">predict</span><span class="p">,</span> <span class="n">left_bc</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">right_bc</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">vproblem1</span> <span class="o">=</span> <span class="n">FEAProblem</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">mobility</span> <span class="o">=</span> <span class="n">iproblem1</span><span class="o">.</span><span class="n">predict</span><span class="p">,</span> 
+                       <span class="n">left_bc</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">right_bc</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">v1</span> <span class="o">=</span> <span class="n">vproblem1</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$x$'</span><span class="p">)</span>
@@ -717,8 +739,8 @@ $$
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Validate-for-different-BCs">Validate for different BCs<a class="anchor-link" href="#Validate-for-different-BCs">¶</a>
-</h2>
+<h3 id="Validate-for-different-BCs">Validate for different BCs<a class="anchor-link" href="#Validate-for-different-BCs">¶</a>
+</h3>
 <p>A major advantage of this approach over say, physics-informed nueral networks, is that we have only "learned" the consitutive model, i.e. the mobility function, not the solution of the partial differential equation with the supplied bounadary conditions.  Instead, we rely on our finite element implementation to compute the solution.  Which means we can now use our "learned" constitutive model to solve problems with different boundary conditions accurately.</p>
 
 </div>
@@ -729,9 +751,11 @@ $$
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">problem2</span> <span class="o">=</span> <span class="n">FEAProblem</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">mobility</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">+</span> <span class="mf">0.001</span><span class="p">,</span> <span class="n">left_bc</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">right_bc</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">problem2</span> <span class="o">=</span> <span class="n">FEAProblem</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">mobility</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">+</span> <span class="mf">0.001</span><span class="p">,</span> 
+                      <span class="n">left_bc</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">right_bc</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 <span class="n">p2</span> <span class="o">=</span> <span class="n">problem2</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-4</span><span class="p">)</span>
-<span class="n">problem3</span> <span class="o">=</span> <span class="n">FEAProblem</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">mobility</span> <span class="o">=</span> <span class="n">iproblem1</span><span class="o">.</span><span class="n">predict</span><span class="p">,</span> <span class="n">left_bc</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">right_bc</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">problem3</span> <span class="o">=</span> <span class="n">FEAProblem</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">mobility</span> <span class="o">=</span> <span class="n">iproblem1</span><span class="o">.</span><span class="n">predict</span><span class="p">,</span> 
+                      <span class="n">left_bc</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">right_bc</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 <span class="n">p3</span> <span class="o">=</span> <span class="n">problem3</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-4</span><span class="p">)</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="s1">'k-'</span><span class="p">);</span>
@@ -769,8 +793,8 @@ $$
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="License">License<a class="anchor-link" href="#License">¶</a>
-</h2>
+<h3 id="License">License<a class="anchor-link" href="#License">¶</a>
+</h3>
 <p>Copyright 2021 John T. Foster</p>
 <p>Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -788,13 +812,13 @@ limitations under the License.</p>
 </div>
 </div>
 </div>
-        </div>
-                <ul class="pager hidden-print">
+    </div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
 <li class="previous">
                 <a href="../matlab-vs-python/" rel="prev" title="Matlab vs. Python -- A rebuttal">Previous post</a>
             </li>
-        </ul>
-<div id="disqus_thread"></div>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+                        <div id="disqus_thread"></div>
         <script>
         var disqus_shortname ="johntfoster",
             disqus_url="https://johnfoster.pge.utexas.edu/blog/posts/jax-fea/",
@@ -813,12 +837,31 @@ limitations under the License.</p>
     <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
-    </div>
-                    <footer id="footer"><p>Contents © 2021         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
+        </section><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+ tex2jax: {
+     inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+     displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
+ },
+ displayAlign: 'left', // Change this to 'center' to center equations.
+ "HTML-CSS": {
+     styles: {'.MathJax_Display': {"margin": 0}}
+ }
+});
+</script></article><script>var disqus_shortname="johntfoster";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2021         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
             
         </footer>
 </div>
-    </section><script>
+    </section><script src="../../assets/js/baguetteBox.min.js"></script><script src="../../assets/js/moment-with-locales.min.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(2, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script><script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -826,10 +869,6 @@ limitations under the License.</p>
 
    ga('create', 'UA-25324596-7', 'auto');
    ga('send', 'pageview');
-</script><script src="../../assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="../../assets/js/jquery.timeago.js" type="text/javascript"></script><script src="../../assets/js/mathjax.js" type="text/javascript"></script><script type="text/javascript">
-            $(function(){
-                $('.timeago').timeago();
-            });
-        </script>
+</script>
 </body>
 </html>

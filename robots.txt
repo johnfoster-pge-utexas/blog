@@ -1,4 +1,0 @@
-Sitemap: https://johnfoster.pge.utexas.edu/blog/sitemapindex.xml
-
-User-Agent: *
-Host: johnfoster.pge.utexas.edu

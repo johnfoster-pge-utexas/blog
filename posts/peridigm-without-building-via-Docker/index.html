@@ -1,29 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html prefix="
+        og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+    " vocab="http://ogp.me/ns" lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 <title>Run Peridigm (and other scientific HPC codes) without building via Docker | John T. Foster</title>
-<link href="../../assets/css/bitter.css" rel="stylesheet" type="text/css">
-<link href="../../assets/css/main.css" rel="stylesheet" type="text/css">
-<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst_base.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_rst.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
-<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
 <link rel="canonical" href="https://johnfoster.pge.utexas.edu/blog/posts/peridigm-without-building-via-Docker/">
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
- tex2jax: {
-     inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-     displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
- },
- displayAlign: 'left', // Change this to 'center' to center equations.
- "HTML-CSS": {
-     styles: {'.MathJax_Display': {"margin": 0}}
- }
-});
-</script><!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><meta name="author" content="John T. Foster">
+<!--[if lt IE 9]><script src="../../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><meta name="author" content="John T. Foster">
+<link rel="prev" href="../cockrell-school-beamer-template/" title="A LaTeX Beamer template/theme for the Cockrell School of Engineering" type="text/html">
+<link rel="next" href="../pythonnumpy-implementation-of-bspline-basis-functions/" title="Python/Numpy implementation of Bspline basis functions" type="text/html">
 <meta property="og:site_name" content="John T. Foster">
 <meta property="og:title" content="Run Peridigm (and other scientific HPC codes) without building via Doc">
 <meta property="og:url" content="https://johnfoster.pge.utexas.edu/blog/posts/peridigm-without-building-via-Docker/">
@@ -37,41 +35,49 @@ MathJax.Hub.Config({
 <meta property="article:tag" content="Trilinos">
 </head>
 <body>
+    <a href="#page-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    
     <section class="social"><ul>
-<li><a href="../../index.html" title="Home"><i class="icon-home"></i></a></li>
-            <li><a href="http://johnfoster.pge.utexas.edu" title="About me"><i class="icon-user"></i></a></li>
-            <li><a href="https://github.com/johntfoster" title="My Github"><i class="icon-github"></i></a></li>
-            <li><a href="https://twitter.com/johntfoster" title="My Twitter"><i class="icon-twitter"></i></a></li>
-            <li><a href="../../archive.html" title="Archives"><i class="icon-folder-open-alt"></i></a></li>
-            <li><a href="../../categories/index.html" title="Tags"><i class="icon-tags"></i></a></li>
-            <li><a href="../../rss.xml" title="RSS"><i class="icon-rss"></i></a></li>
+<li><a href="../../index.html" title="Home"><i class="fa fa-home"></i></a></li>
+            <li><a href="http://johnfoster.pge.utexas.edu" title="Professional Website"><i class="fa fa-user"></i></a></li>
+            <li><a href="https://github.com/johntfoster" title="My Github"><i class="fab fa-github"></i></a></li>
+            <li><a href="https://twitter.com/johntfoster" title="My Twitter"><i class="fab fa-twitter"></i></a></li>
+            <li><a href="../../archive.html" title="Archives"><i class="fa fa-folder-open"></i></a></li>
+            <li><a href="../../categories/index.html" title="Tags"><i class="fa fa-tags"></i></a></li>
+            <li><a href="../../rss.xml" title="RSS"><i class="fa fa-rss"></i></a></li>
+    
+    
 
         </ul></section><section class="page-content"><div class="content" rel="main">
-    <div class="post">
-        <h1 class="p-name entry-title" itemprop="headline name">Run Peridigm (and other scientific HPC codes) without building via Docker</h1>
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Run Peridigm (and other scientific HPC codes) without building via Docker</a></h1>
 
-        <div class="meta">
-            <div class="authordate">
-                <time class="timeago" datetime="2015-04-22T10:44:25-05:00">2015-04-22 10:44</time>
+        <div class="metadata">
+            <p class="dateline"><a href="." rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2015-04-22T10:44:25-05:00" itemprop="datePublished" title="2015-04-22 10:44">2015-04-22 10:44</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                    John T. Foster
+            </span></p>
+                <p class="commentline"><i class="far fa-comment"></i>            <a href="#disqus_thread" data-disqus-identifier="cache/posts/peridigm-witout-building-trilinos-with-docker.html">Comments</a>
+
+
+                    </p>
+<p class="sourceline"><a href="index.md" class="sourcelink"><i class="fa fa-file-code"></i> Source</a></p>
+
             
-                      |  
-        <a href="index.md" id="sourcelink">Source</a>
-
-            </div>
-                    <div itemprop="keywords" class="tags">
-        <ul>
-        Tags : 
-           <li><a class="tag p-category" href="../../categories/docker/" rel="tag">Docker</a></li>
-           <li><a class="tag p-category" href="../../categories/hpc/" rel="tag">HPC</a></li>
-           <li><a class="tag p-category" href="../../categories/mpi/" rel="tag">MPI</a></li>
-           <li><a class="tag p-category" href="../../categories/peridigm/" rel="tag">Peridigm</a></li>
-           <li><a class="tag p-category" href="../../categories/trilinos/" rel="tag">Trilinos</a></li>
+                <div class="tags">
+<h3 class="metadata-title">
+<i class="fa fa-tags"></i> Tags:</h3>
+        <ul itemprop="keywords" class="tags-ul">
+<li><a class="tag p-category" href="../../categories/docker/" rel="tag">Docker</a></li>
+            <li><a class="tag p-category" href="../../categories/hpc/" rel="tag">HPC</a></li>
+            <li><a class="tag p-category" href="../../categories/mpi/" rel="tag">MPI</a></li>
+            <li><a class="tag p-category" href="../../categories/peridigm/" rel="tag">Peridigm</a></li>
+            <li><a class="tag p-category" href="../../categories/trilinos/" rel="tag">Trilinos</a></li>
         </ul>
 </div>
 
         </div>
-        <div class="body">
-            <div>
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
 <p>If your a software engineer working in web development or cloud software deployment, you would have had to have your head in the sand for the last two years to have not heard of <a href="http://www.docker.com">Docker</a> by now.  Briefly, Docker is a light-weight application container deployment service (think super low-overhead virtual machine, usually meant to contain one application and its dependencies), based on Linux containers.  While there are <a href="https://www.google.com/search?q=docker&amp;oq=docker++&amp;aqs=chrome..69i57j69i60l2j0l3.2551j1j9&amp;sourceid=chrome&amp;es_sm=119&amp;ie=UTF-8">100s of articles</a> describing Docker, its uses, many services, and even companies springing up around it; my colleagues in the scientific computing/high-performance computing (HPC) world are either not aware of Docker or don't see the utility, because it's hard to find significant information for or uses of Docker in this field.  This post will hopefully demonstrate some of the utility of the service and promote its use in HPC and in academic settings.  Additionally, as a contributor to the open-source software <a href="http://peridigm.sandia.gov">Peridigm</a>, my hope it that the path demonstrated here might lower the courage required to try out the software and promote new users.</p>
 <p>To provide some background/context for my own interest in Docker, in my current role as an academic advisor to graduate students and in my previous career as a researcher at Sandia National Laboratories I have often been a user and/or developer of scientific software that has a fairly complex dependent application stack. To use <em>Peridigm</em>, a massively parallel computational peridynamic mechanics simulation code, as an example, we have a large dependency on <a href="http://trilinos.org">Trilinos</a>.  The packages we use from Trilinos have additional dependencies on a message passing interface (MPI) implementation (e.g. <a href="http://www.open-mpi.org">OpenMPI</a>), <a href="http://www.boost.org">Boost</a>, and <a href="http://www.unidata.ucar.edu/software/netcdf/">NetCDF</a>.  NetCDF has a dependency on <a href="https://hdfgroup.org/HDF5/">HDF5</a>, HDF5 on <a href="http://www.zlib.net/">zlib</a>, etc.  All of these need a C/C++ compiler for building, of course, and if we are using the Intel compilers we might as well go ahead and use <a href="https://software.intel.com/en-us/intel-mkl">MKL</a> libraries for efficiency.  Trilinos uses <a href="http://www.cmake.org">CMake</a> as a build system, so we need that around as well, at least during the build process. I'm sure there are others I am not thinking of at this moment.  Figuring out and understanding these dependencies and learning to debug build issues can take a really long time for a budding computational scientist to master.  Problems can be really compounded in a large multi-user HPC cluster where many different versions of compilers and libraries are present.  Using UNIX <a href="http://modules.sourceforge.net/">modules</a> goes a long way towards keeping things straight, but problems still arise that can be time consuming to troubleshoot.  I usually have new graduate students go through the process of building <em>Peridigm</em> and all the dependencies for their own learning experience when they first join my group, in every case they struggle considerably the first few times the have to build the entire suite of software on a new machine.  In some cases, particularly with MS level students, it can be a serious impediment to progress, as they are very short time lines to make meaningful research progress, and oftentimes they are only going to be end-users of the code, not developers.  Almost certainly they are not going to make changes to any of the packages in Trilinos or any of the other dependencies outside of <em>Peridigm</em>.  Enter Docker.</p>
 <p>Docker allows for the ability to run applications in prebuilt containers on any Linux machine with Docker installed (or even Mac OS X and Windows via <a href="http://boot2docker.io/">Boot2Docker</a>).  If your Linux distribution doesn't already have it installed, just use your package manager (e.g. <code>apt-get install docker</code> on Debian/Ubuntu based machines and <code>yum install docker</code> on Fedora/Redhat based machines).  Docker is so ubiquitous at this point there are even entire Linux distributions like <a href="https://coreos.com/">CoreOS</a> being built specifically to maximize its strengths.  Additionally, there is the <a href="https://registry.hub.docker.com/">Docker Hub Registry</a> which provides <a href="http://github.com">Github</a> like <code>push/pull</code> operations and cloud storage of prebuilt images.  Of course, you or your organization can host your own Docker image registry as well (note: think of a <em>Docker image</em> like a C++ class, and a <em>Docker container</em> as a C++ object, or an <em>instance</em> of the image that runs).  You can derive images from one another and this is what I have done in setting up an image of <em>Peridigm</em>.  First, I have an image that starts with a baseline Debian based Linux and installs NetCDF and its dependencies.  I have two tagged versions, a standard NetCDF build and a <em>largefiles</em> patched version which makes the <a href="https://peridigm.sandia.gov/content/netcdf">large file modifications</a> as suggested in the <em>Peridigm</em> build documentation. The NetCDF largefile image can be pulled to a Docker users local machine from my public Docker Hub Registry with</p>
@@ -143,16 +149,16 @@ docker rm -v peridigm0 peridigm1
 <p>please consult the documentation of the script for more info about the options using <code>./pdrun -h</code>.  There are really only a few detials in between what I've done here and being able to deploy this on a production HPC cluster.  The main difference would be that you would use a resource manager, e.g. <a href="http://slurm.schedmd.com/">SLURM</a> to schedule running the Docker containers.  You would also want to have both your mounted volume and a copy of the Docker image on a shared filesystem across all nodes of the cluster.  Did I mention you can <a href="https://docs.Docker.com/registry/deploying/">deploy your own private registry server?</a></p>
 <p>The last point I would like to make about Docker is that, while I demonstrated that end users can benefit by eliminating the entire build process and move right to running the simulation code, also developers could greatly benefit from using a common development image and requiring only support for the Docker image, as it can be quickly deployed and tested against all platforms.  How many times have your heard, even from experienced developers, after a commit fails in continuous integration, "It worked on my machine...".  Docker offers a solution to those problems and many others.</p>
 </div>
-        </div>
-                <ul class="pager hidden-print">
+    </div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
 <li class="previous">
                 <a href="../cockrell-school-beamer-template/" rel="prev" title="A LaTeX Beamer template/theme for the Cockrell School of Engineering">Previous post</a>
             </li>
             <li class="next">
                 <a href="../pythonnumpy-implementation-of-bspline-basis-functions/" rel="next" title="Python/Numpy implementation of Bspline basis functions">Next post</a>
             </li>
-        </ul>
-<div id="disqus_thread"></div>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+                        <div id="disqus_thread"></div>
         <script>
         var disqus_shortname ="johntfoster",
             disqus_url="https://johnfoster.pge.utexas.edu/blog/posts/peridigm-without-building-via-Docker/",
@@ -171,12 +177,20 @@ docker rm -v peridigm0 peridigm1
     <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
-    </div>
-                    <footer id="footer"><p>Contents © 2021         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
+        </section></article><script>var disqus_shortname="johntfoster";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2021         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
             
         </footer>
 </div>
-    </section><script>
+    </section><script src="../../assets/js/baguetteBox.min.js"></script><script src="../../assets/js/moment-with-locales.min.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(2, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script><script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -184,10 +198,6 @@ docker rm -v peridigm0 peridigm1
 
    ga('create', 'UA-25324596-7', 'auto');
    ga('send', 'pageview');
-</script><script src="../../assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="../../assets/js/jquery.timeago.js" type="text/javascript"></script><script src="../../assets/js/mathjax.js" type="text/javascript"></script><script type="text/javascript">
-            $(function(){
-                $('.timeago').timeago();
-            });
-        </script>
+</script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Fri, 15 Jan 2021 23:41:24 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>JAX implementation of FEA and efficient inverse problem solving with neural networks</title><link>https://johnfoster.pge.utexas.edu/blog/posts/jax-fea/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Fri, 15 Jan 2021 23:42:42 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>JAX implementation of FEA and efficient inverse problem solving with neural networks</title><link>https://johnfoster.pge.utexas.edu/blog/posts/jax-fea/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;If you haven't heard by now &lt;a href="https://jax.readthedocs.io/en/latest/index.html"&gt;JAX&lt;/a&gt; is getting a lot of attention online as a "&lt;a href="https://iaml.it/blog/jax-intro-english"&gt;NumPy on steroids&lt;/a&gt;".  At it's core, it can be thought of as a drop-in replacement for &lt;a href="https://numpy.org/"&gt;NumPy&lt;/a&gt; where the array calculations can be accelerated on GPUs or TPUs when available.  This alone makes it worth looking at, especially if you have a lot of NumPy code that you would like to potentially speed up with GPU acceleration.  Currently, most of the &lt;a href="https://jax.readthedocs.io/en/latest/jax.numpy.html"&gt;NumPy API is implemented&lt;/a&gt; in one-to-one correspondence, as well of some of the most used functions in &lt;a href="https://jax.readthedocs.io/en/latest/jax.scipy.html"&gt;SciPy&lt;/a&gt;.&lt;/p&gt;
@@ -700,7 +700,7 @@ limitations under the License.&lt;/p&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/div&gt;</description><category>fea</category><category>jax</category><guid>https://johnfoster.pge.utexas.edu/blog/posts/jax-fea/</guid><pubDate>Thu, 14 Jan 2021 23:10:11 GMT</pubDate></item><item><title>Matlab vs. Python -- A rebuttal</title><link>https://johnfoster.pge.utexas.edu/blog/posts/matlab-vs-python/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>automatic differentiation</category><category>fea</category><category>jax</category><category>jit</category><guid>https://johnfoster.pge.utexas.edu/blog/posts/jax-fea/</guid><pubDate>Thu, 14 Jan 2021 23:10:11 GMT</pubDate></item><item><title>Matlab vs. Python -- A rebuttal</title><link>https://johnfoster.pge.utexas.edu/blog/posts/matlab-vs-python/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;&lt;strong&gt;UPDATE 8/12/2019:&lt;/strong&gt; Mathworks removed the original post this blog was meant to address around the time I completed writing it.  However, there may be other useful tips contained in the notebook, so I am posting it anyway.  The hyperlink to the original post below has been replaced on the Mathworks website with links to Python/Matlab interoperability features.&lt;/p&gt;
@@ -1279,9 +1279,9 @@ limitations under the License.&lt;/p&gt;
 
  
  
-&lt;div id="420f9c47-9b5c-4cad-8dc8-3d4c1a09c7cd" class="output_subarea output_widget_view "&gt;
+&lt;div id="688d53ce-a2de-4734-be89-ae7a7330af65" class="output_subarea output_widget_view "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#420f9c47-9b5c-4cad-8dc8-3d4c1a09c7cd');
+var element = $('#688d53ce-a2de-4734-be89-ae7a7330af65');
 &lt;/script&gt;
 &lt;script type="application/vnd.jupyter.widget-view+json"&gt;
 {"model_id": "6d64da96f6a94f49aa47edfc01811375", "version_major": 2, "version_minor": 0}
@@ -1466,9 +1466,9 @@ var element = $('#420f9c47-9b5c-4cad-8dc8-3d4c1a09c7cd');
 
 
 
-&lt;div id="8836c367-010b-460f-b6cd-a5dc3d477f63" class="output_subarea output_javascript "&gt;
+&lt;div id="d6dc549b-cfec-439b-b170-b1b796add204" class="output_subarea output_javascript "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#8836c367-010b-460f-b6cd-a5dc3d477f63');
+var element = $('#d6dc549b-cfec-439b-b170-b1b796add204');
 
 (function(root) {
   function now() {
@@ -2661,9 +2661,9 @@ var element = $('#8836c367-010b-460f-b6cd-a5dc3d477f63');
 
 
 
-&lt;div id="b58faa4e-670d-45e6-9df9-b01b14f52e11" class="output_subarea output_javascript "&gt;
+&lt;div id="512931a9-3c69-4fc9-bd11-39dc3390b191" class="output_subarea output_javascript "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#b58faa4e-670d-45e6-9df9-b01b14f52e11');
+var element = $('#512931a9-3c69-4fc9-bd11-39dc3390b191');
 
 if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
    if ((window.HoloViews === undefined) || (window.HoloViews instanceof HTMLElement)) {

@@ -71,7 +71,7 @@ $$
 \rho c \frac{\partial p}{\partial t} = \frac{\partial}{\partial x}\left(\frac{\kappa}{\mu} \frac{\partial p}{\partial x}\right)
 $$<p>Assuming steady state, multiplying by a test function $\delta p$ on the left and integrating by parts over the domain $(0, L)$ we have</p>
 \begin{align}
-0 =&amp; \int_0^L \lambda(x) \frac{\partial \left(\delta p\right)}{\partial x} \frac{\partial p}{\partial x} \textrm{d}x - \left[ \lambda(x)  \frac{\partial p}{\partial x} \right]_0^L \\
+0 =&amp; \int_0^L \lambda(x) \frac{\partial \left(\delta p\right)}{\partial x} \frac{\partial p}{\partial x} \textrm{d}x - \left[ \lambda(x) \delta p \frac{\partial p}{\partial x} \right]_0^L \\
   =&amp; \int_0^L \lambda(x) \frac{\partial \left(\delta p\right)}{\partial x} \frac{\partial p}{\partial x} \textrm{d}x - \left[ q \right]_0^L
 \end{align}<p>where</p>
 $$
@@ -1329,7 +1329,7 @@ limitations under the License.</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>An equivalent expression in MATLAB requires the use of a period (.) in front of the multiplication operator.</p>
-<div class="highlight"><pre><span></span><span class="n">c</span> <span class="p">=</span> <span class="n">a</span> <span class="o">.*</span> <span class="n">b</span>
+<div class="highlight"><pre><span></span><span class="n">c</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">.*</span><span class="w"> </span><span class="n">b</span><span class="w"></span>
 </pre></div>
 <p>This syntax can become unsightly in long expressions.</p>
 
@@ -1416,9 +1416,9 @@ limitations under the License.</p>
 
  
  
-<div id="688d53ce-a2de-4734-be89-ae7a7330af65" class="output_subarea output_widget_view ">
+<div id="86f5dfd6-59ca-4216-b7a7-9938d423730c" class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#688d53ce-a2de-4734-be89-ae7a7330af65');
+var element = $('#86f5dfd6-59ca-4216-b7a7-9938d423730c');
 </script><script type="application/vnd.jupyter.widget-view+json">
 {"model_id": "6d64da96f6a94f49aa47edfc01811375", "version_major": 2, "version_minor": 0}
 </script>
@@ -1617,9 +1617,9 @@ var element = $('#688d53ce-a2de-4734-be89-ae7a7330af65');
 
 
 
-<div id="d6dc549b-cfec-439b-b170-b1b796add204" class="output_subarea output_javascript ">
+<div id="a9b2a43b-1d68-4480-af7a-678f9f2adfb7" class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#d6dc549b-cfec-439b-b170-b1b796add204');
+var element = $('#a9b2a43b-1d68-4480-af7a-678f9f2adfb7');
 
 (function(root) {
   function now() {
@@ -2812,9 +2812,9 @@ var element = $('#d6dc549b-cfec-439b-b170-b1b796add204');
 
 
 
-<div id="512931a9-3c69-4fc9-bd11-39dc3390b191" class="output_subarea output_javascript ">
+<div id="8f2c83f9-9c80-42f2-930c-f003c83fef9f" class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#512931a9-3c69-4fc9-bd11-39dc3390b191');
+var element = $('#8f2c83f9-9c80-42f2-930c-f003c83fef9f');
 
 if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
    if ((window.HoloViews === undefined) || (window.HoloViews instanceof HTMLElement)) {
@@ -3958,23 +3958,23 @@ if ((comm_msg != null) && (Object.keys(comm_msg.content).length > 0)) {
     <div>
 <p>I've been debugging a C++ library that I wrote and am calling from Python via a <a href="https://cffi.readthedocs.org/en/latest/">CFFI</a> interface.  After an hour or two of debugging with print-statements without resolution, I decided to figure out how to use a proper debugger. I'm very comfortable on the command-line and have used <code>gdb</code> in this way often in the past, so am happy I found an easy solution.  The instructions that follow should work for any C/C++ library built with debug flags enabled (i.e. the <code>-g</code> compiler flag) that is called from Python.  While I am using CFFI, it should also work for <a href="https://docs.python.org/2/library/ctypes.html">ctypes</a> or <a href="http://www.swig.org/">SWIG</a> interfaces.  Also the commands below are specific to the <code>lldb</code> debugger, but could be easily translated to <code>gdb</code>.</p>
 <p>First, in two separate terminal windows, launch <code>ipython</code> and <code>lldb</code>.  At the IPython prompt, type:</p>
-<pre class="code literal-block"><span></span><code><span class="err">In [1]: !ps aux | grep -i ipython</span>
+<pre class="code literal-block"><span></span><code>In [1]: !ps aux | grep -i ipython
 </code></pre>
 
 <p>and look for the process ID (pid) of the IPython session.  Let's assume the process ID in our case is <code>1234</code>.  Go to the <code>lldb</code> command prompt and attach to the IPython session with</p>
-<pre class="code literal-block"><span></span><code><span class="err">(lldb) attach --pid 1234</span>
+<pre class="code literal-block"><span></span><code>(lldb) attach --pid 1234
 </code></pre>
 
 <p>followed by</p>
-<pre class="code literal-block"><span></span><code><span class="err">(lldb) continue</span>
+<pre class="code literal-block"><span></span><code><span class="ss">(</span><span class="nv">lldb</span><span class="ss">)</span> <span class="k">continue</span>
 </code></pre>
 
 <p>to release the process.  Now your ready to set breakpoints, etc.  For example, to set a breakpoint on line 400 of a <code>myfile.cpp</code> we would type</p>
-<pre class="code literal-block"><span></span><code><span class="err">(lldb) breakpoint set -f myfile.cpp -l 400</span>
+<pre class="code literal-block"><span></span><code>(lldb) breakpoint set -f myfile.cpp -l 400
 </code></pre>
 
 <p>Assuming <code>myfile.cpp</code> is compiled into a library that is called by the Python script/module <code>myscript.py</code>, we can now run the Python code in the IPython terminal</p>
-<pre class="code literal-block"><span></span><code><span class="err">In [2]: run myscript.py</span>
+<pre class="code literal-block"><span></span><code>In [2]: run myscript.py
 </code></pre>
 
 <p>Back in the <code>lldb</code> terminal we should see our code stopped on line 400.  Debug away...</p>

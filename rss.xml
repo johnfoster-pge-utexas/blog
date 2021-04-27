@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 02 Mar 2021 13:58:53 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>JAX implementation of FEA and efficient inverse problem solving with neural networks</title><link>https://johnfoster.pge.utexas.edu/blog/posts/jax-fea/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 27 Apr 2021 22:59:57 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>JAX implementation of FEA and efficient inverse problem solving with neural networks</title><link>https://johnfoster.pge.utexas.edu/blog/posts/jax-fea/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;If you haven't heard by now &lt;a href="https://jax.readthedocs.io/en/latest/index.html"&gt;JAX&lt;/a&gt; is getting a lot of attention online as a "&lt;a href="https://iaml.it/blog/jax-intro-english"&gt;NumPy on steroids&lt;/a&gt;".  At it's core, it can be thought of as a drop-in replacement for &lt;a href="https://numpy.org/"&gt;NumPy&lt;/a&gt; where the array calculations can be accelerated on GPUs or TPUs when available.  This alone makes it worth looking at, especially if you have a lot of NumPy code that you would like to potentially speed up with GPU acceleration.  Currently, most of the &lt;a href="https://jax.readthedocs.io/en/latest/jax.numpy.html"&gt;NumPy API is implemented&lt;/a&gt; in one-to-one correspondence, as well of some of the most used functions in &lt;a href="https://jax.readthedocs.io/en/latest/jax.scipy.html"&gt;SciPy&lt;/a&gt;.&lt;/p&gt;
@@ -1279,9 +1279,9 @@ limitations under the License.&lt;/p&gt;
 
  
  
-&lt;div id="86f5dfd6-59ca-4216-b7a7-9938d423730c" class="output_subarea output_widget_view "&gt;
+&lt;div id="51e49192-1d24-4058-bc9d-33ba182922ea" class="output_subarea output_widget_view "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#86f5dfd6-59ca-4216-b7a7-9938d423730c');
+var element = $('#51e49192-1d24-4058-bc9d-33ba182922ea');
 &lt;/script&gt;
 &lt;script type="application/vnd.jupyter.widget-view+json"&gt;
 {"model_id": "6d64da96f6a94f49aa47edfc01811375", "version_major": 2, "version_minor": 0}
@@ -1466,9 +1466,9 @@ var element = $('#86f5dfd6-59ca-4216-b7a7-9938d423730c');
 
 
 
-&lt;div id="a9b2a43b-1d68-4480-af7a-678f9f2adfb7" class="output_subarea output_javascript "&gt;
+&lt;div id="0709eb2b-fccd-4948-848b-c66f05408f73" class="output_subarea output_javascript "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#a9b2a43b-1d68-4480-af7a-678f9f2adfb7');
+var element = $('#0709eb2b-fccd-4948-848b-c66f05408f73');
 
 (function(root) {
   function now() {
@@ -2661,9 +2661,9 @@ var element = $('#a9b2a43b-1d68-4480-af7a-678f9f2adfb7');
 
 
 
-&lt;div id="8f2c83f9-9c80-42f2-930c-f003c83fef9f" class="output_subarea output_javascript "&gt;
+&lt;div id="4bb87a27-021c-4219-b2b6-3679a589bcd0" class="output_subarea output_javascript "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#8f2c83f9-9c80-42f2-930c-f003c83fef9f');
+var element = $('#4bb87a27-021c-4219-b2b6-3679a589bcd0');
 
 if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
    if ((window.HoloViews === undefined) || (window.HoloViews instanceof HTMLElement)) {

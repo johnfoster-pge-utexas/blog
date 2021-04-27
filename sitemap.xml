@@ -7,230 +7,246 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/2014/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/2015/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/2017/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/2019/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/2021/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/archive.html</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/automatic-differentiation/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/aztecoo/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/beamer/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/c%2B%2B/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/cling/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/cockrell-school/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/cox-de-boor/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/docker/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/epetra/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/exodus/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/fea/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/github/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://johnfoster.pge.utexas.edu/blog/categories/hackathon/</loc>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/hdf5/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/hpc/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/iga/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/isogeometric-analysis/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/jax/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/jit/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/latex/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://johnfoster.pge.utexas.edu/blog/categories/machine-learning/</loc>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/memoization/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/memoize/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/mpi/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/netcdf/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/nikola/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/numpy/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/peridigm/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/powerpoint/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/python/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/recursion/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/texshop/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/theme/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/travis-ci/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/trilinos/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://johnfoster.pge.utexas.edu/blog/categories/uncertainty-modeling/</loc>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/categories/ut/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/index-1.html</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/posts/cockrell-school-beamer-template/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/posts/debugging-cc%2B%2B-libraries-called-by-python/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/posts/discrete-error-and-convergence/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/posts/extracting-exodus-information-with-netcdf-python/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/posts/git-and-github-tutorial/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://johnfoster.pge.utexas.edu/blog/posts/hackathon/</loc>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/posts/interactive-c%2B%2B-for-hpc/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/posts/jax-fea/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/posts/keep-texshop-from-stealing-focus/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/posts/managing-a-professional-website/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/posts/matlab-vs-python/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/posts/peridigm-tutorial/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/posts/peridigm-without-building-via-Docker/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/posts/pythonnumpy-implementation-of-bspline-basis-functions/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
  <url>
   <loc>https://johnfoster.pge.utexas.edu/blog/posts/using-exoduspy-to-extract-data-from-fea-database/</loc>
-  <lastmod>2021-04-27T22:59:00Z</lastmod>
+  <lastmod>2021-04-27T23:16:00Z</lastmod>
  </url>
 </urlset>

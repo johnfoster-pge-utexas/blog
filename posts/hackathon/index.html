@@ -511,7 +511,7 @@
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We can see that there is quite a bit of missing data.  Of particular concern is the large amount of missing permeabilities as this will be one of the strongest indicators of production.  So our first task is going to be to impute the missing features, especially working toward a good model for permeability.  To start, let's plot some of the provided map data.  Here we are showing the spatial distributions of percentage facies in the reservoir.  There is a fault in the reservoir which we only know the location of, but no other information.  The white circles represent wells we have production for, the red circles are wells we are trying to predict production.  The fault is indicated by the red line.  While I'm trying to present as much code as possible, the matplotlib plotting commands are somewhat verbose, so I will suppress the inputs and only show the plots.</p>
+<p>We can see that there is quite a bit of missing data.  Of particular concern is the large amount of missing permeabilities as this will be one of the strongest indicators of production.  So our first task is going to be to impute the missing features, especially working toward a good model for permeability.  To start, let's plot some of the provided map data.  Here we are showing the spatial distributions of percentage facies in the reservoir.  There is a fault in the reservoir which we only know the location of, but no other information.  The white circles represent wells we have production for, the red circles are wells we are trying to predict production.  The fault is indicated by the red line.</p>
 
 </div>
 </div>
@@ -1487,7 +1487,7 @@ $$<p>where $\kappa$ is the permeability and $\phi$ is the porosity.  We can quic
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Visualizing the results of the prediction against the given data, this model appears to perform well.  Again, I am suppressing the verbose plotting commands</p>
+<p>Visualizing the results of the prediction against the given data, this model appears to perform well.</p>
 
 </div>
 </div>
@@ -2228,7 +2228,7 @@ $$<p>where $\kappa$ is the permeability and $\phi$ is the porosity.  We can quic
 <p>In order to hyperparameter tune our forthcoming models, we're going to use the "goodness" measure of Deutsch, 1996, i.e.</p>
 $$
 \mbox{goodness} = 1 - \int_0^1 \left(2 a(p) - 2 \right) \left(\overline{\xi(p)} - p \right) \mathrm{d}p
-$$<p>in addition to the <code>mean_absolute_percentage_error</code> from scikit-learn to score our models.  The idea will be to use the <code>BaggingRegressor</code> to create an ensemble of models that we average over to create our "best estimate" as well using each individual estimator as a realization for our uncertainty model.  We'll score our model over each fold in the cross-validation using <code>GridSearchCV</code>.  Credit goes to Honggeun Jo for creating the original version of this function which I only slightly modified here.</p>
+$$<p>in addition to the <code>mean_absolute_percentage_error</code> from scikit-learn to score our models.  The idea will be to use the <code>BaggingRegressor</code> to create an ensemble of models that we average over to create our "best estimate" as well using each individual estimator as a realization for our uncertainty model.  We'll score our model over each fold in the cross-validation using <code>GridSearchCV</code>.  Credit goes to <a href="https://github.com/whghdrms">Honggeun Jo</a> for creating the original version of this function which I only slightly modified here.</p>
 
 </div>
 </div>

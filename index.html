@@ -492,7 +492,7 @@
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We can see that there is quite a bit of missing data.  Of particular concern is the large amount of missing permeabilities as this will be one of the strongest indicators of production.  So our first task is going to be to impute the missing features, especially working toward a good model for permeability.  To start, let's plot some of the provided map data.  Here we are showing the spatial distributions of percentage facies in the reservoir.  There is a fault in the reservoir which we only know the location of, but no other information.  The white circles represent wells we have production for, the red circles are wells we are trying to predict production.  The fault is indicated by the red line.  While I'm trying to present as much code as possible, the matplotlib plotting commands are somewhat verbose, so I will suppress the inputs and only show the plots.</p>
+<p>We can see that there is quite a bit of missing data.  Of particular concern is the large amount of missing permeabilities as this will be one of the strongest indicators of production.  So our first task is going to be to impute the missing features, especially working toward a good model for permeability.  To start, let's plot some of the provided map data.  Here we are showing the spatial distributions of percentage facies in the reservoir.  There is a fault in the reservoir which we only know the location of, but no other information.  The white circles represent wells we have production for, the red circles are wells we are trying to predict production.  The fault is indicated by the red line.</p>
 
 </div>
 </div>
@@ -1468,7 +1468,7 @@ $$<p>where $\kappa$ is the permeability and $\phi$ is the porosity.  We can quic
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Visualizing the results of the prediction against the given data, this model appears to perform well.  Again, I am suppressing the verbose plotting commands</p>
+<p>Visualizing the results of the prediction against the given data, this model appears to perform well.</p>
 
 </div>
 </div>
@@ -2209,7 +2209,7 @@ $$<p>where $\kappa$ is the permeability and $\phi$ is the porosity.  We can quic
 <p>In order to hyperparameter tune our forthcoming models, we're going to use the "goodness" measure of Deutsch, 1996, i.e.</p>
 $$
 \mbox{goodness} = 1 - \int_0^1 \left(2 a(p) - 2 \right) \left(\overline{\xi(p)} - p \right) \mathrm{d}p
-$$<p>in addition to the <code>mean_absolute_percentage_error</code> from scikit-learn to score our models.  The idea will be to use the <code>BaggingRegressor</code> to create an ensemble of models that we average over to create our "best estimate" as well using each individual estimator as a realization for our uncertainty model.  We'll score our model over each fold in the cross-validation using <code>GridSearchCV</code>.  Credit goes to Honggeun Jo for creating the original version of this function which I only slightly modified here.</p>
+$$<p>in addition to the <code>mean_absolute_percentage_error</code> from scikit-learn to score our models.  The idea will be to use the <code>BaggingRegressor</code> to create an ensemble of models that we average over to create our "best estimate" as well using each individual estimator as a realization for our uncertainty model.  We'll score our model over each fold in the cross-validation using <code>GridSearchCV</code>.  Credit goes to <a href="https://github.com/whghdrms">Honggeun Jo</a> for creating the original version of this function which I only slightly modified here.</p>
 
 </div>
 </div>
@@ -4063,9 +4063,9 @@ limitations under the License.</p>
 
  
  
-<div id="8d3094f4-38cc-4105-a463-7e4c869bc93f" class="output_subarea output_widget_view ">
+<div id="92c40303-22ad-47f7-a1b5-e623c8fa0e96" class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#8d3094f4-38cc-4105-a463-7e4c869bc93f');
+var element = $('#92c40303-22ad-47f7-a1b5-e623c8fa0e96');
 </script><script type="application/vnd.jupyter.widget-view+json">
 {"model_id": "6d64da96f6a94f49aa47edfc01811375", "version_major": 2, "version_minor": 0}
 </script>
@@ -4264,9 +4264,9 @@ var element = $('#8d3094f4-38cc-4105-a463-7e4c869bc93f');
 
 
 
-<div id="845f281a-c416-482b-81b9-ac56142ad8a1" class="output_subarea output_javascript ">
+<div id="88de823c-cc72-4938-a9d9-4c5d385d1908" class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#845f281a-c416-482b-81b9-ac56142ad8a1');
+var element = $('#88de823c-cc72-4938-a9d9-4c5d385d1908');
 
 (function(root) {
   function now() {
@@ -5459,9 +5459,9 @@ var element = $('#845f281a-c416-482b-81b9-ac56142ad8a1');
 
 
 
-<div id="829ddd88-7c94-42a9-b89b-88730b198e3e" class="output_subarea output_javascript ">
+<div id="4c460f11-b219-4250-906a-7e4d806cd483" class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#829ddd88-7c94-42a9-b89b-88730b198e3e');
+var element = $('#4c460f11-b219-4250-906a-7e4d806cd483');
 
 if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
    if ((window.HoloViews === undefined) || (window.HoloViews instanceof HTMLElement)) {

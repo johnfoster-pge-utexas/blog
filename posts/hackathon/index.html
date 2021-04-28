@@ -24,7 +24,7 @@
 <meta property="og:site_name" content="John T. Foster">
 <meta property="og:title" content="What I might have done in a recent hackathon">
 <meta property="og:url" content="https://johnfoster.pge.utexas.edu/blog/posts/hackathon/">
-<meta property="og:description" content="Recently, my colleague Prof. Michael Pyrcz (@GeostatsGuy) and myself hosted a data science hackathon open to students at The University of Texas at Austin with support from The Hildebrand Department o">
+<meta property="og:description" content="and why domain expertise matters in machine learning...¶Recently, my colleague Prof. Michael Pyrcz (@GeostatsGuy) and myself hosted a data science hackathon open to students at The University of Texas">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2021-04-27T16:55:11-06:00">
 <meta property="article:tag" content="hackathon">
@@ -78,6 +78,8 @@
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="and-why-domain-expertise-matters-in-machine-learning...">and why domain expertise matters in machine learning...<a class="anchor-link" href="#and-why-domain-expertise-matters-in-machine-learning...">¶</a>
+</h3>
 <p>Recently, my colleague <a href="https://www.pge.utexas.edu/facultystaff/faculty-directory/pyrcz">Prof. Michael Pyrcz</a> (<a href="https://twitter.com/GeostatsGuy">@GeostatsGuy</a>) and myself hosted a <a href="https://github.com/PGEHackathon/PGEHackathon">data science hackathon</a> open to students at <a href="https://utexas.edu">The University of Texas at Austin</a> with support from <a href="https://pge.utexas.edu">The Hildebrand Department of Petroleum and Geosystems Engineering</a>.  Given the COVID pandemic, we hosted the event virtually over two weekends in April 2021.  The first weekend consisted of a <a href="https://github.com/PGEHackathon/workshop">workshop</a> followed by an explanation of the <a href="https://github.com/PGEHackathon/data">problem dataset</a>, then the students broke into teams and worked on their solutions that were ultimately submitted for scoring, code review, and presentation judging by a panel of industry experts the following weekend.</p>
 <p>This was a really fun experience for me personally and the feedback has been incredible from all involved. Given that I have been teaching data science skills and challenging students in my classes with difficult coding exercises for years, it was great to see them showcase their capabilities.</p>
 <p>I'd encourage you to take a look at the detailed problem statement and datasets linked to above, but briefly, the challenge was: given petrophysical data from well logs and spatial maps interpreted from seismic on 73 oil wells that have been in production for some time, predict the cumulative 3 year production for 10 new wells recently drilled, and having well log data, but not yet put into production.  In addition to their "best estimate" the students where asked to provide 100 additional realizations such that an uncertainty model could be evaluated.  The objective scoring consisted of comparisons of the mean squared error with respect to their "best estimate" and the true 3 year production (which we know, but was withheld from the students) as well as a scoring of their uncertainty model with a "goodness measure" proposed by Deutsch (1996).</p>

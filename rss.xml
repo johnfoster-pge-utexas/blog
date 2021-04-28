@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 28 Apr 2021 13:53:34 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>What I might have done in a recent hackathon</title><link>https://johnfoster.pge.utexas.edu/blog/posts/hackathon/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 28 Apr 2021 15:10:16 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>What I might have done in a recent hackathon</title><link>https://johnfoster.pge.utexas.edu/blog/posts/hackathon/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Recently, my colleague &lt;a href="https://www.pge.utexas.edu/facultystaff/faculty-directory/pyrcz"&gt;Prof. Michael Pyrcz&lt;/a&gt; (&lt;a href="https://twitter.com/GeostatsGuy"&gt;@GeostatsGuy&lt;/a&gt;) and myself hosted a &lt;a href="https://github.com/PGEHackathon/PGEHackathon"&gt;data science hackathon&lt;/a&gt; open to students at &lt;a href="https://utexas.edu"&gt;The University of Texas at Austin&lt;/a&gt; with support from &lt;a href="https://pge.utexas.edu"&gt;The Hildebrand Department of Petroleum and Geosystems Engineering&lt;/a&gt;.  Given the COVID pandemic, we hosted the event virtually over two weekends in April 2021.  The first weekend consisted of a &lt;a href="https://github.com/PGEHackathon/workshop"&gt;workshop&lt;/a&gt; followed by an explanation of the &lt;a href="https://github.com/PGEHackathon/data"&gt;problem dataset&lt;/a&gt;, then the students broke into teams and worked on their solutions that were ultimately submitted for scoring, code review, and presentation judging by a panel of industry experts the following weekend.&lt;/p&gt;
+&lt;h3 id="and-why-domain-expertise-matters-in-machine-learning..."&gt;and why domain expertise matters in machine learning...&lt;a class="anchor-link" href="https://johnfoster.pge.utexas.edu/blog/posts/hackathon/#and-why-domain-expertise-matters-in-machine-learning..."&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Recently, my colleague &lt;a href="https://www.pge.utexas.edu/facultystaff/faculty-directory/pyrcz"&gt;Prof. Michael Pyrcz&lt;/a&gt; (&lt;a href="https://twitter.com/GeostatsGuy"&gt;@GeostatsGuy&lt;/a&gt;) and myself hosted a &lt;a href="https://github.com/PGEHackathon/PGEHackathon"&gt;data science hackathon&lt;/a&gt; open to students at &lt;a href="https://utexas.edu"&gt;The University of Texas at Austin&lt;/a&gt; with support from &lt;a href="https://pge.utexas.edu"&gt;The Hildebrand Department of Petroleum and Geosystems Engineering&lt;/a&gt;.  Given the COVID pandemic, we hosted the event virtually over two weekends in April 2021.  The first weekend consisted of a &lt;a href="https://github.com/PGEHackathon/workshop"&gt;workshop&lt;/a&gt; followed by an explanation of the &lt;a href="https://github.com/PGEHackathon/data"&gt;problem dataset&lt;/a&gt;, then the students broke into teams and worked on their solutions that were ultimately submitted for scoring, code review, and presentation judging by a panel of industry experts the following weekend.&lt;/p&gt;
 &lt;p&gt;This was a really fun experience for me personally and the feedback has been incredible from all involved. Given that I have been teaching data science skills and challenging students in my classes with difficult coding exercises for years, it was great to see them showcase their capabilities.&lt;/p&gt;
 &lt;p&gt;I'd encourage you to take a look at the detailed problem statement and datasets linked to above, but briefly, the challenge was: given petrophysical data from well logs and spatial maps interpreted from seismic on 73 oil wells that have been in production for some time, predict the cumulative 3 year production for 10 new wells recently drilled, and having well log data, but not yet put into production.  In addition to their "best estimate" the students where asked to provide 100 additional realizations such that an uncertainty model could be evaluated.  The objective scoring consisted of comparisons of the mean squared error with respect to their "best estimate" and the true 3 year production (which we know, but was withheld from the students) as well as a scoring of their uncertainty model with a "goodness measure" proposed by Deutsch (1996).&lt;/p&gt;
 &lt;p&gt;I thought it would be a fun exercise to consider what I might have done to complete this challenge myself.  In the spirit of the hackathon, I'll limit my time working on the project to what I can accomplish in a single day.  Of course, since I am already familiar with the dataset, I have a head start over the teams in the competition who generally spent a few hours just investigating the data the first day.  But given my short timeline, I won't be training any complicated neural network architectures or really any complicated machine learning models at all. I want to see how I can use my domain expertise to engineer meaningful features to get an answer quickly.  I also have a surprise in store with respect to how I handled the uncertainty model.  So let's get started...&lt;/p&gt;
@@ -3828,9 +3828,9 @@ limitations under the License.&lt;/p&gt;
 
  
  
-&lt;div id="92c40303-22ad-47f7-a1b5-e623c8fa0e96" class="output_subarea output_widget_view "&gt;
+&lt;div id="2cae92f5-c500-4fe8-aedf-d77e0c8ca11f" class="output_subarea output_widget_view "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#92c40303-22ad-47f7-a1b5-e623c8fa0e96');
+var element = $('#2cae92f5-c500-4fe8-aedf-d77e0c8ca11f');
 &lt;/script&gt;
 &lt;script type="application/vnd.jupyter.widget-view+json"&gt;
 {"model_id": "6d64da96f6a94f49aa47edfc01811375", "version_major": 2, "version_minor": 0}
@@ -4015,9 +4015,9 @@ var element = $('#92c40303-22ad-47f7-a1b5-e623c8fa0e96');
 
 
 
-&lt;div id="88de823c-cc72-4938-a9d9-4c5d385d1908" class="output_subarea output_javascript "&gt;
+&lt;div id="6c82528c-4e04-4005-b523-47e5596665e2" class="output_subarea output_javascript "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#88de823c-cc72-4938-a9d9-4c5d385d1908');
+var element = $('#6c82528c-4e04-4005-b523-47e5596665e2');
 
 (function(root) {
   function now() {
@@ -5210,9 +5210,9 @@ var element = $('#88de823c-cc72-4938-a9d9-4c5d385d1908');
 
 
 
-&lt;div id="4c460f11-b219-4250-906a-7e4d806cd483" class="output_subarea output_javascript "&gt;
+&lt;div id="d95b9116-9f17-44c4-b6c1-6d6704268199" class="output_subarea output_javascript "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#4c460f11-b219-4250-906a-7e4d806cd483');
+var element = $('#d95b9116-9f17-44c4-b6c1-6d6704268199');
 
 if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
    if ((window.HoloViews === undefined) || (window.HoloViews instanceof HTMLElement)) {

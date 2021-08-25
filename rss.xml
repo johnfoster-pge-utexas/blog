@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 25 Aug 2021 16:18:58 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Why I'm not wearing a mask (Fall 2021)</title><link>https://johnfoster.pge.utexas.edu/blog/posts/why-im-not-wearing-a-mask/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;p&gt;Since I started this blog in 2014, it has been entirely technical.  Usually
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 25 Aug 2021 16:31:56 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Why I'm not wearing a mask (Fall 2021)</title><link>https://johnfoster.pge.utexas.edu/blog/posts/why-im-not-wearing-a-mask/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;p&gt;Since I started this blog in 2014, it has been entirely technical.  Usually
 dedicated to examples that are intended to remind my future self and/or 
 students of interesting problem solutions through code.  However, as we return to
 in-person teaching in the Fall semester of 2021, under a &lt;a href="https://protect.utexas.edu/health-and-wellness/"&gt;strong
@@ -13,7 +13,7 @@ This is simply documenting how I arrived at my decision to not wear a mask.&lt;/
 &lt;p&gt;Before any vaccine was available to me, I caught and recovered from COVID-19.
 I confirmed that I have antibodies through a laboratory test in June of 2021.
 A summary of the results are shown below and the full report can be downloaded
-&lt;a href="https://johnfoster.pge.utexas.edu/blog/files/covid-antibody-results-redacted.pdf" target="_blank"&gt;here&lt;/a&gt;).  &lt;/p&gt;
+&lt;a href="https://johnfoster.pge.utexas.edu/blog/files/covid-antibody-results-redacted.pdf" target="_blank"&gt;here&lt;/a&gt;.  &lt;/p&gt;
 &lt;p&gt;&lt;img alt="image" src="https://johnfoster.pge.utexas.edu/blog/files/covid-antibody-report.png"&gt;&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;p&gt;This test is for antibodies against the receptor-binding-domain (RBD) of the 
@@ -3889,9 +3889,9 @@ limitations under the License.&lt;/p&gt;
 
  
  
-&lt;div id="0392bfff-ebae-4b72-9bb8-26d4757ab6c2" class="output_subarea output_widget_view "&gt;
+&lt;div id="f5d28d6c-4471-4cd0-8350-4fcd91863b21" class="output_subarea output_widget_view "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#0392bfff-ebae-4b72-9bb8-26d4757ab6c2');
+var element = $('#f5d28d6c-4471-4cd0-8350-4fcd91863b21');
 &lt;/script&gt;
 &lt;script type="application/vnd.jupyter.widget-view+json"&gt;
 {"model_id": "6d64da96f6a94f49aa47edfc01811375", "version_major": 2, "version_minor": 0}
@@ -4072,9 +4072,9 @@ var element = $('#0392bfff-ebae-4b72-9bb8-26d4757ab6c2');
 
 
 
-&lt;div id="73922aa3-54c4-4ff1-bf46-c5cf1998edc7" class="output_subarea output_javascript "&gt;
+&lt;div id="00459d44-a543-4ac3-b9a6-1f11f9a22939" class="output_subarea output_javascript "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#73922aa3-54c4-4ff1-bf46-c5cf1998edc7');
+var element = $('#00459d44-a543-4ac3-b9a6-1f11f9a22939');
 
 (function(root) {
   function now() {
@@ -5267,9 +5267,9 @@ var element = $('#73922aa3-54c4-4ff1-bf46-c5cf1998edc7');
 
 
 
-&lt;div id="2da8cd3b-6301-49c9-9c47-b0d026754cf1" class="output_subarea output_javascript "&gt;
+&lt;div id="701e50c0-9213-480d-933c-aa5ff0e9098e" class="output_subarea output_javascript "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#2da8cd3b-6301-49c9-9c47-b0d026754cf1');
+var element = $('#701e50c0-9213-480d-933c-aa5ff0e9098e');
 
 if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
    if ((window.HoloViews === undefined) || (window.HoloViews instanceof HTMLElement)) {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 25 Aug 2021 16:08:46 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Why I'm not wearing a mask (Fall 2021)</title><link>https://johnfoster.pge.utexas.edu/blog/posts/why-im-not-wearing-a-mask/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;p&gt;Since I started this blog in 2014, it has been entirely technical.  Usually
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 25 Aug 2021 16:18:58 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Why I'm not wearing a mask (Fall 2021)</title><link>https://johnfoster.pge.utexas.edu/blog/posts/why-im-not-wearing-a-mask/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;p&gt;Since I started this blog in 2014, it has been entirely technical.  Usually
 dedicated to examples that are intended to remind my future self and/or 
 students of interesting problem solutions through code.  However, as we return to
 in-person teaching in the Fall semester of 2021, under a &lt;a href="https://protect.utexas.edu/health-and-wellness/"&gt;strong
@@ -33,13 +33,13 @@ employees and report  &lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://www.nejm.org/doi/full/10.1056/NEJMoa2034545?query=recirc_mostViewed_railB_article"&gt;This report&lt;/a&gt; following &amp;gt;12,500 staff at the Oxford University 
-Hospitals in the United Kingdom of which 1265 had positive antibody tests observed only 2 reinfections and they where both asymptotic.&lt;/p&gt;
+Hospitals in the United Kingdom of which 1265 had positive antibody tests observed only 2 reinfections and they where both asymptomatic.&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://www.israelnationalnews.com/News/News.aspx/309762"&gt;A recent Israel
 study&lt;/a&gt; reported that of 835,792 Israelis known 
 to have recovered from COVID-19, there where only 72 known instances of
 reinfection (0.0086%) compared with over 3000 breakthrough infections of the
-5,193,499 vaccinated (0.0578%).&lt;/p&gt;
+5,193,499 vaccinated (0.0578%) at the time of the report.&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;p&gt;Finally, this last paper is not as statistically significant, but I think it’s interesting given the uniformity of the observation group. The paper &lt;a href="https://wwwnc.cdc.gov/eid/article/27/10/21-1427_article"&gt;Breakthrough Infections of SARS-CoV-2 Gamma Variant in Fully Vaccinated Gold Miners, French Guiana, 2021&lt;/a&gt; with the main results summarized in &lt;a href="https://wwwnc.cdc.gov/eid/article/27/10/21-1427-t1"&gt;this table&lt;/a&gt; describes a COVID outbreak among 44 gold miners, all men of roughly the same age and overall health status. Of the 44, 25 had been “fully vaccinated” and 9 had 1 dose — all Pfizer vaccines. Of the 25 fully vaccinated, 15 (!) had breakthrough infections. Of the 9 that had 1 dose, 6 had breakthrough infections. There were 6 that had recovered from COVID previously — 3 with 1 dose and 3 not vaccinated. Of those 6, none of them caught COVID in the outbreak.&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
@@ -61,8 +61,8 @@ antibody responses in 32 (all of the participants) people who had survived the
 SARS-CoV-2 is strong and long-lived.  However, there is a personal anecdote to share as well.  In early
 August 2021, my wife visited a friend in Florida and 48 hours after her return
 she fell ill and tested positive for COVID-19.  Two days after that her
-daughter, my step-daugter who lives with us, also became ill with COVID-19.&lt;br&gt;
-Because I already had plenty of exposure to both of them in the house by
+daughter, my step-daugter who lives with us, also became ill with COVID-19.  Because 
+I already had plenty of exposure to both of them in the house by
 the time we knew they were infected, I made no effort to quarantine myself from
 them and did what I could to make them comfortable.  My wife's case was fairly
 mild with most of the symptoms subsiding after 5 days, my step-daughters case
@@ -3889,9 +3889,9 @@ limitations under the License.&lt;/p&gt;
 
  
  
-&lt;div id="848bdac1-4dd4-4741-bb37-cbeafcf106ed" class="output_subarea output_widget_view "&gt;
+&lt;div id="0392bfff-ebae-4b72-9bb8-26d4757ab6c2" class="output_subarea output_widget_view "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#848bdac1-4dd4-4741-bb37-cbeafcf106ed');
+var element = $('#0392bfff-ebae-4b72-9bb8-26d4757ab6c2');
 &lt;/script&gt;
 &lt;script type="application/vnd.jupyter.widget-view+json"&gt;
 {"model_id": "6d64da96f6a94f49aa47edfc01811375", "version_major": 2, "version_minor": 0}
@@ -4072,9 +4072,9 @@ var element = $('#848bdac1-4dd4-4741-bb37-cbeafcf106ed');
 
 
 
-&lt;div id="45f9d3a3-f6ac-4a4a-b30f-753a161665d3" class="output_subarea output_javascript "&gt;
+&lt;div id="73922aa3-54c4-4ff1-bf46-c5cf1998edc7" class="output_subarea output_javascript "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#45f9d3a3-f6ac-4a4a-b30f-753a161665d3');
+var element = $('#73922aa3-54c4-4ff1-bf46-c5cf1998edc7');
 
 (function(root) {
   function now() {
@@ -5267,9 +5267,9 @@ var element = $('#45f9d3a3-f6ac-4a4a-b30f-753a161665d3');
 
 
 
-&lt;div id="d64f3954-212e-4a7d-8ed8-77466e9e0b85" class="output_subarea output_javascript "&gt;
+&lt;div id="2da8cd3b-6301-49c9-9c47-b0d026754cf1" class="output_subarea output_javascript "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#d64f3954-212e-4a7d-8ed8-77466e9e0b85');
+var element = $('#2da8cd3b-6301-49c9-9c47-b0d026754cf1');
 
 if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
    if ((window.HoloViews === undefined) || (window.HoloViews instanceof HTMLElement)) {

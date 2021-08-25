@@ -22,9 +22,9 @@ This is simply documenting how I arrived at my decision to not wear a mask.
 Before any vaccine was available to me, I caught and recovered from COVID-19.
 I confirmed that I have antibodies through a laboratory test in June of 2021.
 A summary of the results are shown below and the full report can be downloaded
-[here](/files/covid-antibody-results-redacted.pdf).  
+<a href="/files/covid-antibody-results-redacted.pdf" target="_blank">here.</a>).  
 
-<img src="/files/covid-antibody-report.png" width=200>
+![image](/files/covid-antibody-report.png)
 
 This test is for antibodies against the receptor-binding-domain (RBD) of the 
 SARS-CoV-2 spike protien (S-protien) which are known to [wane over time](https://www.nature.com/articles/s41586-021-03207-w); however, 
@@ -36,7 +36,7 @@ There are plenty of evidence-based findings that show that natural immunity is
 very robust.  In [this
 article](https://www.medrxiv.org/content/10.1101/2021.06.01.21258176v3) by
 researchers at the Cleveland Clinic Health System, they follow over 50k
-employees and report
+employees and report  
 
 >COVID-19 did not occur in anyone over the five months of the study among 2579 individuals previously infected with COVID-19, including 1359 who did not take the vaccine.
 
@@ -55,7 +55,7 @@ So it appears that I should be immune, but for how long? There was this very rec
 
 Of course, these results should not be surprising, it's extremely rare to be
 infected twice by the same virus in a lifetime.  [The same paper linked above
-](https://www.nature.com/articles/s41586-020-2550-z) demonstrates 
+](https://www.nature.com/articles/s41586-020-2550-z) demonstrates  
 
 >long-lasting T cells are reactive to the N protein of SARS-CoV 17 years after the outbreak of SARS in 2003; these T cells displayed robust cross-reactivity to the N protein of SARS-CoV-2.
 

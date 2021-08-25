@@ -26,7 +26,7 @@ This is simply documenting how I arrived at my decision to not wear a mask.
 Before any vaccine was available to me, I caught and recovered from COVID-19.
 I confirmed that I have antibodies through a laboratory test in June of 2021.
 A summary of the results are shown below and the full report can be downloaded
-<a href="/files/covid-antibody-results-redacted.pdf" target="_blank">here</a>).  
+<a href="/files/covid-antibody-results-redacted.pdf" target="_blank">here</a>.  
 
 ![image](/files/covid-antibody-report.png)
 

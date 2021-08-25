@@ -105,6 +105,7 @@ believe I was infected during this time.
 <br/><br/>
 
 Given all the information above, I do not believe there is any medical reason
-for me to wear a mask while teaching.  I believe it's easier for the students
+for me to wear a mask while teaching at this time.  I believe it's easier for the students
 to comprehend what I'm saying without a mask on, it's easier for me to 
-project my voice without, and it's certainly more comfortable.
+project my voice without, and it's certainly more comfortable.  I do plan to
+continue to monitor my antibody levels and may change my mind in the future.

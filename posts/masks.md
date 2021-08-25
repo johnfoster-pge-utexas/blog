@@ -53,7 +53,7 @@ employees and report
 <br/>
 
 [This report](https://www.nejm.org/doi/full/10.1056/NEJMoa2034545?query=recirc_mostViewed_railB_article) following >12,500 staff at the Oxford University 
-Hospitals in the United Kingdom of which 1265 had positive antibody tests observed only 2 reinfections and they where both asymptotic.
+Hospitals in the United Kingdom of which 1265 had positive antibody tests observed only 2 reinfections and they where both asymptomatic.
 
 <br/>
 
@@ -61,7 +61,7 @@ Hospitals in the United Kingdom of which 1265 had positive antibody tests observ
 study](https://www.israelnationalnews.com/News/News.aspx/309762) reported that of 835,792 Israelis known 
 to have recovered from COVID-19, there where only 72 known instances of
 reinfection (0.0086%) compared with over 3000 breakthrough infections of the
-5,193,499 vaccinated (0.0578%).
+5,193,499 vaccinated (0.0578%) at the time of the report.
 
 <br/>
 
@@ -93,8 +93,8 @@ Given these findings (and there are more, [cf. Ref 6-8](https://www.medrxiv.org/
 SARS-CoV-2 is strong and long-lived.  However, there is a personal anecdote to share as well.  In early
 August 2021, my wife visited a friend in Florida and 48 hours after her return
 she fell ill and tested positive for COVID-19.  Two days after that her
-daughter, my step-daugter who lives with us, also became ill with COVID-19.  
-Because I already had plenty of exposure to both of them in the house by
+daughter, my step-daugter who lives with us, also became ill with COVID-19.  Because 
+I already had plenty of exposure to both of them in the house by
 the time we knew they were infected, I made no effort to quarantine myself from
 them and did what I could to make them comfortable.  My wife's case was fairly
 mild with most of the symptoms subsiding after 5 days, my step-daughters case

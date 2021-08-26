@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 25 Aug 2021 16:31:56 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Why I'm not wearing a mask (Fall 2021)</title><link>https://johnfoster.pge.utexas.edu/blog/posts/why-im-not-wearing-a-mask/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;p&gt;Since I started this blog in 2014, it has been entirely technical.  Usually
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Thu, 26 Aug 2021 15:10:04 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Why I'm not wearing a mask (Fall 2021)</title><link>https://johnfoster.pge.utexas.edu/blog/posts/why-im-not-wearing-a-mask/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;p&gt;Since I started this blog in 2014, it has been entirely technical.  Usually
 dedicated to examples that are intended to remind my future self and/or 
 students of interesting problem solutions through code.  However, as we return to
 in-person teaching in the Fall semester of 2021, under a &lt;a href="https://protect.utexas.edu/health-and-wellness/"&gt;strong
@@ -17,9 +17,9 @@ A summary of the results are shown below and the full report can be downloaded
 &lt;p&gt;&lt;img alt="image" src="https://johnfoster.pge.utexas.edu/blog/files/covid-antibody-report.png"&gt;&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;p&gt;This test is for antibodies against the receptor-binding-domain (RBD) of the 
-SARS-CoV-2 spike protien (S-protien) which are known to &lt;a href="https://www.nature.com/articles/s41586-021-03207-w"&gt;wane over time&lt;/a&gt;; however, 
+SARS-CoV-2 spike protein (S-protein) which are known to &lt;a href="https://www.nature.com/articles/s41586-021-03207-w"&gt;wane over time&lt;/a&gt;; however, 
 in response to recovery from infection the immune system will also produce 
-other antibodies (e.g. &lt;a href="https://www.nature.com/articles/s41598-021-83108-0"&gt;N-protien&lt;/a&gt;), &lt;a href="https://www.nature.com/articles/s41586-020-2550-z"&gt;T-cells&lt;/a&gt;, B memory cells, etc. The number of RBD-specific memory B cells has been shown to &lt;a href="https://www.nature.com/articles/s41586-021-03207-w"&gt;remain unchanged after
+other antibodies (e.g. &lt;a href="https://www.nature.com/articles/s41598-021-83108-0"&gt;N-protein&lt;/a&gt;), &lt;a href="https://www.nature.com/articles/s41586-020-2550-z"&gt;T-cells&lt;/a&gt;, B memory cells, etc. The number of RBD-specific memory B cells has been shown to &lt;a href="https://www.nature.com/articles/s41586-021-03207-w"&gt;remain unchanged after
 SARS-CoV-2 infection and have a resistance to RBD mutations (i.e. variants)&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;p&gt;There are plenty of evidence-based findings that show that natural immunity is
@@ -54,14 +54,14 @@ infected twice by the same virus in a lifetime.  &lt;a href="https://www.nature.
 &lt;/blockquote&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;p&gt;Perhaps most interesting, &lt;a href="https://www.nature.com/articles/nature07231"&gt;this paper from 2008&lt;/a&gt; demonstrates neutralizing
-antibody responses in 32 (all of the participants) people who had survived the
+antibody responses in 32 people (all of the participants)  who had survived the
 1918 H1N1 flu pandemic as children -- 90 years later!&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
-&lt;p&gt;Given these findings (and there are more, &lt;a href="https://www.medrxiv.org/content/10.1101/2021.06.01.21258176v3"&gt;cf. Ref 6-8&lt;/a&gt;), I concluded that my immunity to
+&lt;p&gt;Given these findings (and there are more, &lt;a href="https://www.medrxiv.org/content/10.1101/2021.06.01.21258176v3"&gt;cf. Ref 6-8&lt;/a&gt;, and &lt;a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3838993"&gt;here&lt;/a&gt;, &lt;a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3838993"&gt;here&lt;/a&gt;, &lt;a href="https://doi.org/10.1016/j.xcrm.2021.100354"&gt;here&lt;/a&gt;, &lt;a href="https://www.biorxiv.org/content/10.1101/2021.07.14.452381v1"&gt;here&lt;/a&gt;, &lt;a href="https://www.biorxiv.org/content/10.1101/2021.05.12.443888v1"&gt;here&lt;/a&gt;, &lt;a href="https://www.medrxiv.org/content/10.1101/2021.08.19.21262111v1"&gt;here&lt;/a&gt;, &lt;a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8209951/pdf/RMV-9999-e2260.pdf"&gt;here&lt;/a&gt;, &lt;a href="https://doi.org/10.1016/j.eclinm.2021.100861"&gt;here&lt;/a&gt;, &lt;a href="https://www.medrxiv.org/content/10.1101/2021.04.20.21255670v1"&gt;here&lt;/a&gt;, &lt;a href="https://www.medrxiv.org/content/10.1101/2021.05.11.21256578v1"&gt;here&lt;/a&gt;, &lt;a href="https://rupress.org/jem/article/218/5/e20202617/211835/Highly-functional-virus-specific-cellular-immune"&gt;here&lt;/a&gt;, &lt;a href="https://www.nature.com/articles/s41467-021-24377-1?utm_source=other&amp;amp;utm_medium=other&amp;amp;utm_content=null&amp;amp;utm_campaign=JRCN_1_LW01_CN_natureOA_article_paid_XMOL"&gt;here&lt;/a&gt;, &lt;a href="https://www.biorxiv.org/content/10.1101/2021.07.29.454333v1"&gt;here&lt;/a&gt;, &lt;a href="https://www.biorxiv.org/content/10.1101/2021.03.22.436441v1"&gt;here&lt;/a&gt;), I concluded that my immunity to
 SARS-CoV-2 is strong and long-lived.  However, there is a personal anecdote to share as well.  In early
 August 2021, my wife visited a friend in Florida and 48 hours after her return
 she fell ill and tested positive for COVID-19.  Two days after that her
-daughter, my step-daugter who lives with us, also became ill with COVID-19.  Because 
+daughter, my step-daughter who lives with us, also became ill with COVID-19.  Because 
 I already had plenty of exposure to both of them in the house by
 the time we knew they were infected, I made no effort to quarantine myself from
 them and did what I could to make them comfortable.  My wife's case was fairly
@@ -71,7 +71,9 @@ was recovered with negative tests.  I did not experience any symptoms or have an
 believe I was infected during this time.&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;p&gt;Given all the information above, I do not believe there is any medical reason
-for me to wear a mask while teaching at this time.  I believe it's easier for the students
+for me to wear a mask while teaching at this time.  For all practical purposes, you cannot
+catch a virus from which you are immune, and you certainly can't transmit a virus you don't have.
+I believe it's easier for the students
 to comprehend what I'm saying without a mask on, it's easier for me to 
 project my voice without, and it's certainly more comfortable.  I do plan to
 continue to monitor my antibody levels and may change my mind in the future.&lt;/p&gt;&lt;/div&gt;</description><guid>https://johnfoster.pge.utexas.edu/blog/posts/why-im-not-wearing-a-mask/</guid><pubDate>Wed, 25 Aug 2021 13:37:11 GMT</pubDate></item><item><title>What I might have done in a recent hackathon</title><link>https://johnfoster.pge.utexas.edu/blog/posts/hackathon/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
@@ -3889,9 +3891,9 @@ limitations under the License.&lt;/p&gt;
 
  
  
-&lt;div id="f5d28d6c-4471-4cd0-8350-4fcd91863b21" class="output_subarea output_widget_view "&gt;
+&lt;div id="fdde4cbe-f933-4bee-8d14-0a4e2fa709b2" class="output_subarea output_widget_view "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#f5d28d6c-4471-4cd0-8350-4fcd91863b21');
+var element = $('#fdde4cbe-f933-4bee-8d14-0a4e2fa709b2');
 &lt;/script&gt;
 &lt;script type="application/vnd.jupyter.widget-view+json"&gt;
 {"model_id": "6d64da96f6a94f49aa47edfc01811375", "version_major": 2, "version_minor": 0}
@@ -4072,9 +4074,9 @@ var element = $('#f5d28d6c-4471-4cd0-8350-4fcd91863b21');
 
 
 
-&lt;div id="00459d44-a543-4ac3-b9a6-1f11f9a22939" class="output_subarea output_javascript "&gt;
+&lt;div id="4e8f6e69-44a0-4d7f-9335-31c5399262ff" class="output_subarea output_javascript "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#00459d44-a543-4ac3-b9a6-1f11f9a22939');
+var element = $('#4e8f6e69-44a0-4d7f-9335-31c5399262ff');
 
 (function(root) {
   function now() {
@@ -5267,9 +5269,9 @@ var element = $('#00459d44-a543-4ac3-b9a6-1f11f9a22939');
 
 
 
-&lt;div id="701e50c0-9213-480d-933c-aa5ff0e9098e" class="output_subarea output_javascript "&gt;
+&lt;div id="0112c88a-02cd-447e-9572-84c873e8665b" class="output_subarea output_javascript "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#701e50c0-9213-480d-933c-aa5ff0e9098e');
+var element = $('#0112c88a-02cd-447e-9572-84c873e8665b');
 
 if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
    if ((window.HoloViews === undefined) || (window.HoloViews instanceof HTMLElement)) {

@@ -33,9 +33,9 @@ A summary of the results are shown below and the full report can be downloaded
 <br/>
 
 This test is for antibodies against the receptor-binding-domain (RBD) of the 
-SARS-CoV-2 spike protien (S-protien) which are known to [wane over time](https://www.nature.com/articles/s41586-021-03207-w); however, 
+SARS-CoV-2 spike protein (S-protein) which are known to [wane over time](https://www.nature.com/articles/s41586-021-03207-w); however, 
 in response to recovery from infection the immune system will also produce 
-other antibodies (e.g. [N-protien](https://www.nature.com/articles/s41598-021-83108-0)), [T-cells](https://www.nature.com/articles/s41586-020-2550-z), B memory cells, etc. The number of RBD-specific memory B cells has been shown to [remain unchanged after
+other antibodies (e.g. [N-protein](https://www.nature.com/articles/s41598-021-83108-0)), [T-cells](https://www.nature.com/articles/s41586-020-2550-z), B memory cells, etc. The number of RBD-specific memory B cells has been shown to [remain unchanged after
 SARS-CoV-2 infection and have a resistance to RBD mutations (i.e. variants)](https://www.nature.com/articles/s41586-021-03207-w).
 
 <br/>
@@ -84,16 +84,16 @@ infected twice by the same virus in a lifetime.  [The same paper linked above
 <br/>
 
 Perhaps most interesting, [this paper from 2008](https://www.nature.com/articles/nature07231) demonstrates neutralizing
-antibody responses in 32 (all of the participants) people who had survived the
+antibody responses in 32 people (all of the participants)  who had survived the
 1918 H1N1 flu pandemic as children -- 90 years later!
 
 <br/>
 
-Given these findings (and there are more, [cf. Ref 6-8](https://www.medrxiv.org/content/10.1101/2021.06.01.21258176v3)), I concluded that my immunity to
+Given these findings (and there are more, [cf. Ref 6-8](https://www.medrxiv.org/content/10.1101/2021.06.01.21258176v3), and [here](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3838993), [here](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3838993), [here](https://doi.org/10.1016/j.xcrm.2021.100354), [here](https://www.biorxiv.org/content/10.1101/2021.07.14.452381v1), [here](https://www.biorxiv.org/content/10.1101/2021.05.12.443888v1), [here](https://www.medrxiv.org/content/10.1101/2021.08.19.21262111v1), [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8209951/pdf/RMV-9999-e2260.pdf), [here](https://doi.org/10.1016/j.eclinm.2021.100861), [here](https://www.medrxiv.org/content/10.1101/2021.04.20.21255670v1), [here](https://www.medrxiv.org/content/10.1101/2021.05.11.21256578v1), [here](https://rupress.org/jem/article/218/5/e20202617/211835/Highly-functional-virus-specific-cellular-immune), [here](https://www.nature.com/articles/s41467-021-24377-1?utm_source=other&utm_medium=other&utm_content=null&utm_campaign=JRCN_1_LW01_CN_natureOA_article_paid_XMOL), [here](https://www.biorxiv.org/content/10.1101/2021.07.29.454333v1), [here](https://www.biorxiv.org/content/10.1101/2021.03.22.436441v1)), I concluded that my immunity to
 SARS-CoV-2 is strong and long-lived.  However, there is a personal anecdote to share as well.  In early
 August 2021, my wife visited a friend in Florida and 48 hours after her return
 she fell ill and tested positive for COVID-19.  Two days after that her
-daughter, my step-daugter who lives with us, also became ill with COVID-19.  Because 
+daughter, my step-daughter who lives with us, also became ill with COVID-19.  Because 
 I already had plenty of exposure to both of them in the house by
 the time we knew they were infected, I made no effort to quarantine myself from
 them and did what I could to make them comfortable.  My wife's case was fairly
@@ -105,7 +105,9 @@ believe I was infected during this time.
 <br/>
 
 Given all the information above, I do not believe there is any medical reason
-for me to wear a mask while teaching at this time.  I believe it's easier for the students
+for me to wear a mask while teaching at this time.  For all practical purposes, you cannot
+catch a virus from which you are immune, and you certainly can't transmit a virus you don't have.
+I believe it's easier for the students
 to comprehend what I'm saying without a mask on, it's easier for me to 
 project my voice without, and it's certainly more comfortable.  I do plan to
 continue to monitor my antibody levels and may change my mind in the future.

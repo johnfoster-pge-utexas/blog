@@ -84,7 +84,7 @@ infected twice by the same virus in a lifetime.  [The same paper linked above
 <br/>
 
 Perhaps most interesting, [this paper from 2008](https://www.nature.com/articles/nature07231) demonstrates neutralizing
-antibody responses in 32 (all of the participants) people who had survived the
+antibody responses in 32 people (all of the participants)  who had survived the
 1918 H1N1 flu pandemic as children -- 90 years later!
 
 <br/>

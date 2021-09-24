@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sat, 28 Aug 2021 11:26:20 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Why I'm not wearing a mask (Fall 2021)</title><link>https://johnfoster.pge.utexas.edu/blog/posts/why-im-not-wearing-a-mask/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;p&gt;Since I started this blog in 2014, it has been entirely technical.  Usually
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Fri, 24 Sep 2021 11:03:54 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Why I'm not wearing a mask (Fall 2021)</title><link>https://johnfoster.pge.utexas.edu/blog/posts/why-im-not-wearing-a-mask/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div&gt;&lt;p&gt;Since I started this blog in 2014, it has been entirely technical.  Usually
 dedicated to examples that are intended to remind my future self and/or 
 students of interesting problem solutions through code.  However, as we return to
 in-person teaching in the Fall semester of 2021, under a &lt;a href="https://protect.utexas.edu/health-and-wellness/"&gt;strong
@@ -3891,9 +3891,9 @@ limitations under the License.&lt;/p&gt;
 
  
  
-&lt;div id="63f53a4d-7598-4c63-8552-c86158442c88" class="output_subarea output_widget_view "&gt;
+&lt;div id="af3c9936-b3e4-4d31-89ae-74e04a042453" class="output_subarea output_widget_view "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#63f53a4d-7598-4c63-8552-c86158442c88');
+var element = $('#af3c9936-b3e4-4d31-89ae-74e04a042453');
 &lt;/script&gt;
 &lt;script type="application/vnd.jupyter.widget-view+json"&gt;
 {"model_id": "6d64da96f6a94f49aa47edfc01811375", "version_major": 2, "version_minor": 0}
@@ -4074,9 +4074,9 @@ var element = $('#63f53a4d-7598-4c63-8552-c86158442c88');
 
 
 
-&lt;div id="da330896-ab9a-4fea-a0cf-1c5f456696d2" class="output_subarea output_javascript "&gt;
+&lt;div id="fd049244-4b68-44a8-96eb-b69f8c920936" class="output_subarea output_javascript "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#da330896-ab9a-4fea-a0cf-1c5f456696d2');
+var element = $('#fd049244-4b68-44a8-96eb-b69f8c920936');
 
 (function(root) {
   function now() {
@@ -5269,9 +5269,9 @@ var element = $('#da330896-ab9a-4fea-a0cf-1c5f456696d2');
 
 
 
-&lt;div id="744100c3-9d15-43e7-a489-47926f5b6b48" class="output_subarea output_javascript "&gt;
+&lt;div id="890c8e17-4b23-4838-b1a2-984f0993b23d" class="output_subarea output_javascript "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#744100c3-9d15-43e7-a489-47926f5b6b48');
+var element = $('#890c8e17-4b23-4838-b1a2-984f0993b23d');
 
 if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
    if ((window.HoloViews === undefined) || (window.HoloViews instanceof HTMLElement)) {

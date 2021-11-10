@@ -8,6 +8,17 @@
 .. type: text
 -->
 
+**UPDATE 11/10/2021**: I had a second antibody test on 9/2/2021 and it showed
+that I my antibody levels remain strong, well above the threshold.  The full report 
+is available <a href="/files/covid-antibody-results-redacted-2.pdf" target="_blank">here</a>.
+
+Additionally, since writing this, there have been many more journal articles
+written on natural immunity that continue to demonstrate it is very robust.  [This
+website](https://brownstone.org/articles/79-research-studies-affirm-naturally-acquired-immunity-to-covid-19-documented-linked-and-quoted/) has been keeping a continuously updated list of references that, at the time of this update,
+is now up to 122 papers.
+
+---
+
 Since I started this blog in 2014, it has been entirely technical.  Usually
 dedicated to examples that are intended to remind my future self and/or 
 students of interesting problem solutions through code.  However, as we return to

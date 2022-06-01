@@ -51,7 +51,7 @@
             <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
                     John T. Foster
             </span></p>
-                <p class="commentline"><i class="far fa-comment"></i>            <a href="../debugging-cc%2B%2B-libraries-called-by-python/#disqus_thread" data-disqus-identifier="cache/posts/debugging-cc++-libraries-called-by-python.html">Comments</a>
+                <p class="commentline"><i class="far fa-comment"></i>        <a href="../debugging-cc%2B%2B-libraries-called-by-python/#disqus_thread" data-disqus-identifier="cache/posts/debugging-cc++-libraries-called-by-python.html">Comments</a>
 
 
                     </p>
@@ -61,31 +61,29 @@
             
         </div>
     </header><div class="e-content entry-content" itemprop="articleBody text">
-    <div>
-<p>I've been debugging a C++ library that I wrote and am calling from Python via a <a href="https://cffi.readthedocs.org/en/latest/">CFFI</a> interface.  After an hour or two of debugging with print-statements without resolution, I decided to figure out how to use a proper debugger. I'm very comfortable on the command-line and have used <code>gdb</code> in this way often in the past, so am happy I found an easy solution.  The instructions that follow should work for any C/C++ library built with debug flags enabled (i.e. the <code>-g</code> compiler flag) that is called from Python.  While I am using CFFI, it should also work for <a href="https://docs.python.org/2/library/ctypes.html">ctypes</a> or <a href="http://www.swig.org/">SWIG</a> interfaces.  Also the commands below are specific to the <code>lldb</code> debugger, but could be easily translated to <code>gdb</code>.</p>
+    <p>I've been debugging a C++ library that I wrote and am calling from Python via a <a href="https://cffi.readthedocs.org/en/latest/">CFFI</a> interface.  After an hour or two of debugging with print-statements without resolution, I decided to figure out how to use a proper debugger. I'm very comfortable on the command-line and have used <code>gdb</code> in this way often in the past, so am happy I found an easy solution.  The instructions that follow should work for any C/C++ library built with debug flags enabled (i.e. the <code>-g</code> compiler flag) that is called from Python.  While I am using CFFI, it should also work for <a href="https://docs.python.org/2/library/ctypes.html">ctypes</a> or <a href="http://www.swig.org/">SWIG</a> interfaces.  Also the commands below are specific to the <code>lldb</code> debugger, but could be easily translated to <code>gdb</code>.</p>
 <p>First, in two separate terminal windows, launch <code>ipython</code> and <code>lldb</code>.  At the IPython prompt, type:</p>
-<pre class="code literal-block"><span></span><code>In [1]: !ps aux | grep -i ipython
-</code></pre>
+<div class="code"><pre class="code literal-block">In [1]: !ps aux | grep -i ipython
+</pre></div>
 
 <p>and look for the process ID (pid) of the IPython session.  Let's assume the process ID in our case is <code>1234</code>.  Go to the <code>lldb</code> command prompt and attach to the IPython session with</p>
-<pre class="code literal-block"><span></span><code>(lldb) attach --pid 1234
-</code></pre>
+<div class="code"><pre class="code literal-block">(lldb) attach --pid 1234
+</pre></div>
 
 <p>followed by</p>
-<pre class="code literal-block"><span></span><code><span class="ss">(</span><span class="nv">lldb</span><span class="ss">)</span> <span class="k">continue</span>
-</code></pre>
+<div class="code"><pre class="code literal-block"><span class="ss">(</span><span class="nv">lldb</span><span class="ss">)</span> <span class="k">continue</span>
+</pre></div>
 
 <p>to release the process.  Now your ready to set breakpoints, etc.  For example, to set a breakpoint on line 400 of a <code>myfile.cpp</code> we would type</p>
-<pre class="code literal-block"><span></span><code>(lldb) breakpoint set -f myfile.cpp -l 400
-</code></pre>
+<div class="code"><pre class="code literal-block">(lldb) breakpoint set -f myfile.cpp -l 400
+</pre></div>
 
 <p>Assuming <code>myfile.cpp</code> is compiled into a library that is called by the Python script/module <code>myscript.py</code>, we can now run the Python code in the IPython terminal</p>
-<pre class="code literal-block"><span></span><code>In [2]: run myscript.py
-</code></pre>
+<div class="code"><pre class="code literal-block">In [2]: run myscript.py
+</pre></div>
 
 <p>Back in the <code>lldb</code> terminal we should see our code stopped on line 400.  Debug away...</p>
 <p>P.S.  I found the bug after 5 minutes in a proper debugger...</p>
-</div>
     </div>
     <aside class="postpromonav"><nav><ul class="pager hidden-print">
 <li class="previous">
@@ -95,7 +93,7 @@
                 <a href="../peridigm-tutorial/" rel="next" title="Peridigm tutorial">Next post</a>
             </li>
         </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
-                        <div id="disqus_thread"></div>
+                    <div id="disqus_thread"></div>
         <script>
         var disqus_shortname ="johntfoster",
             disqus_url="https://johnfoster.pge.utexas.edu/blog/posts/debugging-cc%2B%2B-libraries-called-by-python/",
@@ -114,7 +112,7 @@
     <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
-        </section></article><script>var disqus_shortname="johntfoster";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2021         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
+        </section></article><script>var disqus_shortname="johntfoster";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2022         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
             
         </footer>
 </div>

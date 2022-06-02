@@ -22,13 +22,13 @@ To provide some background/context for my own interest in Docker, in my current 
 Docker allows for the ability to run applications in prebuilt containers on any Linux machine with Docker installed (or even Mac OS X and Windows via [Boot2Docker](http://boot2docker.io/)).  If your Linux distribution doesn't already have it installed, just use your package manager (e.g. `apt-get install docker` on Debian/Ubuntu based machines and `yum install docker` on Fedora/Redhat based machines).  Docker is so ubiquitous at this point there are even entire Linux distributions like [CoreOS](https://coreos.com/) being built specifically to maximize its strengths.  Additionally, there is the [Docker Hub Registry](https://registry.hub.docker.com/) which provides [Github](http://github.com) like `push/pull` operations and cloud storage of prebuilt images.  Of course, you or your organization can host your own Docker image registry as well (note: think of a *Docker image* like a C++ class, and a *Docker container* as a C++ object, or an *instance* of the image that runs).  You can derive images from one another and this is what I have done in setting up an image of *Peridigm*.  First, I have an image that starts with a baseline Debian based Linux and installs NetCDF and its dependencies.  I have two tagged versions, a standard NetCDF build and a *largefiles* patched version which makes the [large file modifications](https://peridigm.sandia.gov/content/netcdf) as suggested in the *Peridigm* build documentation. The NetCDF largefile image can be pulled to a Docker users local machine from my public Docker Hub Registry with
 
 ````bash
-docker pull johntfoster/netcdf:largefiles
+docker pull peridigm/netcdf:largefiles
 ````
 
 the NetCDF image is built automatically via continuous integration with a [Github repository](https://github.com/johntfoster/docker-netcdf) that contains a [Dockerfile](https://docs.docker.com/reference/builder/) with instructions for the image build process.  I then derive a Trilinos image from the NetCDF largefiles image.  This image contains only the Trilinos packages enabled such that *Peridigm* can be built.  The Trilinos image can be pulled to a local machine with
 
 ````bash
-docker pull johntfoster/trilinos
+docker pull peridigm/trilinos
 ````
 
 this Trilinos image could be used to derive other images for other Trilinos based application codes which utilize the same dependent packages as *Peridigm*.  The `cmake` build script which shows the active Trilinos packages in this image can be viewed [here](https://github.com/johntfoster/docker-trilinos/blob/master/trilinos-debian-cmake.sh).  This image is also built via continuous integration with [this Github repository](https://github.com/johntfoster/docker-trilinos) which can easily be modified to include more Trilinos packages.  Finally, the *Peridigm* image can be pulled to a local machine with

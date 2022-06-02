@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 01 Jun 2022 11:49:01 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Why I'm not wearing a mask (Fall 2021)</title><link>https://johnfoster.pge.utexas.edu/blog/posts/why-im-not-wearing-a-mask/</link><dc:creator>John T. Foster</dc:creator><description>&lt;p&gt;Since I started this blog in 2014, it has been entirely technical.  Usually
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Thu, 02 Jun 2022 16:11:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Why I'm not wearing a mask (Fall 2021)</title><link>https://johnfoster.pge.utexas.edu/blog/posts/why-im-not-wearing-a-mask/</link><dc:creator>John T. Foster</dc:creator><description>&lt;p&gt;Since I started this blog in 2014, it has been entirely technical.  Usually
 dedicated to examples that are intended to remind my future self and/or 
 students of interesting problem solutions through code.  However, as we return to
 in-person teaching in the Fall semester of 2021, under a &lt;a href="https://protect.utexas.edu/health-and-wellness/"&gt;strong
@@ -4075,9 +4075,9 @@ limitations under the License.&lt;/p&gt;
 
 
 
-&lt;div id="0df5e823-646e-4e4e-83c8-4f0e41dc3a0b" class="output_subarea output_javascript "&gt;
+&lt;div id="e9b4e897-cd05-4ca3-9103-51b8b1f74e15" class="output_subarea output_javascript "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#0df5e823-646e-4e4e-83c8-4f0e41dc3a0b');
+var element = $('#e9b4e897-cd05-4ca3-9103-51b8b1f74e15');
 
 (function(root) {
   function now() {
@@ -5270,9 +5270,9 @@ var element = $('#0df5e823-646e-4e4e-83c8-4f0e41dc3a0b');
 
 
 
-&lt;div id="a871b51b-520b-4864-b810-6faf9aaf5a1c" class="output_subarea output_javascript "&gt;
+&lt;div id="185b3248-0820-4726-a1cf-892da74019ac" class="output_subarea output_javascript "&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#a871b51b-520b-4864-b810-6faf9aaf5a1c');
+var element = $('#185b3248-0820-4726-a1cf-892da74019ac');
 
 if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
    if ((window.HoloViews === undefined) || (window.HoloViews instanceof HTMLElement)) {

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Fri, 18 Aug 2023 20:34:10 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Sentiment analysis in your own PDF documents with ChatGPT</title><link>https://johnfoster.pge.utexas.edu/blog/posts/pdf-chatgpt/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div class="cell border-box-sizing text_cell rendered" id="cell-id=bd60d22f-6667-4cec-92ac-d826b388f164"&gt;&lt;div class="prompt input_prompt"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Fri, 18 Aug 2023 21:01:04 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Sentiment analysis in your own PDF documents with ChatGPT</title><link>https://johnfoster.pge.utexas.edu/blog/posts/pdf-chatgpt/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div class="cell border-box-sizing text_cell rendered" id="cell-id=bd60d22f-6667-4cec-92ac-d826b388f164"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;While preparing some documents for a forthcoming academic review, I was asked by my department chair to go through all of the student comments from every course I've taught in the last 6 years and find a few "positive" comments that he could quote in his summary writeup.&lt;/p&gt;
 &lt;p&gt;As I usually teach 3 courses per year, sometimes with cross-listings in multiple departments and/or undergrad/grad sections.  All in, this resulted in 32 PDF documents each with many student comments that I needed to draw from.  Doing it manually, would require opening each document, reading and/or compiling the comments and then evaluating and choosing the "most positive" comments. I decided to use ChatGPT with a text embedding to assit me in this task, and thought the code might be useful to others so I am sharing it below along with some comments and documentation.&lt;/p&gt;
-&lt;p&gt;First we start with the package imports.  I'm heavily using &lt;a href="https://python.langchain.com/docs/get_started/introduction.html"&gt;langchian&lt;/a&gt; which provides generalized abstracts for using large language models (LLMs) and tooling to easily "chain together" tasks such as reading in text, creating a vectorstore of the text embedding to be passed to a LLM along with a prompt which a specific question or instruction.&lt;/p&gt;
+&lt;p&gt;First we start with the package imports.  I'm heavily using &lt;a href="https://python.langchain.com/docs/get_started/introduction.html"&gt;langchian&lt;/a&gt; which provides abstractions for using large language models (LLMs) and tooling to easily "chain together" tasks such as reading in text, creating a vectorstore of the text embedding to be passed to a LLM along with a prompt which a specific question or instruction.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -3759,9 +3759,9 @@ limitations under the License.&lt;/p&gt;
 &lt;div class="output"&gt;
 &lt;div class="output_area"&gt;
 &lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_javascript" id="53b8e68d-9a29-4e32-b036-1edd47ad6cec"&gt;
+&lt;div class="output_subarea output_javascript" id="d6ab0aa7-0a9f-4a2c-98ff-2b1159ec7c5d"&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#53b8e68d-9a29-4e32-b036-1edd47ad6cec');
+var element = $('#d6ab0aa7-0a9f-4a2c-98ff-2b1159ec7c5d');
 
 (function(root) {
   function now() {
@@ -4946,9 +4946,9 @@ var element = $('#53b8e68d-9a29-4e32-b036-1edd47ad6cec');
 &lt;/div&gt;
 &lt;div class="output_area"&gt;
 &lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_javascript" id="5c3db001-e31d-434d-ba5f-215de668c22b"&gt;
+&lt;div class="output_subarea output_javascript" id="3a729968-ff85-4bf3-9f47-575e7c443bc0"&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#5c3db001-e31d-434d-ba5f-215de668c22b');
+var element = $('#3a729968-ff85-4bf3-9f47-575e7c443bc0');
 
 if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
    if ((window.HoloViews === undefined) || (window.HoloViews instanceof HTMLElement)) {

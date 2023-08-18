@@ -27,7 +27,8 @@
 <meta property="og:url" content="https://johnfoster.pge.utexas.edu/blog/posts/interactive-c%2B%2B-for-hpc/">
 <meta property="og:description" content='I recently discovered cling after I saw this Tweet
 I made a C++ kernel for Jupyter for some reason: https://t.co/7ApuZyeR0r— Min RK (@minrk) May 19, 2015
-From the cling website, "Cling is an interacti'>
+
+From the cling website, "Cling is an interact'>
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2015-06-08T11:00:18-05:00">
 <meta property="article:tag" content="AztecOO">
@@ -85,16 +86,15 @@ From the cling website, "Cling is an interacti'>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>I recently discovered <a href="https://root.cern.ch/drupal/content/cling">cling</a> after I saw this Tweet</p>
-<p></p>
 <blockquote class="twitter-tweet" lang="en">
-<p lang="en" dir="ltr">I made a C++ kernel for Jupyter for some reason: <a href="https://t.co/7ApuZyeR0r">https://t.co/7ApuZyeR0r</a></p>— Min RK (@minrk) <a href="https://twitter.com/minrk/status/600762804161933312">May 19, 2015</a>
+<p dir="ltr" lang="en">I made a C++ kernel for Jupyter for some reason: <a href="https://t.co/7ApuZyeR0r">https://t.co/7ApuZyeR0r</a></p>— Min RK (@minrk) <a href="https://twitter.com/minrk/status/600762804161933312">May 19, 2015</a>
 </blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script><p>From the cling website, "Cling is an interactive C++ interpreter, built on the top of LLVM and Clang libraries. Its advantages over the standard interpreters are that it has command line prompt and uses just-in-time (JIT) compiler for compilation."  As I write (or mostly teach through dual-coding with students) quite a bit of C++ and have already been utilizing the <a href="http://ipython.org/">IPython</a>/<a href="https://jupyter.org/">Jupyter</a> notebook as a teaching tool for sometime, I was immediately interested in using <a href="https://github.com/minrk">MinRK</a>'s <a href="https://github.com/minrk/clingkernel">clingkernel</a> for this purpose as well as exploring and testing out my own ideas.  As I learned more about cling, I found most of the examples to be very trivial and those that inluded the calling/loading of external functions typically only utilized the functions from the standard library.  I was eager to give it try on something a little more complex, and because most of the code we write in my group is heavily dependent on <a href="http://trilinos.org/">Trilinos</a>, I thought I would attempt to solve a simple linear algebra system of the form</p>
-$$
+<script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script><p>From the cling website, "Cling is an interactive C++ interpreter, built on the top of LLVM and Clang libraries. Its advantages over the standard interpreters are that it has command line prompt and uses just-in-time (JIT) compiler for compilation."  As I write (or mostly teach through dual-coding with students) quite a bit of C++ and have already been utilizing the <a href="http://ipython.org/">IPython</a>/<a href="https://jupyter.org/">Jupyter</a> notebook as a teaching tool for sometime, I was immediately interested in using <a href="https://github.com/minrk">MinRK</a>'s <a href="https://github.com/minrk/clingkernel">clingkernel</a> for this purpose as well as exploring and testing out my own ideas.  As I learned more about cling, I found most of the examples to be very trivial and those that inluded the calling/loading of external functions typically only utilized the functions from the standard library.  I was eager to give it try on something a little more complex, and because most of the code we write in my group is heavily dependent on <a href="http://trilinos.org/">Trilinos</a>, I thought I would attempt to solve a simple linear algebra system of the form</p>
+<p>$$
 A \vec{x} = \vec{b}
-$$<p>using <a href="http://trilinos.org/packages/epetra/">AztecOO</a> solvers with <a href="http://trilinos.org/packages/aztecoo/">Epetra</a> datastructures from Trilinos (at least AztecOO and Epetra).  This is an adaptation of the example code provided in Figure 1 of the <a href="http://trilinos.org/oldsite/packages/aztecoo/AztecOOUserGuide.pdf">AztecOO User's guide</a>.</p>
+$$</p>
+<p>using <a href="http://trilinos.org/packages/epetra/">AztecOO</a> solvers with <a href="http://trilinos.org/packages/aztecoo/">Epetra</a> datastructures from Trilinos (at least AztecOO and Epetra).  This is an adaptation of the example code provided in Figure 1 of the <a href="http://trilinos.org/oldsite/packages/aztecoo/AztecOOUserGuide.pdf">AztecOO User's guide</a>.</p>
 <p>Of course, to reproduce the code below, you will need to <a href="https://github.com/vgvassilev/cling">install cling</a> and Trilinos.  Additionally, if you want to use MinRK's <a href="https://github.com/minrk/clingkernel">clingkernel</a> you need to install the <a href="https://github.com/jupyter/notebook#jupyter-notebook">Jupyter notebook</a> from the <code>master</code> branch, and install the kernel.  With that, you should be able to <a href="http://johntfoster.github.io/posts/interactive-c++-for-hpc.ipynb">download this notebook</a> and execute it with few modifications.</p>
-
 </div>
 </div>
 </div>
@@ -104,22 +104,21 @@ $$<p>using <a href="http://trilinos.org/packages/epetra/">AztecOO</a> solvers wi
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Cling provides a few metaprocessing commands to perform actions that you would normal provide as arguments to the build system, such as providing locations for include files, loading shared libraries, etc.  The documentation for the metaprocessing commands are</p>
-
 <pre><code>.x test.cpp – load a file (if the file defines void test() it will be executed)
 .L libname – load a libary or file
 .x filename.cxx – loads filename and calls void filename() if defined
 .I path – adds an include path
 .printAST – shows the abstract syntax tree after each processed entity
 .q – exit cling
-.help – display a brief description</code></pre>
+.help – display a brief description
+</code></pre>
 <p>We'll start by loading the location of the installed header files in my Trilinos build (here I only built AztecOO and Epetra in serial to keep it simple).  Cling utilizes the Clang compiler which is pretty picky, so I had to edit the header files in a few locations where <code>#include</code> statments where provided with angle brackets <code>&lt; &gt;</code> for local includes, where the compiler wanted double quotes.  In other words, I had to change</p>
-
-<pre><code>#include &lt;foo.h&gt;</code></pre>
+<pre><code>#include &lt;foo.h&gt;
+</code></pre>
 <p>to</p>
-
-<pre><code>#include "foo.h"</code></pre>
+<pre><code>#include "foo.h"
+</code></pre>
 <p>in a few of the Trilinos headers.  So the metaprocessing command to tell the system where the header files are:</p>
-
 </div>
 </div>
 </div>
@@ -127,31 +126,22 @@ $$<p>using <a href="http://trilinos.org/packages/epetra/">AztecOO</a> solvers wi
 <div class="input">
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="p">.</span><span class="n">I</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">trilinos</span><span class="o">-</span><span class="n">serial</span><span class="o">/</span><span class="n">include</span><span class="o">/</span><span class="w"></span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="p">.</span><span class="n">I</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">trilinos</span><span class="o">-</span><span class="n">serial</span><span class="o">/</span><span class="n">include</span><span class="o">/</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
-    <div class="prompt"></div>
-
-
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre></pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -159,7 +149,6 @@ $$<p>using <a href="http://trilinos.org/packages/epetra/">AztecOO</a> solvers wi
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And now we provide the include statememts.</p>
-
 </div>
 </div>
 </div>
@@ -167,65 +156,47 @@ $$<p>using <a href="http://trilinos.org/packages/epetra/">AztecOO</a> solvers wi
 <div class="input">
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">"AztecOO.h"</span><span class="cp"></span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">"AztecOO.h"</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
-    <div class="prompt"></div>
-
-
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre></pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">"AztecOO_Version.h"</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"Epetra_SerialComm.h"</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"Epetra_Map.h"</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"Epetra_Vector.h"</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"Epetra_CrsMatrix.h"</span><span class="cp"></span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">"AztecOO_Version.h"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"Epetra_SerialComm.h"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"Epetra_Map.h"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"Epetra_Vector.h"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"Epetra_CrsMatrix.h"</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
-    <div class="prompt"></div>
-
-
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre></pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -233,10 +204,9 @@ $$<p>using <a href="http://trilinos.org/packages/epetra/">AztecOO</a> solvers wi
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now the metaprocessing to load the shared libraries.  Since I'm on a Mac, I had to define the environment variable</p>
-<div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">DYLD_LIBRARY_PATH</span><span class="o">=</span>/usr/local/trilinos-serial/lib:<span class="nv">$DYLD_LIBRARY_PATH</span>
+<div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">DYLD_LIBRARY_PATH</span><span class="o">=</span>/usr/local/trilinos-serial/lib:<span class="nv">$DYLD_LIBRARY_PATH</span>
 </pre></div>
 <p>before launching the notebook/cling so the system knows where to find the libraries at runtime.  On a Linux machine, this variable would be <code>LD_LIBRARY_PATH</code>.</p>
-
 </div>
 </div>
 </div>
@@ -244,32 +214,23 @@ $$<p>using <a href="http://trilinos.org/packages/epetra/">AztecOO</a> solvers wi
 <div class="input">
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="p">.</span><span class="n">L</span><span class="w"> </span><span class="n">libepetra</span><span class="w"></span>
-<span class="p">.</span><span class="n">L</span><span class="w"> </span><span class="n">libaztecOO</span><span class="w"></span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="p">.</span><span class="n">L</span><span class="w"> </span><span class="n">libepetra</span>
+<span class="p">.</span><span class="n">L</span><span class="w"> </span><span class="n">libaztecOO</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
-    <div class="prompt"></div>
-
-
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre></pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -277,7 +238,6 @@ $$<p>using <a href="http://trilinos.org/packages/epetra/">AztecOO</a> solvers wi
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we start in with the actual Epetra/AztecOO code.  Since it's not apparent to me whether it's possible for <code>cling</code> to support <a href="http://www.open-mpi.org/">MPI</a> processes, we'll just provide a serial implementation.  We start with some code that instantiates the Epetra serial communicator and provides some information about the version of Trilinos we are using.</p>
-
 </div>
 </div>
 </div>
@@ -285,30 +245,23 @@ $$<p>using <a href="http://trilinos.org/packages/epetra/">AztecOO</a> solvers wi
 <div class="input">
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">Epetra_SerialComm</span><span class="w"> </span><span class="n">Comm</span><span class="p">;</span><span class="w"></span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="n">Epetra_SerialComm</span><span class="w"> </span><span class="n">Comm</span><span class="p">;</span>
 <span class="w">  </span>
-<span class="kt">int</span><span class="w"> </span><span class="n">NumMyElements</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w"></span>
+<span class="kt">int</span><span class="w"> </span><span class="n">NumMyElements</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span>
 
-<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Comm</span><span class="p">.</span><span class="n">MyPID</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">AztecOO_Version</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Comm</span><span class="p">.</span><span class="n">MyPID</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">AztecOO_Version</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
-<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">Comm</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">Comm</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
-    <div class="prompt"></div>
-
-
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
 AztecOO in Trilinos 12.1 (Dev)
@@ -318,10 +271,8 @@ Epetra::Comm::Processor 0 of 1 total processors.
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -329,7 +280,6 @@ Epetra::Comm::Processor 0 of 1 total processors.
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Notice the immediate output to screen.  Remember this is C++!</p>
-
 </div>
 </div>
 </div>
@@ -339,7 +289,6 @@ Epetra::Comm::Processor 0 of 1 total processors.
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we construct a Map that puts same number of equations on each processor.  Of course, we only have one processor here, but the code is generic and could also be run in parallel if multiple processors were available.</p>
-
 </div>
 </div>
 </div>
@@ -347,32 +296,23 @@ Epetra::Comm::Processor 0 of 1 total processors.
 <div class="input">
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">Epetra_Map</span><span class="w"> </span><span class="nf">Map</span><span class="p">(</span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="n">NumMyElements</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">Comm</span><span class="p">);</span><span class="w"></span>
-<span class="kt">int</span><span class="w"> </span><span class="n">NumGlobalElements</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Map</span><span class="p">.</span><span class="n">NumGlobalElements</span><span class="p">();</span><span class="w"></span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="n">Epetra_Map</span><span class="w"> </span><span class="nf">Map</span><span class="p">(</span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="n">NumMyElements</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">Comm</span><span class="p">);</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">NumGlobalElements</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Map</span><span class="p">.</span><span class="n">NumGlobalElements</span><span class="p">();</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
-    <div class="prompt"></div>
-
-
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre></pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -380,7 +320,6 @@ Epetra::Comm::Processor 0 of 1 total processors.
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we instantiate the column-row sparse matrix $A$</p>
-
 </div>
 </div>
 </div>
@@ -388,31 +327,22 @@ Epetra::Comm::Processor 0 of 1 total processors.
 <div class="input">
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">Epetra_CrsMatrix</span><span class="w"> </span><span class="nf">A</span><span class="p">(</span><span class="n">Copy</span><span class="p">,</span><span class="w"> </span><span class="n">Map</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="n">Epetra_CrsMatrix</span><span class="w"> </span><span class="nf">A</span><span class="p">(</span><span class="n">Copy</span><span class="p">,</span><span class="w"> </span><span class="n">Map</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
-    <div class="prompt"></div>
-
-
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre></pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -420,7 +350,6 @@ Epetra::Comm::Processor 0 of 1 total processors.
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here we fill $A$ to be a finite-difference like operator.</p>
-
 </div>
 </div>
 </div>
@@ -428,40 +357,31 @@ Epetra::Comm::Processor 0 of 1 total processors.
 <div class="input">
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">negOne</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-1.0</span><span class="p">;</span><span class="w"></span>
-<span class="kt">double</span><span class="w"> </span><span class="n">posTwo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span><span class="w"></span>
-<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="n">NumMyElements</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">GlobalRow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">GRID</span><span class="p">(</span><span class="n">i</span><span class="p">);</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">RowLess1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GlobalRow</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">RowPlus1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GlobalRow</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">negOne</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-1.0</span><span class="p">;</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">posTwo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="n">NumMyElements</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">GlobalRow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">GRID</span><span class="p">(</span><span class="n">i</span><span class="p">);</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">RowLess1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GlobalRow</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">RowPlus1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GlobalRow</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">RowLess1</span><span class="o">!=</span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">InsertGlobalValues</span><span class="p">(</span><span class="n">GlobalRow</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">negOne</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">RowLess1</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">RowPlus1</span><span class="o">!=</span><span class="n">NumGlobalElements</span><span class="p">)</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">InsertGlobalValues</span><span class="p">(</span><span class="n">GlobalRow</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">negOne</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">RowPlus1</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="n">A</span><span class="p">.</span><span class="n">InsertGlobalValues</span><span class="p">(</span><span class="n">GlobalRow</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">posTwo</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">GlobalRow</span><span class="p">);</span><span class="w"></span>
-<span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">RowLess1</span><span class="o">!=</span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">InsertGlobalValues</span><span class="p">(</span><span class="n">GlobalRow</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">negOne</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">RowLess1</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">RowPlus1</span><span class="o">!=</span><span class="n">NumGlobalElements</span><span class="p">)</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">InsertGlobalValues</span><span class="p">(</span><span class="n">GlobalRow</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">negOne</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">RowPlus1</span><span class="p">);</span>
+<span class="w">    </span><span class="n">A</span><span class="p">.</span><span class="n">InsertGlobalValues</span><span class="p">(</span><span class="n">GlobalRow</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">posTwo</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">GlobalRow</span><span class="p">);</span>
+<span class="p">};</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
-    <div class="prompt"></div>
-
-
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>?   
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -469,7 +389,6 @@ Epetra::Comm::Processor 0 of 1 total processors.
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we call the <code>FillComplete()</code> method to optimize storage of the matrix.</p>
-
 </div>
 </div>
 </div>
@@ -477,31 +396,22 @@ Epetra::Comm::Processor 0 of 1 total processors.
 <div class="input">
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">A</span><span class="p">.</span><span class="n">FillComplete</span><span class="p">();</span><span class="w"></span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="n">A</span><span class="p">.</span><span class="n">FillComplete</span><span class="p">();</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
-    <div class="prompt"></div>
-
-
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre></pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -509,7 +419,6 @@ Epetra::Comm::Processor 0 of 1 total processors.
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here we instantiate $\vec{x}$ and the right-hand-side vector $\vec{b}$.  Also, we fill $\vec{b}$ with random numbers for our solution.</p>
-
 </div>
 </div>
 </div>
@@ -517,35 +426,26 @@ Epetra::Comm::Processor 0 of 1 total processors.
 <div class="input">
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">Epetra_Vector</span><span class="w"> </span><span class="nf">x</span><span class="p">(</span><span class="n">Map</span><span class="p">);</span><span class="w"></span>
-<span class="n">Epetra_Vector</span><span class="w"> </span><span class="nf">b</span><span class="p">(</span><span class="n">Map</span><span class="p">);</span><span class="w"></span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="n">Epetra_Vector</span><span class="w"> </span><span class="nf">x</span><span class="p">(</span><span class="n">Map</span><span class="p">);</span>
+<span class="n">Epetra_Vector</span><span class="w"> </span><span class="nf">b</span><span class="p">(</span><span class="n">Map</span><span class="p">);</span>
 
-<span class="n">b</span><span class="p">.</span><span class="n">Random</span><span class="p">();</span><span class="w"></span>
+<span class="n">b</span><span class="p">.</span><span class="n">Random</span><span class="p">();</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
-    <div class="prompt"></div>
-
-
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -553,7 +453,6 @@ Epetra::Comm::Processor 0 of 1 total processors.
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we instantiate the <code>Epetra_Problem</code> and the Aztec solver from that instance.</p>
-
 </div>
 </div>
 </div>
@@ -561,34 +460,25 @@ Epetra::Comm::Processor 0 of 1 total processors.
 <div class="input">
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">Epetra_LinearProblem</span><span class="w"> </span><span class="nf">problem</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="n">Epetra_LinearProblem</span><span class="w"> </span><span class="nf">problem</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
 
-<span class="n">AztecOO</span><span class="w"> </span><span class="nf">solver</span><span class="p">(</span><span class="n">problem</span><span class="p">);</span><span class="w"></span>
+<span class="n">AztecOO</span><span class="w"> </span><span class="nf">solver</span><span class="p">(</span><span class="n">problem</span><span class="p">);</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
-    <div class="prompt"></div>
-
-
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -596,7 +486,6 @@ Epetra::Comm::Processor 0 of 1 total processors.
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Next is the actual solution step.  A GMRES solver is used for 10 iterations.  This won't be enough for convergence of the solver, but this is just for demonstration purposes and I would like to keep the output short.</p>
-
 </div>
 </div>
 </div>
@@ -604,27 +493,20 @@ Epetra::Comm::Processor 0 of 1 total processors.
 <div class="input">
 <div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">solver</span><span class="p">.</span><span class="n">SetAztecOption</span><span class="p">(</span><span class="n">AZ_precond</span><span class="p">,</span><span class="w"> </span><span class="n">AZ_Jacobi</span><span class="p">);</span><span class="w"></span>
-<span class="n">solver</span><span class="p">.</span><span class="n">Iterate</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0E-2</span><span class="p">);</span><span class="w"></span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="n">solver</span><span class="p">.</span><span class="n">SetAztecOption</span><span class="p">(</span><span class="n">AZ_precond</span><span class="p">,</span><span class="w"> </span><span class="n">AZ_Jacobi</span><span class="p">);</span>
+<span class="n">solver</span><span class="p">.</span><span class="n">Iterate</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0E-2</span><span class="p">);</span>
 
-<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Solver performed "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">solver</span><span class="p">.</span><span class="n">NumIters</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" iterations."</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
-<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Norm of true residual = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">solver</span><span class="p">.</span><span class="n">TrueResidual</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Solver performed "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">solver</span><span class="p">.</span><span class="n">NumIters</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" iterations."</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Norm of true residual = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">solver</span><span class="p">.</span><span class="n">TrueResidual</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
-    <div class="prompt"></div>
-
-
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
 		*******************************************************
@@ -674,10 +556,8 @@ Norm of true residual = 3.94466
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -685,7 +565,6 @@ Norm of true residual = 3.94466
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To demonstrate that is worked, we'll print out the first 10 values of the solution vector $\vec{x}$.</p>
-
 </div>
 </div>
 </div>
@@ -693,25 +572,18 @@ Norm of true residual = 3.94466
 <div class="input">
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">){</span><span class="w"></span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
 <span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"> </span>
-<span class="p">}</span><span class="w"></span>
+<span class="p">}</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
-    <div class="prompt"></div>
-
-
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>-0.288916
 -0.723977
@@ -726,10 +598,8 @@ Norm of true residual = 3.94466
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -737,7 +607,6 @@ Norm of true residual = 3.94466
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It's pretty amazing to be able to do interactive C++ developement.  If we could get this to work in parallel, it would be a leap forward in the ability to do introspective high-performance scientific computing.</p>
-
 </div>
 </div>
 </div>
@@ -780,7 +649,7 @@ MathJax.Hub.Config({
      styles: {'.MathJax_Display': {"margin": 0}}
  }
 });
-</script></article><script>var disqus_shortname="johntfoster";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2022         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
+</script></article><script>var disqus_shortname="johntfoster";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2023         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
             
         </footer>
 </div>

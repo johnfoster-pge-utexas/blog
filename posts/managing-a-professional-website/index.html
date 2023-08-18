@@ -94,19 +94,19 @@
 <h4>Commit changes to local repository and push to GitHub</h4>
 <p><a name="commit"></a></p>
 <p>There are so many great <code>git</code> and <a href="https://github.com">GitHub</a> resources out there, I'm going to assume you know or can find out about basic <code>git</code> usage.  There is one important think to note for the <em>first</em> commit to GitHub.  You may run into problems if there is not an alternate branch of the repository for Travis to push the build results to.  You can create a branch with the following command:</p>
-<div class="code"><pre class="code literal-block">git checkout -b travis-build --orphan
+<div class="code"><pre class="code literal-block">git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>travis-build<span class="w"> </span>--orphan
 </pre></div>
 
 <p>This will create a new branch called <code>travis-build</code> with no history.  You should then remove all the files in this branch, commit, and push to GitHub</p>
-<div class="code"><pre class="code literal-block">git rm -rf *
-git commit -m <span class="s2">"First commit to travis-build branch"</span>
-git push origin travis-build
+<div class="code"><pre class="code literal-block">git<span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>*
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">"First commit to travis-build branch"</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>travis-build
 </pre></div>
 
 <p>assuming the default <code>origin</code> name for your GitHub repository.  Now switch back to your <code>master</code> branch, and push to GitHub, the <code>travis.yml</code> file in your repository (details covered below) will instruct Travis on how to build the repository</p>
-<div class="code"><pre class="code literal-block">git checkout master
-git commit -am <span class="s2">"A commit message detailing changes"</span>
-git push origin master
+<div class="code"><pre class="code literal-block">git<span class="w"> </span>checkout<span class="w"> </span>master
+git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">"A commit message detailing changes"</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>master
 </pre></div>
 
 <h4>Travis builds CV in PDF and HTML versions</h4>
@@ -118,8 +118,8 @@ git push origin master
 <p>Upon committing, Travis reads the <code>travis.yml</code> file in the repository and performs a set of actions.  In this case, we want to build a LaTeX file which there is not a preinstalled Travis Ubuntu instance for LaTeX so we need to use <code>apt-get</code> to install all of the LaTeX dependencies and proper fonts for building the CV. The other commands just some basic Travis configuration, full details for Travis configuration can be found <a href="http://docs.travis-ci.com/">here</a></p>
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=0:16&amp;footer=minimal"></script><p>Once all of the dependencies are installed, Travis will build both the PDF and HTML versions of the CV with</p>
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=17:19&amp;footer=minimal"></script><p>After a successful build, Travis will clone the previously created <code>travis-build</code> branch, copy the newly created PDF and HTML files into this branch, commit them, and push them back to GitHub.  This requires setting up a few environment variables, that can be added to the Travis project page.  The variables are <code>GIT_EMAIL</code>, <code>GIT_NAME</code>, <code>GH_TOKEN</code>, and <code>TRAVIS_TOKEN</code>.  The first two just correspond to basic <code>git</code> configuration and are really just used to store the information of the person who make the commit in the <code>git</code> history.  Since it's actually Travis making the commit, I just define the variables as</p>
-<div class="code"><pre class="code literal-block"><span class="n">GIT_NAME</span><span class="o">=</span><span class="ss">"Travis CI"</span><span class="w"></span>
-<span class="n">GIT_EMAIL</span><span class="o">=</span><span class="n">travis</span><span class="o">-</span><span class="n">ci</span><span class="nv">@travis</span><span class="p">.</span><span class="n">org</span><span class="w"></span>
+<div class="code"><pre class="code literal-block"><span class="n">GIT_NAME</span><span class="o">=</span><span class="ss">"Travis CI"</span>
+<span class="n">GIT_EMAIL</span><span class="o">=</span><span class="n">travis</span><span class="o">-</span><span class="n">ci</span><span class="nv">@travis</span><span class="p">.</span><span class="n">org</span>
 </pre></div>
 
 <p>The environment variables can be set on the Travis setting page as shown</p>
@@ -131,11 +131,11 @@ git push origin master
 <p>The other two environment variables, <code>GH_TOKEN</code> and <code>TRAVIS_TOKEN</code> are more critical as they allow the Travis the proper credentials to commit back to Github and to issue a new build of the website for which the CV will be included. The get a GitHub token, go to your GitHub settings page, click on Applications on the left-hand panel and then "Generate new token", give the token a name and copy or write down the token somewhere safely.  </p>
 <p><img src="../../files/github-settings.png"></p>
 <p><strong>This will be the only time you can actually see the token</strong> so make sure you have it copied somewhere.  You can use the same token form multiple Travis jobs, but you have to know what it is and cannot reveal it again later.  Use this token to set the <code>GH_TOKEN</code> environment variable back on the Travis site.  Finally, you can get a <code>TRAVIS_TOKEN</code> through the Ruby <a href="http://blog.travis-ci.com/2013-01-14-new-client/">Travis command line interface</a>.  If you have Ruby installed you can install Travis like any Ruby <code>gem</code> with</p>
-<div class="code"><pre class="code literal-block">gem install travis
+<div class="code"><pre class="code literal-block">gem<span class="w"> </span>install<span class="w"> </span>travis
 </pre></div>
 
 <p>Then you can find your Travis access token with </p>
-<div class="code"><pre class="code literal-block">travis token
+<div class="code"><pre class="code literal-block">travis<span class="w"> </span>token
 </pre></div>
 
 <p>copy the result and add the final environment variable into your Travis settings page just like the others before.  </p>
@@ -186,7 +186,7 @@ git push origin master
     <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
-        </section></article><script>var disqus_shortname="johntfoster";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2022         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
+        </section></article><script>var disqus_shortname="johntfoster";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2023         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
             
         </footer>
 </div>

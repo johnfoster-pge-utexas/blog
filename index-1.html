@@ -61,20 +61,20 @@ computing can now be accomplished much easier by using <a href="https://docs.doc
 <p>If your a software engineer working in web development or cloud software deployment, you would have had to have your head in the sand for the last two years to have not heard of <a href="http://www.docker.com">Docker</a> by now.  Briefly, Docker is a light-weight application container deployment service (think super low-overhead virtual machine, usually meant to contain one application and its dependencies), based on Linux containers.  While there are <a href="https://www.google.com/search?q=docker&amp;oq=docker++&amp;aqs=chrome..69i57j69i60l2j0l3.2551j1j9&amp;sourceid=chrome&amp;es_sm=119&amp;ie=UTF-8">100s of articles</a> describing Docker, its uses, many services, and even companies springing up around it; my colleagues in the scientific computing/high-performance computing (HPC) world are either not aware of Docker or don't see the utility, because it's hard to find significant information for or uses of Docker in this field.  This post will hopefully demonstrate some of the utility of the service and promote its use in HPC and in academic settings.  Additionally, as a contributor to the open-source software <a href="http://peridigm.sandia.gov">Peridigm</a>, my hope it that the path demonstrated here might lower the courage required to try out the software and promote new users.</p>
 <p>To provide some background/context for my own interest in Docker, in my current role as an academic advisor to graduate students and in my previous career as a researcher at Sandia National Laboratories I have often been a user and/or developer of scientific software that has a fairly complex dependent application stack. To use <em>Peridigm</em>, a massively parallel computational peridynamic mechanics simulation code, as an example, we have a large dependency on <a href="http://trilinos.org">Trilinos</a>.  The packages we use from Trilinos have additional dependencies on a message passing interface (MPI) implementation (e.g. <a href="http://www.open-mpi.org">OpenMPI</a>), <a href="http://www.boost.org">Boost</a>, and <a href="http://www.unidata.ucar.edu/software/netcdf/">NetCDF</a>.  NetCDF has a dependency on <a href="https://hdfgroup.org/HDF5/">HDF5</a>, HDF5 on <a href="http://www.zlib.net/">zlib</a>, etc.  All of these need a C/C++ compiler for building, of course, and if we are using the Intel compilers we might as well go ahead and use <a href="https://software.intel.com/en-us/intel-mkl">MKL</a> libraries for efficiency.  Trilinos uses <a href="http://www.cmake.org">CMake</a> as a build system, so we need that around as well, at least during the build process. I'm sure there are others I am not thinking of at this moment.  Figuring out and understanding these dependencies and learning to debug build issues can take a really long time for a budding computational scientist to master.  Problems can be really compounded in a large multi-user HPC cluster where many different versions of compilers and libraries are present.  Using UNIX <a href="http://modules.sourceforge.net/">modules</a> goes a long way towards keeping things straight, but problems still arise that can be time consuming to troubleshoot.  I usually have new graduate students go through the process of building <em>Peridigm</em> and all the dependencies for their own learning experience when they first join my group, in every case they struggle considerably the first few times the have to build the entire suite of software on a new machine.  In some cases, particularly with MS level students, it can be a serious impediment to progress, as they are very short time lines to make meaningful research progress, and oftentimes they are only going to be end-users of the code, not developers.  Almost certainly they are not going to make changes to any of the packages in Trilinos or any of the other dependencies outside of <em>Peridigm</em>.  Enter Docker.</p>
 <p>Docker allows for the ability to run applications in prebuilt containers on any Linux machine with Docker installed (or even Mac OS X and Windows via <a href="http://boot2docker.io/">Boot2Docker</a>).  If your Linux distribution doesn't already have it installed, just use your package manager (e.g. <code>apt-get install docker</code> on Debian/Ubuntu based machines and <code>yum install docker</code> on Fedora/Redhat based machines).  Docker is so ubiquitous at this point there are even entire Linux distributions like <a href="https://coreos.com/">CoreOS</a> being built specifically to maximize its strengths.  Additionally, there is the <a href="https://registry.hub.docker.com/">Docker Hub Registry</a> which provides <a href="http://github.com">Github</a> like <code>push/pull</code> operations and cloud storage of prebuilt images.  Of course, you or your organization can host your own Docker image registry as well (note: think of a <em>Docker image</em> like a C++ class, and a <em>Docker container</em> as a C++ object, or an <em>instance</em> of the image that runs).  You can derive images from one another and this is what I have done in setting up an image of <em>Peridigm</em>.  First, I have an image that starts with a baseline Debian based Linux and installs NetCDF and its dependencies.  I have two tagged versions, a standard NetCDF build and a <em>largefiles</em> patched version which makes the <a href="https://peridigm.sandia.gov/content/netcdf">large file modifications</a> as suggested in the <em>Peridigm</em> build documentation. The NetCDF largefile image can be pulled to a Docker users local machine from my public Docker Hub Registry with</p>
-<div class="code"><pre class="code literal-block">docker pull peridigm/netcdf:largefiles
+<div class="code"><pre class="code literal-block">docker<span class="w"> </span>pull<span class="w"> </span>peridigm/netcdf:largefiles
 </pre></div>
 
 <p>the NetCDF image is built automatically via continuous integration with a <a href="https://github.com/johntfoster/docker-netcdf">Github repository</a> that contains a <a href="https://docs.docker.com/reference/builder/">Dockerfile</a> with instructions for the image build process.  I then derive a Trilinos image from the NetCDF largefiles image.  This image contains only the Trilinos packages enabled such that <em>Peridigm</em> can be built.  The Trilinos image can be pulled to a local machine with</p>
-<div class="code"><pre class="code literal-block">docker pull peridigm/trilinos
+<div class="code"><pre class="code literal-block">docker<span class="w"> </span>pull<span class="w"> </span>peridigm/trilinos
 </pre></div>
 
 <p>this Trilinos image could be used to derive other images for other Trilinos based application codes which utilize the same dependent packages as <em>Peridigm</em>.  The <code>cmake</code> build script which shows the active Trilinos packages in this image can be viewed <a href="https://github.com/johntfoster/docker-trilinos/blob/master/trilinos-debian-cmake.sh">here</a>.  This image is also built via continuous integration with <a href="https://github.com/johntfoster/docker-trilinos">this Github repository</a> which can easily be modified to include more Trilinos packages.  Finally, the <em>Peridigm</em> image can be pulled to a local machine with</p>
-<div class="code"><pre class="code literal-block">docker pull peridigm/peridigm
+<div class="code"><pre class="code literal-block">docker<span class="w"> </span>pull<span class="w"> </span>peridigm/peridigm
 </pre></div>
 
 <p>this image is built from the Dockerfile <a href="https://github.com/johntfoster/docker-peridigm">found here</a>, however it must be modified slightly to work with a local <em>Peridigm</em> source distribution if you want to build your own image because I do not want to distribute the <em>Peridigm</em> software source code as that is done by Sandia National Laboratories (see <a href="http://peridigm.sandia.gov">here</a> if interested in getting the source). To run <em>Peridigm</em> you simply have to run the command:</p>
-<div class="code"><pre class="code literal-block">docker run --name peridigm0 -d -v <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/output peridigm/peridigm <span class="se">\ </span>
-       Peridigm fragmenting_cylinder.peridigm 
+<div class="code"><pre class="code literal-block">docker<span class="w"> </span>run<span class="w"> </span>--name<span class="w"> </span>peridigm0<span class="w"> </span>-d<span class="w"> </span>-v<span class="w"> </span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/output<span class="w"> </span>peridigm/peridigm<span class="w"> </span><span class="se">\ </span>
+<span class="w">       </span>Peridigm<span class="w"> </span>fragmenting_cylinder.peridigm<span class="w"> </span>
 </pre></div>
 
 <p>Even if you have not pulled the images locally from the Docker Hub Registry, this command will initiate the download process and  run the command after downloading.  Because the image contains all the necessary dependencies, it is around 2GB in size; therefore, it takes a while to download on the first execution.  I have not made any attempts to optimize the image size, but it's likely it could be made smaller to speed this process up.  Once you have the image locally, launching a container to run a simulation takes only milliseconds.  The <code>--name</code> option gives the container the name <code>peridigm0</code>, this could be any name you choose and naming the container is not required, but makes for an easy way to stop the execution if you wish.  If you need to stop the execution, simply run <code>docker stop peridigm0</code>.  The <code>-d</code> option "detaches" the terminal so that the process runs in the background, you can reattach if needed with <code>docker attach peridigm0</code>.  The <code>-v</code> option is critical for retrieving the data generated by the simulation.  Docker handles data a little strangely, so you have to mount a local volume, in this case the current working directory returned by <code>pwd</code>, but in general it could any <code>/path/to/data/storage</code>.  The local path is mounted to the volume <code>/output</code> that has been created in the <em>Peridigm</em> Docker image.  You must place your input file, in this case <code>fragmenting_cylinder.peridigm</code> from the examples distributed with <em>Peridigm</em>, in your local shared mount for the <em>Peridigm</em> executable located in the Docker image to access it. As the simulation runs, you will see an output file <code>fragmenting_cylinder.e</code> appear in the shared mount.  The other two arguments, <code>peridigm/peridigm</code> and <code>Peridigm</code> are the image name in the Docker Hub Registry and the executable, respectively.</p>
@@ -92,38 +92,38 @@ computing can now be accomplished much easier by using <a href="https://docs.doc
 </ol>
 <p>That's it.  No compiling, no dependencies.  Most of the performance studies I've seen report a very small, 1-2% hit from the Dockerized version of an application over a natively installed application stack.</p>
 <p>Of course, <em>Peridigm</em> is meant to be run in a massively parallel setting.  A Docker container can take advantage of some multithreading, therefore you can also just run an MPI job right inside a Docker container, for <em>Peridigm</em> we can simply run</p>
-<div class="code"><pre class="code literal-block">docker run --name peridigm0 -d -v <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/output peridigm/peridigm <span class="se">\</span>
-       mpiexec -np <span class="m">2</span> Peridigm fragmenting_cylinder.peridigm 
+<div class="code"><pre class="code literal-block">docker<span class="w"> </span>run<span class="w"> </span>--name<span class="w"> </span>peridigm0<span class="w"> </span>-d<span class="w"> </span>-v<span class="w"> </span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/output<span class="w"> </span>peridigm/peridigm<span class="w"> </span><span class="se">\</span>
+<span class="w">       </span>mpiexec<span class="w"> </span>-np<span class="w"> </span><span class="m">2</span><span class="w"> </span>Peridigm<span class="w"> </span>fragmenting_cylinder.peridigm<span class="w"> </span>
 </pre></div>
 
 <p>for a possibly small performance gain.  If you run this command, you should now see the domain decomposed output files, e.g. <code>fragmenting_cylinder.e.0</code> and  <code>fragmenting_cylinder.e.1</code> appear in your mounted directory.  However, this alone will not give you the true gains you expect form multicore CPUs or close to what you would see in a massively parallel HPC cluster.  We can spawn a virtual cluster of Docker containers, from the <code>peridigm/peridigm</code> image and use MPI to communicate between them.  To do this, we launch our virtual cluster with <code>docker run ...</code> but this time without any execution command.  The default is for these containers to be ssh servers, so they will sit there idle until we need them for an MPI task.  For example, if we want a 2 node job, we can run</p>
-<div class="code"><pre class="code literal-block">docker run --name peridigm0 -d -P -h node0 -v <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/output peridigm/peridigm
-docker run --name peridigm1 -d -P -h node1 -v <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/output peridigm/peridigm
+<div class="code"><pre class="code literal-block">docker<span class="w"> </span>run<span class="w"> </span>--name<span class="w"> </span>peridigm0<span class="w"> </span>-d<span class="w"> </span>-P<span class="w"> </span>-h<span class="w"> </span>node0<span class="w"> </span>-v<span class="w"> </span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/output<span class="w"> </span>peridigm/peridigm
+docker<span class="w"> </span>run<span class="w"> </span>--name<span class="w"> </span>peridigm1<span class="w"> </span>-d<span class="w"> </span>-P<span class="w"> </span>-h<span class="w"> </span>node1<span class="w"> </span>-v<span class="w"> </span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/output<span class="w"> </span>peridigm/peridigm
 </pre></div>
 
 <p>this launches containers named <code>peridigm0</code> and <code>peridigm1</code> that will have local (to their containers) machine names <code>node0</code> and <code>node1</code>.  Now we can find the containers IP addresses with the following command</p>
-<div class="code"><pre class="code literal-block">docker inspect -f <span class="s2">"{{ .NetworkSettings.IPAddress }}"</span> peridigm0
-docker inspect -f <span class="s2">"{{ .NetworkSettings.IPAddress }}"</span> peridigm1
+<div class="code"><pre class="code literal-block">docker<span class="w"> </span>inspect<span class="w"> </span>-f<span class="w"> </span><span class="s2">"{{ .NetworkSettings.IPAddress }}"</span><span class="w"> </span>peridigm0
+docker<span class="w"> </span>inspect<span class="w"> </span>-f<span class="w"> </span><span class="s2">"{{ .NetworkSettings.IPAddress }}"</span><span class="w"> </span>peridigm1
 </pre></div>
 
 <p>These commands will return the ip addresses, just for demonstration purposes, let's assume that they are <code>10.1.0.124</code> and <code>10.1.0.125</code> respectively.  Now we can launch <code>mpiexec</code> to run <em>Peridigm</em> on our virtual cluster.  This time the containers are already running, so all we have to is run</p>
-<div class="code"><pre class="code literal-block">docker <span class="nb">exec</span> peridigm0 mpiexec -np <span class="m">2</span> -host <span class="m">10</span>.1.0.124,10.1.0.125 <span class="se">\</span>
-       Peridigm fragmenting_cylinder.peridigm
+<div class="code"><pre class="code literal-block">docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>peridigm0<span class="w"> </span>mpiexec<span class="w"> </span>-np<span class="w"> </span><span class="m">2</span><span class="w"> </span>-host<span class="w"> </span><span class="m">10</span>.1.0.124,10.1.0.125<span class="w"> </span><span class="se">\</span>
+<span class="w">       </span>Peridigm<span class="w"> </span>fragmenting_cylinder.peridigm
 </pre></div>
 
 <p>which executes <code>mpiexec</code> on the container named <code>peridigm0</code> and passes a host list to make MPI aware of where the nodes waiting for tasks are.  You can have fine grained control over <code>mpirun</code> as well, for example if you wanted to run 2 MPI tasks per Docker container, you could do something like</p>
-<div class="code"><pre class="code literal-block">docker <span class="nb">exec</span> peridigm0 mpiexec -np <span class="m">4</span> -num-proc <span class="m">2</span> -host <span class="m">10</span>.1.0.124,10.1.0.125 <span class="se">\</span>
-       Peridigm fragmenting_cylinder.peridigm
+<div class="code"><pre class="code literal-block">docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>peridigm0<span class="w"> </span>mpiexec<span class="w"> </span>-np<span class="w"> </span><span class="m">4</span><span class="w"> </span>-num-proc<span class="w"> </span><span class="m">2</span><span class="w"> </span>-host<span class="w"> </span><span class="m">10</span>.1.0.124,10.1.0.125<span class="w"> </span><span class="se">\</span>
+<span class="w">       </span>Peridigm<span class="w"> </span>fragmenting_cylinder.peridigm
 </pre></div>
 
 <p>when your finished you can stop and remove the containers with</p>
-<div class="code"><pre class="code literal-block">docker stop peridigm0 peridigm1
-docker rm -v peridigm0 peridigm1
+<div class="code"><pre class="code literal-block">docker<span class="w"> </span>stop<span class="w"> </span>peridigm0<span class="w"> </span>peridigm1
+docker<span class="w"> </span>rm<span class="w"> </span>-v<span class="w"> </span>peridigm0<span class="w"> </span>peridigm1
 </pre></div>
 
 <p>the <code>-v</code> option to <code>docker rm</code> ensures that the mounted volumes are removed as well and there not any orphaned file system volume shares. I have written a Python script (shown below) that automates the whole process for an arbitrary number of Docker containers in a virtual cluster.</p>
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/docker-peridigm/blob/master/pdrun?footer=minimal"></script><p>You can utilize this script to run <em>Peridigm</em> simulations on a virtual Docker cluster with the following command:</p>
-<div class="code"><pre class="code literal-block">./pdrun --np <span class="m">4</span> fragmenting_cylinder.peridigm --path<span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>
+<div class="code"><pre class="code literal-block">./pdrun<span class="w"> </span>--np<span class="w"> </span><span class="m">4</span><span class="w"> </span>fragmenting_cylinder.peridigm<span class="w"> </span>--path<span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>
 </pre></div>
 
 <p>please consult the documentation of the script for more info about the options using <code>./pdrun -h</code>.  There are really only a few detials in between what I've done here and being able to deploy this on a production HPC cluster.  The main difference would be that you would use a resource manager, e.g. <a href="http://slurm.schedmd.com/">SLURM</a> to schedule running the Docker containers.  You would also want to have both your mounted volume and a copy of the Docker image on a shared filesystem across all nodes of the cluster.  Did I mention you can <a href="https://docs.Docker.com/registry/deploying/">deploy your own private registry server?</a></p>
@@ -144,7 +144,7 @@ docker rm -v peridigm0 peridigm1
     <p>This post is mainly aimed at my colleagues (and students) in the Cockrell School of Engineering at <a href="http://www.utexas.edu">The University of Texas at Austin</a>.  As you may have gathered from other posts on this blog, I am a huge fan of <a href="http://www.latex-project.org/">LaTeX</a> for typesetting documents.  Recently, I had to give a talk within the <a href="http://pge.utexas.edu">Department</a> and was asked polietly by our Communications Coordinator to use a provided MS PowerPoint template that conforms to the <a href="http://www.engr.utexas.edu/communications/visualguidelines">Visual Style Guide</a> of the <a href="http://engr.utexas.edu">Cockrell School of Engineering</a>. </p>
 <p>I have many reasons for disliking PowerPoint that I will not go into here, but I have avoided using it at all costs for several years now, and did not want to start now.  I also have an appreciation for branding and respect the desire to project a uniform brand from the Departments/School.  My solution was to create my own LaTeX Beamer presentation style that replicates the Cockrell School PowerPoint as close as possible.  I hacked it together relatively quickly for my talk which I delivered last week, but decided over the weekend to put together something a little more robust to share with my colleagues in the Cockrell School.  The style file accepts arguments to input different department names and has some nice features for using BibTeX citations within the presentation.</p>
 <p>The repository can be found cloned with <code>git</code> with the following command:</p>
-<div class="code"><pre class="code literal-block">git clone git@github.com:johntfoster/cockrell-school-latex-beamer-template
+<div class="code"><pre class="code literal-block">git<span class="w"> </span>clone<span class="w"> </span>git@github.com:johntfoster/cockrell-school-latex-beamer-template
 </pre></div>
 
 <p>it can also be found on <a href="https://github.com/johntfoster/cockrell-school-latex-beamer-template">GitHub</a>. Feel free to fork it and extend it as you see fit.  If you find any errors or add useful extensions, please send pull-requests.</p>
@@ -165,7 +165,7 @@ docker rm -v peridigm0 peridigm1
 </div>
     </header><div class="e-content entry-content">
     <p>I use <a href="http://www.vim.org/">Vim</a> as my editor of choice for nearly all text editing activities including writing LaTeX documents.  My usual workflow is to use a split window setup with <code>tmux</code> and run <code>latexmk -pvc</code> on my LaTeX file in one split-pane while editing the source file in the other split-pane.  If your not familiar with <code>latexmk</code> it is a Perl script that, in a smart way, using minimal number of compile runs, keeps your LaTeX document output up-to-date with the correct cross-references, citations, etc.  The <code>-pvc</code> option keeps it running in the background and recompiles with a detected change in <em>any</em> of the project files.  I then use <a href="http://pages.uoregon.edu/koch/texshop/">TeXShop</a> as a PDF viewer because it has the nice ability to detect changes to the PDF output and autoupdate.  Mac OS X's built-in Preview will do this as well, but you must click the window to enable the refresh.  However, by default, TeXShop will steal focus from the editor window.  This is annoying causing me to click or Command-Tab back to the Terminal to continue typing.  I found a fix in a <a href="http://tex.stackexchange.com/questions/43057/macosx-pdf-viewer-automatic-reload-on-file-modification">comment on Stack Exchange</a>.  If you type</p>
-<div class="code"><pre class="code literal-block">defaults write TeXShop BringPdfFrontOnAutomaticUpdate NO
+<div class="code"><pre class="code literal-block">defaults<span class="w"> </span>write<span class="w"> </span>TeXShop<span class="w"> </span>BringPdfFrontOnAutomaticUpdate<span class="w"> </span>NO
 </pre></div>
 
 <p>in the Terminal window this will disable the focus-stealing behavior and leave the window in the background so that it doesn't disrupt continuous editing.</p>
@@ -189,7 +189,6 @@ docker rm -v peridigm0 peridigm1
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This post will briefly show how you can use the <code>exodus.py</code> script distributed with <a href="http://trilinos.org">Trilinos</a> to extract data directly from an Exodus database.  Exodus is a wrapper API on NetCDF that is specifically suited for finite element data.  That is, it defines variables on nodes, elements, blocks of elements, sets of nodes, etc.  The Exodus API is provided in both C and Fortran, <code>exodus.py</code> uses <code>ctypes</code> to call into the compiled Exodus C library.</p>
 <p>First, I need to rearrange my install environment a little because <code>exodus.py</code> expects the NetCDF and Exodus compiled dynamic libraries to be in the same directory. On my machine they are not, so I will just create some symbolic links.  It also expects the Exodus include file to be in a folder labeled <code>inc</code>, but on my machine it is labeled <code>include</code> so again, I will just create some symbolic links.</p>
-
 </div>
 </div>
 </div>
@@ -197,16 +196,14 @@ docker rm -v peridigm0 peridigm1
 <div class="input">
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span>%%bash
-ln -sf /usr/local/netcdf/lib/libnetcdf.dylib /usr/local/trilinos/lib/.
-ln -sf /usr/local/trilinos/include /usr/local/trilinos/inc
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span>%%bash
+ln<span class="w"> </span>-sf<span class="w"> </span>/usr/local/netcdf/lib/libnetcdf.dylib<span class="w"> </span>/usr/local/trilinos/lib/.
+ln<span class="w"> </span>-sf<span class="w"> </span>/usr/local/trilinos/include<span class="w"> </span>/usr/local/trilinos/inc
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -215,7 +212,6 @@ ln -sf /usr/local/trilinos/include /usr/local/trilinos/inc
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If your /usr/local is not writable, you may need to use <code>sudo</code> to create the links.  Also, I am on Mac OSX where dynamic libraries have a <code>.dylib</code> file extension.  If you use Linux, you will need to change <code>.dylib</code> above to <code>.so</code>.</p>
 <p>We also need to add the path of <code>exodus.py</code> to the active <code>PYTHONPATH</code>.  We can do this from within the IPython session.</p>
-
 </div>
 </div>
 </div>
@@ -223,15 +219,13 @@ ln -sf /usr/local/trilinos/include /usr/local/trilinos/inc
 <div class="input">
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'/usr/local/trilinos/bin'</span><span class="p">)</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -239,7 +233,6 @@ ln -sf /usr/local/trilinos/include /usr/local/trilinos/inc
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we can load the <code>exodus</code> class from <code>exodus.py</code> and instantiate a file object with a given filename.  I will use the <code>ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h</code> Exodus history database that is output from the <a href="http://peridigm.sandia.gov"><em>Peridigm</em></a> verification test of the same name.</p>
-
 </div>
 </div>
 </div>
@@ -247,25 +240,18 @@ ln -sf /usr/local/trilinos/include /usr/local/trilinos/inc
 <div class="input">
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">exodus</span> <span class="kn">import</span> <span class="n">exodus</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">exodus</span> <span class="kn">import</span> <span class="n">exodus</span>
 
 <span class="n">e</span> <span class="o">=</span> <span class="n">exodus</span><span class="p">(</span><span class="s1">'ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h'</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span> <span class="n">array_type</span><span class="o">=</span><span class="s1">'numpy'</span><span class="p">)</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
-    <div class="prompt"></div>
-
-
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
 You are using exodus.py v 1.02 (beta), a python wrapper of some of the exodus II library.
@@ -276,10 +262,8 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -287,7 +271,6 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we'll use the API calls to extract the data.  First we'll get the time step values.</p>
-
 </div>
 </div>
 </div>
@@ -295,14 +278,12 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <div class="input">
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">time_steps</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">get_times</span><span class="p">()</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">time_steps</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">get_times</span><span class="p">()</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -310,7 +291,6 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we can print the global variable names.</p>
-
 </div>
 </div>
 </div>
@@ -318,34 +298,22 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <div class="input">
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">e</span><span class="o">.</span><span class="n">get_global_variable_names</span><span class="p">()</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">e</span><span class="o">.</span><span class="n">get_global_variable_names</span><span class="p">()</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
-    <div class="prompt output_prompt">Out[5]:</div>
-
-
-
-
+<div class="prompt output_prompt">Out[5]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>['Max_Von_Mises_Stress', 'Min_Von_Mises_Stress']</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -353,7 +321,6 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And use the global variable names to extract the data from the database.  Since we used <code>array_type='numpy'</code> when we instantiated the file object above.  The data is stored in numpy arrays.</p>
-
 </div>
 </div>
 </div>
@@ -361,15 +328,13 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <div class="input">
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">vm_max</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">get_global_variable_values</span><span class="p">(</span><span class="s1">'Max_Von_Mises_Stress'</span><span class="p">)</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">vm_max</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">get_global_variable_values</span><span class="p">(</span><span class="s1">'Max_Von_Mises_Stress'</span><span class="p">)</span>
 <span class="n">vm_min</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">get_global_variable_values</span><span class="p">(</span><span class="s1">'Min_Von_Mises_Stress'</span><span class="p">)</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -377,7 +342,6 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Because in this example test we load at a constant strain-rate, we can easily convert the time-steps to engineering strain.</p>
-
 </div>
 </div>
 </div>
@@ -385,14 +349,12 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <div class="input">
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">eng_strain_Y</span> <span class="o">=</span> <span class="n">time_steps</span> <span class="o">*</span> <span class="mf">0.001</span> <span class="o">/</span> <span class="mf">1.0e-8</span>
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">eng_strain_Y</span> <span class="o">=</span> <span class="n">time_steps</span> <span class="o">*</span> <span class="mf">0.001</span> <span class="o">/</span> <span class="mf">1.0e-8</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -400,7 +362,6 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we can create a stress-strain curve</p>
-
 </div>
 </div>
 </div>
@@ -408,37 +369,25 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <div class="input">
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">eng_strain_Y</span><span class="p">,</span> <span class="n">vm_max</span><span class="p">,</span> <span class="n">eng_strain_Y</span><span class="p">,</span> <span class="n">vm_min</span><span class="p">);</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Max/Min von Mises Stress"</span><span class="p">);</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
-<img src="data:image/png;base64,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">
-</div>
-
-</div>
-
+<div class="prompt"></div>
+<div class="output_png output_subarea">
+<img alt="No description has been provided for this image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX8AAAEGCAYAAACNaZVuAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz%0AAAALEgAACxIB0t1+/AAAIABJREFUeJzt3XmcXHWZ7/HP01XV1Xu2zk4gCRA2WYIKKKBpUASEMHec%0AGUVmVOTOeK86wOhFB1nSgIMj4qCM48y9gyIioA7iKALKlijKJphAgIBEMWTrrJ30VtW19HP/qIp2%0AQtJ9urvOqUrX9/161aurTp1zfs8v3Xn617/zq/OYuyMiItWlptwBiIhI9JT8RUSqkJK/iEgVUvIX%0AEalCSv4iIlVIyV9EpAqVNfmb2TfNbJOZrQyw7yFm9piZLTez58zsrChiFBEZj8o98r8VODPgvlcC%0A33H3hcAHgK+HFpWIyDhX1uTv7o8BnYO3mdnBZvaAmT1jZr8ws8OKb20EJhSfTwTWRxiqiMi4YuX+%0AhK+ZzQXudfeji68fAT7m7qvN7ETgenc/3cxagCeAFqARON3dl5cpbBGR/Vq83AEMZmZNwNuA/zKz%0AXZtri1//BbjF3W8ys5OA7wBHRR+liMj+r6KSP4VpqB3Fef09vR1YAuDuT5pZnZm1uvvWSCMUERkH%0AQp3zN7PLzexFM1tpZneaWXKo/d29C3jNzP6ieLyZ2THFt18G3lXcfgRQp8QvIjI6oSX/4lz+3wLH%0AF+fzYxRW6Qze5y7gceAwM1trZhcCFwAXmdkK4AVgcXH3y4ALi9vvBD4cVuwiIuNdmNM+XUAWaDCz%0APNDAHit03P38fRz7hjX87v47YFGJYxQRqUqhjfzdfTvwZeB1YAOFufyHw2pPRESCC3Pa52DgUmAu%0AMAtoMrMLwmpPRESCC3Pa5y3A4+6+DcDM7qGwYueOXTuYmcqIiYiMgrvb8HvtW5jJ/2XgKjOrB9IU%0AVuo8vedOY+1AJTOzdndvL3ccYVH/9m/juX/juW9QmoFzmHP+zwHfBp4Bni9u/n9htSciIsGF+iEv%0Ad78BuCHMNkREZOTKfVfP8W5ZuQMI2bJyBxCyZeUOIGTLyh1AiJaVO4BKV9Ybu5mZj+c5fxGRMJQi%0Ad2rkLyJShZT8RUSqkJK/iEgVUvIXEalCSv4iIlVIyV9EpApVWiUvEREArG1Jgpr8LCw3k5rcNGpy%0AU6nJtRLLTaYmO4VYdgKxTAs1mWbimSZimQZimTpi6STxTIJXFk/ype26f9g+KPmLSMlYW7thAxOp%0AyR1ATfYAanIziWVmEMtOoyY7kVh2IrFMC7FMM7FMI7H+BuLpeuLpJIlULfFUnNreGLU9NbwjA5km%0AyDTkyTbkyTVkyNZnyCXT5OtS5JK95Gt7yCe7yDatJ5/YyUB8BwPxTgbi28v9b1Hp9CEvEfkja2uP%0AYblZxHJzqMnOpCY7k1h2BrFsK7HMFGL9E4n3TySebiaebiSeaiDRl6S2p5banjjJLgOD/pYB+ptz%0AZBuzZBvSZOtT5JO95JJ95Gu7ySe6GajdQT6xg4H4dgYS28nHNzMQ34zHNzEQ68BjWzVy37tS5E4l%0Af5FxyNqWJKnJzSOWmUssO4eazGzimRnE+qcST08hkZpMPNVCoreR2t56kt21JHfGSXYbmUbINOfJ%0ANGbJNvaTrU+Tre8jX9dDrm4nueQO8rWd5Gu3MJDYQj7RwUBiAwPx9QzE1/mj1+4sd//HOyV/kSpg%0Ap109gZrMYcSy84n3zyWWnkM8PYtEupV4ahKJVPOfknhXIYnX9kJ6gtM/IUd/cz+ZxhTZhh5yDTvJ%0A1XWSq9tGrnYz+WQH+dq15BOvM5D4AwPxtb70mmy5+yxDU/IX2c8U5sRzs4hlFxDrn088cyCx9AEk%0A0jOI902ltm8yiZ4Wkj0NJHckqe+ME8tAavIA6YkZ+lv6yDR1k23sJFu/jVzdVvLJTeRrN5KvXT8o%0Aia/zpe35cvdXwqHkL1IBCgk9P4NY/xHE+w8jnj6YROpAEn0zqe2ZSm33ROp2NlO3PUnDthgDCUhN%0AzpGe0E9/cx/Zpi6yDZ1k67eQq+8gl1xHLrmGfPL35BOr8fg6zX3LYEr+IiGytiVJYpk3EU8fTTx9%0ACPHUQST6ZlHbO53ankmFhN5ZT8PWOObQOzVHelKK9IRuMs3byTRsJtuwgVz9GnJ1q8knf0u+dpU/%0Aem1nufsm+zclf5FRstOumk48vZB4+kgSqQUkeueS7J5FsquVus4WGrbW07C1htTkAfpa06QndpNp%0A3kGmaQvZho1k618nV/c7cslXyCdX4bEOjc4lKkr+IntRSOypE0mkjqW293Bqew4k2TWT5M5J1G9r%0AonFLLbEs9EzPkprSR3pCJ/0tm8k0rSPb8Bq5+lfI1q0kn3zOl16TKnd/RPak5C9Vx9rajVjmSOKp%0At5LoexO1PQtIdh1I3Y7pNGydQNOmOuJpo3tWhr7WblKTttDfvIFs0xqy9avJ1b9Erm4FA/E1GqnL%0A/qrik7+ZHQZ8d9Cm+cBV7n5z8X0lf9mNtbUbNdmDSfSdTG3vQpJdR1C34yDqOqfSuLmZpo4E2Uan%0AZ3qKvik7SE/aRKb5dTJNr5BteJ5s/bMMJF5RYpfxrOKT/24NmdUA64ET3H1tcZuSfxWytiVJ4ukT%0ASPSeRG3PMdTtPJT6ztk0bp5C84Z6cOienaJ32jZSk9bTP2E1mcaXyDY8R67uaX/0ui3l7oNIOe1v%0Ayf8M4Gp3P2XQNiX/ccra2mPE0ydS2/MOkl3HU9d5GI1bZtPU0UJTR4K+1jw9M7rpa91EeuIa+ltW%0AkWlcTrbhMQYSr2nkLrJvpcidUd7Y7QPAnRG2JxGw0688iETv6SS7TqRu55E0bJ1L08ZWTl5bR3pi%0Anq7ZXfRO20Bq0qvsnPMDsk1Pkq17wpde213u2EWqWSQjfzOrpTDlc6S7bxm0XSP//YSdfsXhJLvP%0AJLnjbTRsO4qmjgOY8HoL8X5j54F99EzfTGrKa6QnrqS/+QmyDUv90es2lTtukfFofxr5nwU8Ozjx%0A72Jm7YNeLnP3ZRHFJHthp18xn9qes6jb+Xbqt72Jpo45TFwzgRMyNXTO66Jn5nr6prxE5/xv8bsz%0AHiGfXKEpGpFwmdkiYFFJzxnRyP+7wAPuftse2zXyL5PCnHzfO6nbeTYN206kacNhTHptCrW9NXTO%0A6ykk+daXSU98kv7mh8gnf6MkL1IZ9osLvmbWCKwB5rl79x7vKflHwNqubibZs5i6znfRsPV4WtbP%0AZfLqFvpb8nTO20LPzFfom/wE/RPvI1f3KyV5kcq2XyT/IRtX8i85a1uSpLZnMfXbz6Wp4wQmvXYQ%0AE9bUsfPANDsP3EDvtBdITV5Gf8uP/JF/+n254xWRkVPyr3LW1m7EU6dQ3/k+GjefwoTXD2XKb1vo%0AmZGhc/5aumc8S2rKA2Saf6gCGyLjh5J/lbG2q5up6zqfxs3nMeH1N9P68jQG4s62BZvomv08fa0P%0Ak57wPX/082vLHauIhEfJf5yz0688iLrtH6Zp03uY9NpRTPntBHYc1Efnwb+le+ajpCbf5Q9/4Zly%0Axyki0VLyH2fstKtmUr/tY7SsX0zrK0fQsq6OLUd0smPuSnqnP0Bq0m3+6HUbyx2niJSXkv9+rjCN%0As+NCmje+jymvLmTy6ma2Hr6D7Qc/Q8/M75Oe8B3dUlhE9qTkvx+yd3/mXTRv+ASTV5/CtBdb2XlQ%0AH9sWPE/XrP8mPekWf/S6beWOUUQqm5L/fsDarm6kfvvHmbD2fKY//yYSqRgdx73KjoPupa/137Xc%0AUkRGSsm/QtlpV86hueNyJr96HjNWzGLnQT1sOeIpumZ/k0zL93xpe77cMYrI/kvJv4LY6VfMp6nj%0Ac7S+fC7TV05j0zGb2HrYT+iZ/i/+yPUvlTs+ERk/lPzLzE6/Yj7NG66mddV7mbqqlY7jNrBtwT30%0ATP9nf/Tz68sdn4iMT0r+ZWBtVzfSuOVypq76CDOWz6Zj4Tq2HvZ9eqfdoFsYi0gUlPwjZO/51AeZ%0A8upnOODJY+ia00XHsT+me/ZV/sjn15Q7NhGpLkr+IbPTrppCy/ovMfvp95PcmWTt237OjnnX+kNf%0A/Hm5YxOR6qXkHxI747KzaH3leub86li2Hr6ZjmO/Tt/UL/jSa7Lljk1ERMm/hKyt3ajf9mlm/fqz%0ATP79ZNac+iTbD/2sP/TPvyx3bCIigyn5lyKGtiVJmjfcyIG/uohYJsaad9zBzgMuUYFxEalUSv5j%0AabttSZKWdTcz/5ELSU1Ose7Er9I7/Rp9AEtEKl0kyd/M/gr4qbt3mdlVwPHAde7+m7E0XDx35Mnf%0A2pYkaN5wE/Mf+TvSE1O8fsoSv//mr0QZg4jIWESV/Fe6+9FmdgrweeBG4Cp3P3EsDRfPHWnyt7M/%0A+VkOfugacnVZ1px6LanWG1WvVkT2N6XInfEA++yaBjkH+E93/4mZXRfk5GY2EbgFOApw4KPu/uSo%0AIh0DO+MzZzDn8W9z2NoprD7ry/TMuFxJX0SqWZCR/33AeuDdwEIgDTzl7scOe3Kz24Cfu/s3zSwO%0ANLr7zkHvhzryt9Oumsr0lfdz4GNvZvV77mf7IefrQq6I7O+imvZpBM4Ennf3V81sJnC0uz84zHET%0AgOXuPn+IfUJL/nb23/8fDvvRF9i2YC0bTjjXH77+xTDaERGJWlTTPjOA+9w9bWZtwDHAbQGOmwds%0AMbNbgWOBZ4FL3L1v1NEGYKddOYdZzz7EEc8fwsvnXev3ff3aMNsTEdkfBRn5Pwe8GZgL3A/8CDjK%0A3c8e5ri3AE8Ab3f3X5vZV4Aud7960D4OXDPosGXuvmwU/Sic7+yLL+WIu2+kY+HLbFz4Ht1ZU0TG%0AAzNbBCwatGlJFNM+y919oZl9Bki5+7/u2jbMcTOAJ9x9XvH1KcA/uvs5g/YpybSPtS1JMHXVzzjo%0AF+/kpb+4wu/72j+P9ZwiIpUqqmmfjJl9EPgQcG5xW2K4g9y9w8zWmtkCd/8t8C6g5PPudvoVCzj0%0AwcIKouUXHu8Pf+G5UrchIjLe1ATY56PAScA/uftrZjYPuD3g+f8euKM4dXQMcP3owtw7O+Oycznm%0AOy/SNecVXj17uhK/iEgwgW7vYGYNwIHu/nJJGx/Dny723k9cwVHfv45XFv+n/+gbHytlXCIilawU%0A0z7DjvzNbDGwHPhp8fVCM/vxWBodKzv3727iqP+6lpUf/LgSv4jIyAWZ9mkHTgQ6Adx9ObDPtfth%0As/MuuoXDf3wxz/3NB/yBr/5HueIQEdmfBbngm3X3HWa7/YUxEFI8Q7I/u/BbHPLgX/Pc37zXH/zS%0AT8sRg4jIeBBk5P+imV0AxM3sUDP7V+DxkON6Azvnf1/Loff/Dc9fcKYSv4jI2ARJ/p+kcGO2fuAu%0AoAu4NMyg9mRnXnoRR959JSs/+FF/6IaHo2xbRGQ8GnK1T/FmbA+5e1sojQe4Ym3v/uypLLx1GS/+%0AZbvf92+B7iYqIjKeRXVjt0eA97n7jrE0tI9zD9kBa2s3Dr1vG9sPfcLvvvO9pW5fRGR/FNUnfHuB%0AlWb2UPE5gLv7xWNpOJCW128hkUqy7dA/D70tEZEqEiT5/wC4h0IxFgAb9Dxc0146jzWnfsWXXtMf%0ASXsiIlUiSPKf5O671bg1s2gu+E5YM4k/LLovkrZERKpIkNU+H97Lto+UOI43sNOvmE9tbw25uifC%0AbktEpNrsc+RvZucDHwTmmdm9g95qBraFHRi1PWfROa9HtXZFREpvqGmfx4GNwFTgRv40198NPB96%0AZHU7TqZ71rrQ2xERqUL7TP7uvgZYQ+F2zphZK/AOoMfdc6FH1rDtaPpaVXdXRCQE+5zzN7P7zOxN%0AxeczgReAC4HbzewfQo+saeMc0hMjv42EiEg1GOqC71x3f6H4/ELgQXc/l8IdPj8aZlDW1m5M+n0L%0A/c26h4+ISAiGSv7ZQc/fBTwA4O7dhH1XT8tPI5Yxf+T6l0JtR0SkSg11wXedmf09sB5YyJ+KuTQM%0Ac9zY1eRmkG0sy22jRUSqwVAj/4uAN1FY5/9+d+8sbj8RuDXUqCw/lUxjPtQ2RESq2FCrfTYBbyiR%0A6O5LgaVBGzCzP1C4DXSeQmGYE4Y9qCbfSq4u/BVFIiJVKtzpmwIHFrn79sBH1OSmkKvPDr+jiIiM%0ARpDbO5TCyG49WpObTC6ZCSkWEZGqF0Xyd+BhM3vGzP420BE1uYnkk+lwwxIRqV7DTvuY2ZeA64AU%0AhRU/xwL/4O63B2zjZHffaGZTgYfM7GV3f2zQ+dsH7bvM3ZcRy04il0wF7oWIyDhmZouARaU8Z5A5%0A/zPc/TIz+x/AH4A/Bx4DAiV/d99Y/LrFzH4InFA8ftf77W84qCbbQr62L8j5RUTGO3dfBizb9drM%0Aloz1nEGmfXb9gjgHuNvddxKwmIuZNZhZc/F5I3AGsHLYA2PZZvK1vcPuJyIioxJk5H+vmb0MpIH/%0AbWbTis+DmA780Mx2tXWHuz847FE12SYGEj0B2xARkREaNvm7+z+a2Q3ATnfPm1kvcF6Qk7v7a8Bx%0AI44qlmkk27BxxMeJiEggw077FKdrPgH8R3HTLOAtYQZFLNPIQKIr1DZERKpYkDn/W4EM8Pbi6w3A%0AP4UWEUC8v458onP4HUVEZDSCJP+D3f2LFH4B4O7hX4iN9dcxEN8RejsiIlUqSPLvN7P6XS/M7GCg%0AP7yQgHh/LQPx4LeDEBGREQmy2qedwoe7DjCzO4GTgY+EGBPEUwkG4uEXiRcRqVJBVvs8aGa/oVjL%0AF7jY3beGG1U6zkAs3DZERKpYkNU+pwBpd/8JMAn4nJkdFGpUtb0xPLYl1DZERKpYkDn/fwf6zOxY%0A4FPA74BvhxpVoq+GgXhHqG2IiFSxIMk/5+4DwJ8B/+bu/wY0hxWQtbXHiKfANe0jIhKWIBd8u83s%0Ac8BfA6eaWQxIhBaR5VvJ1eNL21XGUUQkJEFG/u+nsLTzo+7eAcwGbgwvovw0sg0q3i4iEqIgq302%0AAl8e9Pp14LbQIrLcVLINGvWLiIRonyN/M/tV8WuPmXXv8Qjvvjs1+Wlk65X8RURCtM+Rv7ufXPza%0AFF047Crervq9IiIh2mfyN7PJQx3o7uHcfkHF20VEQjfUnP9WYB2wrymYeaUPBxVvFxGJwFDJ/2bg%0ANOCXwHeBx9w9UPnGManJTiSn5C8iEqZ9XvB190spVOG6m8Ia/xVm9iUzC2fEv0ssp+LtIiIhG3Kd%0Av7sPuPujwGcoVPL6CPDuUCOKZVrIJ1S8XUQkRENd8G2iUKv3/cBU4B7gzcV1/oEVPxH8DLDO3c8d%0A9oCabBMDtd0jaUNEREZmqDn/TcCrwPeA3xa3vcXM3gq4u98TsI1LgJcIej8gFW8XEQndUMn/vwAH%0AFhQfexo2+ZvZAcDZFGr+fipQRLFMg4q3i4iEa6gPeX2kBOe/CbgMaAl8RCxTTz6+swRti4jIPgS5%0Aq+eomNk5wGZ3X25mi4bYr33Qy2VcdFIdA/HOsOISEdnfFHPoolKeM7TkD7wdWGxmZwN1QIuZfdvd%0APzR4J3dvH/za/tfxKt4uIjKIuy8Dlu16bWZLxnrOILd0HhV3/5y7z3H3ecAHgEf3TPx7FU8lGEio%0AkIuISIgCjfzN7GRg7qD93d1HWsox2KeDVbxdRCR0wyZ/M/sOMB9Ywe73+Qmc/N3958DPA+2c6FPx%0AdhGRkAUZ+b8ZODKS+/rAruLtmyNpS0SkSgWZ838BmBl2IFAs3p7oA48p+YuIhCjIyH8q8JKZPU2h%0Ali8U5vwXlzwaFW8XEYlEkOTfXvy6a9rHCHrxdqRUvF1EJBJBCrgvM7MZwFspJP2n3T2caRkVbxcR%0AicSwc/5m9lfAU8BfAn8FPG1mfxlONPmpKt4uIhK+INM+VwJv3TXaN7OpwCMUbvxWWjW5yeTqVL9X%0ARCRkQVb7GDB43f224rYQosm1qni7iEj4goz8fwr8zMzupJD03w88EEo0NbmJ5OtUv1dEJGRBLvhe%0AZmbvA06hcMH3/7r7D0OJRsXbRUQiEeT2Dp8GvuvuPwg9GhVvFxGJRJA5/2bgQTP7pZl90symhxdN%0AtlnF20VEwjds8nf3dnc/CvgEhds8/MLMHgklmlimiYHanlDOLSIifzSS+/lvBjoorPaZGko0sUwT%0A+UR3KOcWEZE/CvIhr4+b2TIKa/tbgf/p7seEEk2heLvq94qIhCzIUs85wKXuviLsYFS8XUQkGkGW%0Ael4eRSAAxPuTKt4uIhK+0Gr4jko8reLtIiIRqLDkn1LyFxGJQKjJ38zqzOwpM1thZi+Z2ReGPCCe%0AjuNxFW8XEQlZkNU+7zOzV82sy8y6i4+uICd39zTQ5u7HAccAbWZ2yj4PSPTFGIhtChq8iIiMTpDV%0APjcA57j7qtE04O67btdQC8SAfU/rqHi7iEgkgkz7dIw28QOYWY2ZrQA2AUvd/aW97vfH4u01mvYR%0AEQlZkJH/M2b2PeC/gV332nd3vydIA+4+ABxnZhMo3Bp6kbsv2/W+mbUXIqlvYHYCX3pNdgTxi4iM%0Ae2a2CFhU0nO6D12L3cy+VXy6247ufuGIGzO7Cki5+43F1+7uBmDv+tzRHH/LCr9hc2yk5xURqSaD%0Ac+doBfmQ10dGe3IzawVy7r7DzOqBdwPX7H3n3FSy9QOjbUtERILbZ/I3s8+6+xfN7F/38ra7+8UB%0Azj8TuM3MaihcX7jd3fd+R9Ca/FSyDbkgQYuIyNgMNfLfdWH22b28N/Rc0a6d3FcCxweKRMXbRUQi%0As8/k7+73Fr9+K5JIanKTVbxdRCQaQ0373EthhL+3iwru7otLGklNbhL5uv6SnlNERPZqqGmfk4B1%0AwF3AU8Vtu34RBJr2GZGa7CTytSreLiISgaGS/0wKq3POLz7uA+5y9xdDiUTF20VEIrPPT/i6e87d%0AH3D3D1H4K2A18HMz+2Q4kWSbyal+r4hIFIZc529mdcB7gQ8Ac4GvAj8MJRIVbxcRicxQF3xvB44C%0A7geuLS7bDE8s20i2QXf0FBGJwFAj/wuAPuBQ4BKz3Rb9uLu3lDSSWH8jA/FAt4oWEZGxGWqdf7RV%0AvmKZegYSKt4uIhKBfSZ4M3vWzL5qZmcW5/7DFe9PklcJRxGRKAw1uj+Jwm2c2yis8nnAzC4xswWh%0ARKLi7SIikRlq2icLLC0+MLPZwJnA583sEOBJd/946SJR8hcRicqwt3Q2szp3T7v7euAbwDfMbBqF%0AC8EljCSl4u0iIhEJclH312b2tl0vzOx9wK/c/VcljaRQvH1LSc8pIiJ7FaSM4weBb5rZMmA2MIXC%0AdYDSSvTVMBBT8XYRkQgEqeS10syuB24HuoFT3X1dKYOwtvYY7+gDV/IXEYlCkDn/bwCHAEcDC4Cf%0AmNnX3P1rJYvC8pPJ1al4u4hIRILM+b8ALHL319z9Z8CJwMLSRpGfRrZR9XtFRCISZNrnpj1e7wQu%0AKmkUlp+m4u0iItEZduRvZgvM7G4zW2VmrxUfvw9ycjObY2ZLzexFM3vBzPZe9L0mN41cvYq3i4hE%0AJMi0z63AfwBZYBFwG3BHwPNngX9w96MofGL4E2Z2xBujyE0mV6f5fhGRiARJ/vXu/jBg7r7G3dsp%0A3ON/WO7e4e4ris97gFXArDdGkZtMVvV7RUSiEmSdf9rMYsDqYhWvDUDjSBsys7kULhQ/9YY3Vbxd%0ARCRSQZL/pUADcDFwHdACfHgkjZhZE3A3cEnxL4DB77Uz59DTaM40mNkid182knOLiIx3ZraIwrR7%0A6c7p7qU83xsbMEsAPwEecPev7PGeu7vZn3/o+9RvP9zv+MkxoQYjIjIO7MqdYznHUGUc7wUc2FsD%0A7u6Lhzu5Fcp/fQN4ac/Ev5uabAv52t7hwxURkVIYatrnJGAdcBd/mqff9Ysg6J8LJwN/DTxvZsuL%0A2y5395/utlcs00Q+oeLtIiIRGSr5zwTeDZxffNwH3OXuLwY9ubv/kiArilS8XUQkUvtMzO6ec/cH%0A3P1DFP4KWE2hotcnSx5FLNOg4u0iItEZcrVPsXbve4EPAHOBrwI/LHkUsX4VbxcRidBQF3xvB44C%0A7geudfeV4UXRX0c+viO084uIyG6GGvlfAPQClwCXFBbu/JG7e0vpolD9XhGRKA1VwD3IrR9KFEW6%0AFo9vi6w9EZEqF12CH0o8FWcgrvq9IiIRqYzkn0ipeLuISIQqJPmreLuISJTKnvytrd1I9Kp4u4hI%0AhMqe/LF8K/mkireLiESo/Mm/Jj+NTGO4txYVEZHdlD/5W34a2YZ8ucMQEakm5U/+NblWFW8XEYlW%0AJST/KSreLiISrUpJ/plyhyEiUk0qIflPIpdU8XYRkQhVQvKfSD6ZKncYIiLVpPzJP5ZtIV/bV+4w%0ARESqSajJ38y+aWabzGzftQBqss0q3i4iEq2wR/63AmcOuUcsq+LtIiIRCzX5u/tjQOeQO8UySv4i%0AIhGrgDn/TIPq94qIRKsCkn9/PQMJ1e8VEYnQUDV8o7H81SlsXnucmbUDy9x9WZkjEhGpKGa2CFhU%0AynOWP/mfND3L6yff4w/cfHO5QxERqUTFQfGyXa/NbMlYzxn2Us+7gMeBBWa21swufMNOiZSKt4uI%0ARCzUkb+7nz98BKk4AzElfxGRCJX/gm8iFWMgruLtIiIRqoDk31fDQKyj3GGIiFSTCkj+Kt4uIhK1%0A8id/FW8XEYlc+ZO/ireLiESu/Mk/W6/i7SIiESt/8lfxdhGRyFVC8td8v4hIxCog+at4u4hI1Cog%0A+at4u4hI1Mqf/FW8XUQkchWQ/GuV/EVEIlYByT+h4u0iIhGrgORf213uEEREqk0FJH8VbxcRiVr5%0Ak7+Kt4uIRE7JX0SkClVA8o/vKHcIIiLVphKSf2e5QxARqTZhF3A/08xeNrNXzeyze91JJRxFRCIX%0AWvI3sxjwNeBM4EjgfDM74g07juPi7Wa2qNwxhEn927+N5/6N576VSpgj/xOA1e7+B3fPAt8FznvD%0AXuN75L+o3AGEbFG5AwjZonIHELJF5Q4gRIvKHUClCzP5zwbWDnq9rrhtdwOq3ysiErUwk3+w8owq%0A3i4iEjlzD6eErpmdBLS7+5nF15cDA+7+xUH7qH6viMgouLuN5fgwk38ceAU4HdgAPA2c7+6rQmlQ%0AREQCi4cs78PWAAADoElEQVR1YnfPmdkngZ8BMeAbSvwiIpUhtJG/iIhUrjDX+Q/7AS8zu7n4/nNm%0AtnAkx5bbaPtnZnPMbKmZvWhmL5jZxdFGHsxYvn/F92JmttzM7o0m4uDG+LM50czuNrNVZvZS8dpW%0ARRlj/y4v/myuNLM7zSwZXeTBDNc/MzvczJ4ws7SZfXokx1aC0fZvxLnF3Uv+oDDNsxqYCySAFcAR%0Ae+xzNnB/8fmJwJNBjy33Y4z9mwEcV3zeROG6yLjp36D3PwXcAfy43P0pZd+A24CPFp/HgQnl7lMJ%0AfzbnAr8HksXX3wM+XO4+jaJ/U4G3AJ8HPj2SY8v9GGP/RpRbwhr5B/mA12IK/5Fw96eAiWY2I+Cx%0A5Tba/k139w53X1Hc3gOsAmZFF3ogo+4fgJkdQCHB3AKMaUVCCEbdNzObAJzq7t8svpdz90q7K+1Y%0AvnddQBZoKC7YaADWRxZ5MMP2z923uPszFPoyomMrwKj7N9LcElbyD/IBr33tMyvAseU22v4dMHgH%0AM5sLLASeKnmEYzOW7x/ATcBlwEBYAY7BWL5384AtZnarmf3GzP7TzBpCjXbkRv29c/ftwJeB1yms%0A0Nvh7g+HGOtoBPvwaOmPjUpJYgySW8JK/kGvIlfaqDCo0fbvj8eZWRNwN3BJ8bd0JRlt/8zMzgE2%0Au/vyvbxfCcbyvYsDxwNfd/fjgV7gH0sYWymM+v+emR0MXEphymEW0GRmF5QutJIYywqV/WF1y5hj%0ADJpbwkr+64E5g17PofAbbKh9DijuE+TYchtt/9YDmFkC+AHwHXf/7xDjHK2x9O/twGIzew24CzjN%0AzL4dYqwjNZa+rQPWufuvi9vvpvDLoJKMpX9vAR53923ungPuofD9rCRjyQ/jJbfs04hyS0gXLeLA%0A7yiMIGoZ/qLTSfzpotOwx5b7Mcb+GfBt4KZy9yOM/u2xzzuBe8vdn1L2DfgFsKD4vB34Yrn7VMKf%0AzeOAF4D64s/pbcAnyt2nkfZv0L7t7H5BdFzkliH6N6LcEmYnzqJwtXk1cHlx28eAjw3a52vF958D%0Ajh/q2Ep7jLZ/wCkU5sJXAMuLjzPL3Z9Sfv8Gvf9OKmy1Twl+No8Ffl3cfg8VttqnBP37DPAisLKY%0A/BPl7s9I+0dh1ctaYCfQSeEaRtO+jq20x2j7N9Lcog95iYhUofKXcRQRkcgp+YuIVCElfxGRKqTk%0ALyJShZT8RUSqkJK/iEgVUvIXEalCSv4iIlXo/wP9zmRwH8yImgAAAABJRU5ErkJggg==">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -446,7 +395,6 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>I don't want the symbolic links I created earlier to cause any unexpected trouble for me later, so I will remove them.</p>
-
 </div>
 </div>
 </div>
@@ -454,16 +402,14 @@ Opening exodus file: ViscoplasticNeedlemanFullyPrescribedTension_NoFlaw.h
 <div class="input">
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span>%%bash
-rm /usr/local/trilinos/lib/libnetcdf.dylib
-rm /usr/local/trilinos/inc
+<div class="input_area">
+<div class="highlight hl-ipython2"><pre><span></span>%%bash
+rm<span class="w"> </span>/usr/local/trilinos/lib/libnetcdf.dylib
+rm<span class="w"> </span>/usr/local/trilinos/inc
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 </div>
     </div>
     </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/discrete-error-and-convergence/" class="u-url">Discrete error and convergence</a></h1>
@@ -485,15 +431,17 @@ rm /usr/local/trilinos/inc
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>I was asked a question today about a typical way to present the error between a numerical scheme and an exact solution, and the convergence of the method.  I will demonstate one method that is typically used based on the $L_2$-norm of the error.</p>
 <p>Consider the ODE</p>
-\begin{equation}
+<p>\begin{equation}
 \frac{\rm{d}x}{\rm{d}t} = x(t) \quad x(0) = 1
-\end{equation}<p>which has the analytic solution</p>
-\begin{equation}
+\end{equation}</p>
+<p>which has the analytic solution</p>
+<p>\begin{equation}
 x(t) = {\rm e}^t
-\end{equation}<p>I'm too lazy to code up anything much more sophisticated, so let's use an Euler explicit finite difference solution for $0 &lt; t &lt; 100$.  We'll write a function that computes the $L_2$ norm of the error between the discrete solution and the exact solution.  The formula for the norm is</p>
-$$
+\end{equation}</p>
+<p>I'm too lazy to code up anything much more sophisticated, so let's use an Euler explicit finite difference solution for $0 &lt; t &lt; 100$.  We'll write a function that computes the $L_2$ norm of the error between the discrete solution and the exact solution.  The formula for the norm is</p>
+<p>$$
 \Vert error \Vert_{L_2} = \sqrt{ \frac{1}{N} \sum_{i=1}^N(discrete(x_i) - exact(x_i))^2}
-$$
+$$</p>
 </div>
 </div>
 </div>
@@ -501,11 +449,11 @@ $$
 <div class="input">
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="k">def</span> <span class="nf">finite_diff_solution_err</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
-    <span class="sd">"""</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">       Compute explicit finite difference solution and L2 error norm</span>
 <span class="sd">       </span>
 <span class="sd">       input: N - number of time steps</span>
@@ -528,11 +476,9 @@ $$
     
     <span class="k">return</span> <span class="n">err</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -540,7 +486,6 @@ $$
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now let's solve our problem for increasing degrees-of-freedom</p>
-
 </div>
 </div>
 </div>
@@ -548,16 +493,14 @@ $$
 <div class="input">
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dofs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">100000</span><span class="p">])</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">dofs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">100000</span><span class="p">])</span>
 
 <span class="n">errs</span> <span class="o">=</span> <span class="p">[</span><span class="n">finite_diff_solution_err</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dofs</span><span class="p">]</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -565,7 +508,6 @@ $$
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, we plot the results as a function of step size $h$.  If we fit a straight line to the data, we get an estimate of the convergence rate of the method, so we'll do that as well.</p>
-
 </div>
 </div>
 </div>
@@ -573,8 +515,8 @@ $$
 <div class="input">
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="c1">#Fit a straight line</span>
@@ -586,31 +528,19 @@ $$
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"$\log_</span><span class="si">{10}</span><span class="s2"> h$"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"$\log_</span><span class="si">{10}</span><span class="s2"> \Vert error \Vert_</span><span class="si">{L_2}</span><span class="s2">$"</span><span class="p">);</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZgAAAEbCAYAAADnH5IjAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz%0AAAALEgAACxIB0t1+/AAAHsxJREFUeJzt3XuUVeWZ5/Hvwz2gohI1XhAaJQiGRA1QYoKggBSXklYz%0A7WjS0nab6XSmdTKOic5aTijti7pUks5kks60ykgcvEF6pEAoo1YhKirijSgiqChgBBQVsFC5PPPH%0Aeyr7iAWcU2fvs/ep8/usxbL2rnPOfmqvwh/v8+79bnN3RERE4tYp7QJERKRjUsCIiEgiFDAiIpII%0ABYyIiCRCASMiIolQwIiISCIUMCIikggFjIiIJKKiAsbMepnZMjObvL99IiKSvooKGOAnwL0F7BMR%0AkZSlGjBmdoeZbTSzFXvtrzWzV81stZldnds3HngF2Jz3ui/sExGRbLA01yIzs1HAdmCWuw/N7esM%0ArALGARuAZcBFwHeBXsAQoAU4H/iHvH07gPNci6uJiGRClzQP7u5LzKz/XrtHAGvcfS2Amd0DTHX3%0Aa3Pb04DNuSBpa5+IiGRAqgGzD8cC6/K21wM1rRvufufeb2hrXyszU+iIiLSDu1sp78/iJH/sgeDu%0Aif6ZPn164u890Ov29/22vteefaX8nOU4n8W8L43zeaDtLJ3Lcp3PYvZXy/mM+3ez0HO19744ZDFg%0ANgB987b7EkYxmTVmzJjE33ug1+3v+219r5R9SWvvMYt5Xxrns5LOZbHvbe/5LGZ/tZzPuH8329pf%0Atr/rSSf+gf4A/YEVedtdgNdz+7sBLwCDS/h8nz59ujc1NbmUZvr06WmX0KHofMZL5zMeTU1NPn36%0AdA/xUNr/39O+iuxuYDTQB9gE/NTdZ5rZRODnQGfgdne/oYRjeJo/Y0fS3Nycyr8aOyqdz3jpfMbL%0AzPAS52BSDZhyUMCIiBQvjoDJ4hxM7Orr62lubk67DBGRzGtubqa+vj6Wz9IIRkREvkAjGBERyayq%0ACBi1yERECqMWWRHUIhMRKZ5aZCIiklkKGBERSURVBIzmYERECqM5mCJoDkZEpHiagxERkcxSwIiI%0ASCKqImA0ByMiUhjNwRRBczAiIsXTHIyIiGSWAkZERBKhgBERkURURcBokl9EpDCa5C+CJvlFRIqn%0ASX4REcksBYyIiCRCASMiIolQwIiISCIUMCIikoiqCBhdpiwiUhhdplwEXaYsIlI8XaYsIiKZpYAR%0AEZFEKGBERCQRChgREUmEAkZERBKhgBERkUQoYEREJBEKGBERSURVBIzu5BcRKYzu5C+C7uQXESme%0A7uQXEZHMUsCIiEgiFDAiIpIIBYyIiCRCASMiIolQwIiISCIUMCIikggFjIiIJEIBIyIiiVDAiIhI%0AIioqYMysl5ktM7PJue2TzOzXZnafmf1N2vWJiEikotYiM7PrgG3ASndfkLe/E3CPu/9FG+/RWmQi%0AIkWq+LXIzOwOM9toZiv22l9rZq+a2Wozuzq3bzzwCrB5r9fWAQuAe8pVt4iIHFiqIxgzGwVsB2a5%0A+9Dcvs7AKmAcsAFYBlwEfBfoBQwBdgDn5Q9NzOwBd5/axjE0ghERKcLu3dClS+kjmC5xFdQe7r7E%0AzPrvtXsEsMbd1wKY2T3AVHe/Nrc9Ddjs7m5mo4HzgR5AU7nqFhHpaN5/Hx58EBoaIK7HZ6UaMPtw%0ALLAub3s9UNO64e535n29GFh8oA/Mf3jOmDFjGDNmTAxliohULndYtQrmzQuhsnx5M8cf38ygQXDJ%0AJXDrraUfI/VJ/twIpiGvRXYBUOvu389tfw+ocffL2/n5apGJiAA7d8Ljj4dAaWiAHTugri78Ofts%0A6NEjvM7d6dSpU2W3yPZhA9A3b7svYRQjIiJF+uADWLgwBEpjI5xwQgiU++6DU04BayNC5s5tjOXY%0AWQyYZ4GBuZHNO8CFhEn+dquvr1drTESqxmuvRaOU556D0aPh3HND2+uYY/b/3qamJn70o/pY6kj7%0AKrK7gdFAH2AT8FN3n2lmE4GfA52B2939hhKOoRaZiHRou3bBk0+GQJk3D7ZtgylTwkhl7Fjo2bPw%0Az5ozZxHTphktLbUlt8hSn4NJmpn59OnTNYIRkQ7lo49g0aIQKgsXQr9+0XzKaadBp3bc5ejunHzy%0Af2DlypOB6xUwB6IRjIh0FK+/HrW+nnkGRo0Kra8pU+C440r//Gj0MgGo8PtgRERk33bvhqeeilpf%0AW7bA5Mlw+eUwfjz06hXv8RYsaGbYsO6YLWXxAW8AOTCNYEREMmTrVnjooRAqDz4YJuVbW1/Dh7ev%0A9dUecaxFVhUjGF1FJiJZtnZt1Pp66ik444wQKNdfH+ZWyqm5uZnmmG7l1whGRKTM9uwJcyitra+N%0AG2HSpDCfMn48HHxw2hXGM4JRwIiIlMH27fD734dQWbAAjjgian3V1EDnzmlX+HlqkRVILTIRScO6%0AdVHr64knQpDU1cG118KAAWlX1za1yIqgEYyIlMuePbB8edT6Wr8eJk4Mra9zzoHevdOusHBqkRVA%0AASMiSWppgYcfDqEyfz4cemjU+ho5ErpUaJ9IAVMABYyIxG3DhhAmDQ3w2GMwbFgUKieemHZ18VDA%0AFEABIyKlcofnn49aX2++CbW1ofVVWxtGLR2NJvkLpEl+ESnWjh3w6KNR66tnzzBCufVW+Na3oGvX%0AtCtMhib5i6ARjIgU6t13o9ZXUxOcemrU+ho0KO3qykstsgIoYERkX9zhxRejS4lXrw5Xe9XVhau/%0A+vRJu8L0KGAKoIARkXyffALNzVGodO0ajVJGjYJu3dKuMBs0ByMiUoBNm8Ld8w0N8MgjMHRoCJRF%0Ai2Dw4LYfGyylq4qA0SS/SHVxhz/8IRqlrFwJ48bB1Knwm9+EZVqkbZrkL4JaZCLV4bPPYPHiKFTc%0Ao9bX6NHQvXvaFVYWtchEpKq99154ZkpDQ1hIcvDgECjz5sHXvqbWV9o0ghGRiuEe2l2to5QVK2Ds%0A2BAqkybBUUelXWHHoavICqCAEalsO3fCkiXRXfSffRa1vs46C3r0CK9zd0xDlthkpkVmZl8GWoDD%0A3H1DHJ8pItVryxZYuDCESmMjDBwYAmXuXPjGN77Y+nJ3LrvsSm67bYZCJkPimoM5lxAwfYD/FdNn%0AikgVWbUqan09/3wYndTVwc9+Bkcfvf/3zp3byP33w6RJD3HBBRPKU7AcUFwB85q7P25mF8T0ebHS%0AZcoi2bNrFzz+eBQqH38MU6bAj38c5lW+9KXCPsfdueWWRrZtm8HNN1/J+eefo1FMCTJ1mbKZfRN4%0Aw90/iKWimGkORiQ7Pvww3NzY0BD+279/NJ9y2mntu+przpxFTJtmtLRMoGfPRcyaZRrFxCC1SX4z%0AG+juq/O2/8Xd/0sphSRFASOSrjVrolHKs8/CmWeGQJkyBY49trTPdndGjrySp5+eARjg1NRcydKl%0AmospVZoBswiYAzzu7q+a2Vnu3lRKIUlRwIiU165dsHRpFCoffhjCpK4utL569YrvWPmjl1YaxcQj%0AzYAZAhwEfBsYDPR199pSCkmKAkYkeVu3hqu9GhrCjY/HHRe1voYNg06dkjnupZdewxtvdP/caMXd%0AGTDgU2bOvDGZg1aJzNwHY2Zfd/eXSv6gBChgRJLx5pvRKOXpp8NDuFpbX8cfn3Z1UqrMBEyWKWAk%0AqyrtxsDdu0OQtIbK5s0weXIIlfHj4aCD0q5Q4lS2gDGzi4H9PSB0p7vPLqWQpChgJIsq5cbAbdvg%0AoYei1tdXvhK1vkaMSK71JenTCKYAChjJojlzFvHXf93IzJm1mZuMfvvtaJTy5JNw+ulRqPTvn3Z1%0AUi4awRRAASNZk39pbRYuqd2zB5Yti0LlnXfCwpF1deHxwYccklppkqKyrUXWGh5mNsrdl5RywDTo%0ATn7JkrlzG1mxohYwVqyYwO9+V/7lTT7+OCxv39AQnvTYp08IlF/9KoxYOncuazmSIandyW9m9wDT%0A3P3TWI5eBhrBSJakeWPg+vUwf34IlSVLYPjwqPV1wgmJHloqUBqrKX8IjDazJnffWcqBRapR/ugl%0ASG4Us2cPPPdc1Pp66y2YOBEuuQRmz4bevWM9nMgXFDuCuRHYBgwDugPL3f1/JFRbLDSCkSxJ+sbA%0AlhZ45JEQKPPnh/mT1lHKGWdAFz3DVgpU9qvIzOzbwGZ3X2Xhb8jx7v5WKQUkTQEjHd0770Str8WL%0A4ZvfjEJl4MC0q5NKlUbADAZ+CHwA/DZ/wcusUsBIR+MOL7wQtb5efx0mTAiBMnEiHHZY2hVKR5BG%0AwFwFPAj0A74DzHH3haUUkDQFjHQEn3wCjz4atb569IhGKd/+NnTd300EIu2QxiT/Znd/BXgFWGhm%0A00o5uIjs28aNUeurqSk8KriuLlxePGhQ+56dIlJOxQbM+7lLlf8v8DZwZPwliVQnd1ixImp9rVoV%0A1vj6znfg9tvDvSoilaTopWLMbBAwDegG/Ju7r0qisLioRSZZ9umn0NwchUrnzlHr68wzoVu3tCuU%0AapXGHEzF3cmvgJGs2bw53D3f0BAuKT755ChUhgxR60uyIY2A0Z38IkVyh1degXnzQqi8/DKMGxcC%0AZfJkOOKItCsU+aKqu5PfzHoBzUC9uy8ws6nAZOAQ4HZ3/325axJpy2efwWOPRa2v3btDoEyfDmPG%0AQPfuaVcokrxiRzA3AVtJ6U5+M7uOsJLASndfkLf/UOAWd7+sjfdoBCNl8f774ZkpDQ3RlV6tra+h%0AQ9X6ksqSRovsTGBjXHfym9kdhBHIJncfmre/Fvg50Bm4zd1vMrPxwOFAD+C9vQLmFuAud3+hjWMo%0AYCQR7uFKr9bW14svwtlnw7nnhtbXUUelXaFI+1X8HIyZjQK2A7NaA8bMOgOrgHHABmAZcBHwXaAX%0AMATY4e5/ngu5G4GH3P2RfRxDASOx2bkTHn88an3t2BGNUs4+O9wAKdIRVPwcjLsvMbP+e+0eAaxx%0A97Xwp1Cb6u7X5ranAZtzr70cGAscYmYnuvtvSq1JZG8ffAALF4ZAaWwMS9vX1cF998Epp6j1JbIv%0A7QmY4cDfmVlSczDHAuvyttcDNa0b7n5n3te/AH5xoA+sr6//09d68JgUYvXqECjz5oUl78eMCaFy%0A661wzDFpVycSvzgfNNYq9dWUcyOYhrwW2QVArbt/P7f9PaDG3S9v5+erRSYHtGtXeP58a+tr61aY%0AMiXMp5x9NvTsmXaFIuWVRotsDXBQ7usjgY2lHHwfNgB987b7EkYx7aZHJktbPvoIFi0KgbJwIfTr%0AF0Ypd90Fp50GnTqlXaFI+aX5yOT/DKwEHHgMuMjd7yqpgC+OYLoQJvnHAu8Az+SOs7Kdn68RTEzc%0APfHH+ibtjTei1teyZTBqVAiVKVPguOPSrk4kO+IYwRT7b7Ru7v4o0MvddxOeC9NuZnY38CTwVTNb%0AZ2aXuvsu4O+BRsKqzfe2N1wkPu7OZZddSaWF9e7d8MQTcM01YUmWM86Al16CK66AP/4xLNnygx8o%0AXESSUGyL7FUzWwKszo00vg4sOMB79sndL9rH/oVAbM+ZUYusdHPnNnL//TBpUvzPjo/btm3haq+G%0AhnDj4zHHhFHKHXfA8OFqfYnsT2otMgAz6wf8ObCDMLr4KJZKEqIWWencnZEjr+Tpp2dQU3MlS5fO%0AyFyr7K23otbXU0+FkUpr66tfv7SrE6k8Zb/RshIpYEo3Z84ipk0zWlom0LPnImbNstRHMXv2wDPP%0ARFd9vfsuTJoUrvoaPx4OPjjV8kQqXtmuIjOzi4H9PZR1p7vPLqWQJKlF1n7uzi23NNLSMgOAlpYJ%0A3HzzlZx//jllH8Vs3x7W+GpoCHMnRxwRRin/+q9QUxOepSIipUm1RVZpNIIpTf7opVU5RzHr1oXH%0ABs+bFybra2qi1teAAYkfXqRqla1FVskjGAVMaS699BreeKP750Yr7s6AAZ8yc+aNsR9vzx5Yvjxq%0Afa1bBxMnhtbXOedA796xH1JE2pDqHIyZHQ8cRVhd+e1SikiSAib7Wlrg4Yej1lfv3tECkiNHQpdi%0Ar3UUkZKlcSd/64H/lvA8mO3AKDPb7e7/UkohSdIcTPZs2BBaXw0N4cFcw4aFQLn6ajjxxLSrE6le%0Aqc/BmNk4d384b/ssd2+KpaKYaQSTDe7w/PPRpcRvvgm1taH1VVsLhx6adoUiki+1EQywNfeQr57A%0AR8CDpRQhHdOOHfDooyFU5s8PC0a2rkj8rW9B1/3N6olIxdNVZBKrd9+NWl9NTXDqqdF8yqBBaVcn%0AIoVKbZLfzPKfiGHAWaUuepkUBUyy3MPaXq2tr9Wrw9VedXXh6q8+fdKuUETaI80W2XBgGvBibnsQ%0AkMmAAU3yx+3TT8PopPVS4q5dQ6DccENYnbhbt7QrFJH2Sn2SH8DMvuLu7+a+PtLdN8VSUcw0gonH%0Apk3hEuKGBnjkERg6NGp9DR6sxwaLdDRlb5GZ2dXuflPedl/gn4DZ7r6olEKSooBpH3d4+eWo9bVy%0AJYwbFwJl0qSwTIuIdFxptMj6mNkC4Mfu/grw34B/BL5VShGSDZ99BosXR60v9xAo110Ho0dD9+5p%0AVygilaTYgHnG3X9iZlMJDwPrB7wODIy9MimL994Lz0xpaAgLSQ4eHEJl3jz42tfU+hKR9is2YE41%0As6OAg83sD8DxQA+gV+yVxUiT/BF3ePXVqPW1YgWMHRtC5Ze/hKOOSrtCEUlTapP8uXCpAVYAA4CX%0AgUuB5e7+UCwVxUxzMLBzJyxZErW+Pv00mqA/6yzo0SPtCkUka9KY5O8E/BXhMuWX3P3XpRy8HKo1%0AYLZsgYULQ6A89FBY36s1VL7xDbW+RGT/0giYq4ANwCagL9DH3W8tpYCkVVPAvPZaNEp57rkwOqmr%0Ag8mT4eij065ORCpJGleRrXb3B/IKuLCUg0tpdu0KD+FqDZXt28ODuK66KsyrfOlLaVcoItWs2IA5%0A0cxGAO8TRjAnxF+S7M+HH8KiRSFQFi2C/v3DKGX2bDjtNLW+RCQ7im2R9QKuAkYQJvqb3L0xodpi%0A0RFaZK+/Ho1Sli2DM8+MHht87LFpVyciHVFZWmRm9kPCumMte33r9Nz+zHf3K+0y5d27YenSKFS2%0AbAlhcsUV4W76Xpm+KFxEKllZL1M2s3HAYnff2cb3Jrr7wlgqSUiljGC2boXGxhAoCxeGkUnrVV/D%0AhkGnTmlXKCLVJLXl+itJlgNm7dpolPLUU+EhXK2tr+OPT7s6EalmCpgCZClgdu+GZ56JQmXjxnAJ%0AcV0djB8PBx+cdoUiIoECpgBpB8z27eFGx4aGsObXkUdGra8RI6Bz59RKExHZJwVMAdIImLffjkYp%0ATz4Jp58ehUr//mUtRUSkXRQwBShHwOzZA88+G4XKhg3hmSl1deHxwYcckujhRURip4ApQFIB8/HH%0A8PDDIVAWLIDDDotGKSNHqvUlIpVNAVOAOANm/XqYPz+EypIlMHx4FConaE0DEelAFDAFKCVg3MOi%0Aka2tr7VrYeLEECgTJsChh8Zbq4hIVqSx2GVFKuZO/h074JFHQqDMnw8HHRQCZcaMcJ9Kl6o4YyJS%0ArVJ74FglKmQE88c/Rq2v5uawaGRr6+urXy1PnSIiWaIWWQHaChh3ePHFqPW1ejXU1oZAqa2Fww9P%0AqVgRkYxQwBSgNWA++QSamqLWV7du0Shl1Cjo2jXtSkVEskNzMAU67zx49FH4+tdDoDQ2wkkn6dkp%0AIiJJqooRzKxZzsSJ8OUvp12NiEhlUIusAGmvRSYiUoniCBg9ZURERBKhgBERkUQoYEREJBEKGBER%0ASURFBYyZ9TKzZWY2Obf9Z2Z2m5ndn3ZtIiLyeRUVMMBPgHtbN9z9TXe/LMV6RERkH1INGDO7w8w2%0AmtmKvfbXmtmrZrbazK7O7RsPvAJsTqNWEREpTtojmJlAbf4OM+sM/DK3fwhwkZkNBkYDpwMXA983%0A0334IiJZlupSMe6+xMz677V7BLDG3dcCmNk9wFR3vza3PQ3Y7O5uZocD/wycYmZXu/tNZSteRET2%0AK4trkR0LrMvbXg/UtG64+515X28BfnCgD3R3NOARESmvLAZM7Ou6XHjhXzJkyIkABT94TESkmsT5%0AoLFWqa9FlmuRNbj70Nz26UC9u9fmtv87sKe97S8z85qaH7F06QyNYkRECtRR1yJ7FhhoZv3NrBtw%0AITCvlA9cvnwz119/cyzFiYh0ZM3NzdTX18fyWamOYMzsbsLVYX2ATcBP3X2mmU0Efg50Bm539xtK%0AOIbDHmpqrtQoRkSkQFquvwAhYJyePRcxa5ZxwQUT0i5JRCTz9ETLAvXrN4bevfsxf/7RChgRkf2I%0Ac7K/KkYwHf1nFBGJW0ed5BcRkQ6gKgKmvr4+9uu7RUQ6og5zFVk5qEUmIlI8tchERCSzFDAiIpKI%0AqggYzcGIiBRGczBF0ByMiEjxNAcjIiKZpYAREZFEVEXAaA5GRKQwmoMpguZgRESKpzkYERHJLAWM%0AiIgkQgEjIiKJUMCIiEgiqiJgdBWZiEhhdBVZEXQVmYhI8XQVmYiIZJYCRkREEqGAERGRRChgREQk%0AEQoYERFJRFUEjC5TFhEpjC5TLoIuUxYRKZ4uUxYRkcxSwIiISCIUMCIikggFjIiIJEIBIyIiiVDA%0AiIhIIhQwIiKSCAWMiIgkoioCRnfyi4gURnfyF0F38ouIFE938ouISGYpYEREJBEKGBERSYQCRkRE%0AEqGAERGRRChgREQkEQoYERFJhAJGREQSoYAREZFEVFTAmFkvM1tmZpPztu80s/9tZhenXZ+IiEQq%0AKmCAnwD35m2fD9zn7v8JODedkqqH1nOLl85nvHQ+syfVgDGzO8xso5mt2Gt/rZm9amarzezq3L7x%0AwCvA5ryXHgusy329uyxFVzH9BY6Xzme8dD6zJ+0RzEygNn+HmXUGfpnbPwS4yMwGA6OB04GLgcvM%0AzID1QN/cW1P7WUr5xS70vQd63f6+39b3StmXtPYes5j3pXE+K+lcFvve9p7PYvZXy/mM+3ezrf3l%0A+rueasC4+xLgg712jwDWuPtad98J3ANMdfdr3f2/ArOBf8stkfw74AIz+xUwr5y156vEXzoFzP5f%0Aq4BRwLSlEv+ut7W/XH/XU1+u38z6Aw3uPjS3/R1ggrt/P7f9PaDG3S9v5+drrX4RkXYodbn+LnEV%0AEqNYA6HUEyQiIu2T9hxMWzYQzauQ+3p9SrWIiEg7ZTFgngUGmll/M+sGXEiK8ysiItI+aV+mfDfw%0AJPBVM1tnZpe6+y7g74FGwmXJ97r7yjTrFBGR4qU+yS8iIh1TFltkIiLSAVRlwJjZGDNbYma/NrPR%0AadfTEey9Tpy0n5mdlPvdvM/M/ibteiqZmU3NrVV4T241ECmBmf2Zmd1mZvcX8vqqDBhgD7AN6I6u%0AUIvL3uvESTu5+6vu/nfAfwQmpF1PJXP3B3JrFf6AcMGQlMDd33T3ywp9fUUHTDFrme1libtPAq4B%0AritLsRWgvedzH+vEVb0Sfj8xszpgAWEli6pXyrnMuZawBJUQy/ksjLtX7B9gFHAqsCJvX2dgDdAf%0A6Aq8AAwG/hL4GXBM3mu7Afen/XNk5U97zyfwj7mvG4H/R+7ikWr/U+rvZ+71D6T9c2ThTwm/mwbc%0ABIxN+2fI0p8Y/t9Z0P83s3gnf8HcfUluqZl8f1rLDMDMWtcyuxH4bW7feYTWw6HA/yxXvVnX3vNJ%0A+NchZjYN2Oy538BqV8Lv52jCoyh6AE3lqjfLSjiXVwBjgUPM7ER3/03Zis6wEs7n4cA/A6eY2dXu%0AftP+jlPRAbMP+Uv4Q5hjqcl/gbv/O/Dv5Syqgh3wfLZy9zvLUlFlK+T3czGwuJxFVahCzuUvgF+U%0As6gKVsj53EKYzypIRc/B7IP+9Rwvnc946XzGR+cyXrGfz44YMFrLLF46n/HS+YyPzmW8Yj+fHTFg%0AtJZZvHQ+46XzGR+dy3jFfj4rOmC0llm8dD7jpfMZH53LeJXrfGotMhERSURFj2BERCS7FDAiIpII%0ABYyIiCRCASMiIolQwIiISCIUMCIikggFjIiIJEIBIyIiiVDAiMTEzMaZ2Q9j/LxzzeyJuD5PpNwU%0AMCLxWQxMi/HzVgPPxPh5ImWlgBGJibvvBFpi/MiRhAUIRSpSR3zgmEiqzKwX4aFMa4CBwAzgCOAK%0A4HnCkwPfP9DTAIHTgTVmdiHQ2d1nJ1e1SPw0ghGJ31XAEnd/gPCMjb8iPBnwHXefA5xcQLgAnATc%0AAfweGJ5QrSKJUcCIxG8E8H7u602EcFgBHGxmU4Eft77QzKaa2TG5r0fkLhT4WzM7CNji7u8RRjLL%0AyvoTiMRAASMSLyOESeuTAfsCLwEDgPvd/QF3fwXAzL7C5y8K+At3fxjoDpwPLM3tnwQ8ZmanlaF+%0AkdhoDkYkJmY2ERgE3ACcYWZHAX3c/dZcmCwws7eBt4Bb3X2dmb2Y9xE9c//dDvQjPPgJQpvtHOC3%0A5fg5ROKigBGJibsvBI7ObTbu9e1LgTOBT4ATgH8CLsl9z3L//Sj330OB/+Pu63Kfe0NSNYskSQEj%0AUh7LgcnAx8CRwGwzO5Iw4jkLuAt40MzOAva0hotIJdMjk0VEJBGa5BcRkUQoYEREJBEKGBERSYQC%0ARkREEqGAERGRRChgREQkEQoYERFJhAJGREQSoYAREZFE/H/vztb9ioO/TgAAAABJRU5ErkJggg==">
-</div>
-
-</div>
-
+<div class="prompt"></div>
+<div class="output_png output_subarea">
+<img alt="No description has been provided for this image" src="data:image/png;base64,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">
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -618,7 +548,6 @@ $$
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The first term below is the slope of the least-square fit staight line which shows the convergence rate.</p>
-
 </div>
 </div>
 </div>
@@ -626,34 +555,22 @@ $$
 <div class="input">
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">coefs</span>
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">coefs</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
-    <div class="prompt output_prompt">Out[4]:</div>
-
-
-
-
+<div class="prompt output_prompt">Out[4]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>array([  0.45172826,  43.45975537])</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
     </div>
     </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/managing-a-professional-website/" class="u-url">Managing a professional website with Nikola, LaTeX, Github and Travis CI</a></h1>
@@ -688,19 +605,19 @@ $$
 <h4>Commit changes to local repository and push to GitHub</h4>
 <p><a name="commit"></a></p>
 <p>There are so many great <code>git</code> and <a href="https://github.com">GitHub</a> resources out there, I'm going to assume you know or can find out about basic <code>git</code> usage.  There is one important think to note for the <em>first</em> commit to GitHub.  You may run into problems if there is not an alternate branch of the repository for Travis to push the build results to.  You can create a branch with the following command:</p>
-<div class="code"><pre class="code literal-block">git checkout -b travis-build --orphan
+<div class="code"><pre class="code literal-block">git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>travis-build<span class="w"> </span>--orphan
 </pre></div>
 
 <p>This will create a new branch called <code>travis-build</code> with no history.  You should then remove all the files in this branch, commit, and push to GitHub</p>
-<div class="code"><pre class="code literal-block">git rm -rf *
-git commit -m <span class="s2">"First commit to travis-build branch"</span>
-git push origin travis-build
+<div class="code"><pre class="code literal-block">git<span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>*
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">"First commit to travis-build branch"</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>travis-build
 </pre></div>
 
 <p>assuming the default <code>origin</code> name for your GitHub repository.  Now switch back to your <code>master</code> branch, and push to GitHub, the <code>travis.yml</code> file in your repository (details covered below) will instruct Travis on how to build the repository</p>
-<div class="code"><pre class="code literal-block">git checkout master
-git commit -am <span class="s2">"A commit message detailing changes"</span>
-git push origin master
+<div class="code"><pre class="code literal-block">git<span class="w"> </span>checkout<span class="w"> </span>master
+git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">"A commit message detailing changes"</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>master
 </pre></div>
 
 <h4>Travis builds CV in PDF and HTML versions</h4>
@@ -712,8 +629,8 @@ git push origin master
 <p>Upon committing, Travis reads the <code>travis.yml</code> file in the repository and performs a set of actions.  In this case, we want to build a LaTeX file which there is not a preinstalled Travis Ubuntu instance for LaTeX so we need to use <code>apt-get</code> to install all of the LaTeX dependencies and proper fonts for building the CV. The other commands just some basic Travis configuration, full details for Travis configuration can be found <a href="http://docs.travis-ci.com/">here</a></p>
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=0:16&amp;footer=minimal"></script><p>Once all of the dependencies are installed, Travis will build both the PDF and HTML versions of the CV with</p>
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/CV/blob/master/.travis.yml?slice=17:19&amp;footer=minimal"></script><p>After a successful build, Travis will clone the previously created <code>travis-build</code> branch, copy the newly created PDF and HTML files into this branch, commit them, and push them back to GitHub.  This requires setting up a few environment variables, that can be added to the Travis project page.  The variables are <code>GIT_EMAIL</code>, <code>GIT_NAME</code>, <code>GH_TOKEN</code>, and <code>TRAVIS_TOKEN</code>.  The first two just correspond to basic <code>git</code> configuration and are really just used to store the information of the person who make the commit in the <code>git</code> history.  Since it's actually Travis making the commit, I just define the variables as</p>
-<div class="code"><pre class="code literal-block"><span class="n">GIT_NAME</span><span class="o">=</span><span class="ss">"Travis CI"</span><span class="w"></span>
-<span class="n">GIT_EMAIL</span><span class="o">=</span><span class="n">travis</span><span class="o">-</span><span class="n">ci</span><span class="nv">@travis</span><span class="p">.</span><span class="n">org</span><span class="w"></span>
+<div class="code"><pre class="code literal-block"><span class="n">GIT_NAME</span><span class="o">=</span><span class="ss">"Travis CI"</span>
+<span class="n">GIT_EMAIL</span><span class="o">=</span><span class="n">travis</span><span class="o">-</span><span class="n">ci</span><span class="nv">@travis</span><span class="p">.</span><span class="n">org</span>
 </pre></div>
 
 <p>The environment variables can be set on the Travis setting page as shown</p>
@@ -725,11 +642,11 @@ git push origin master
 <p>The other two environment variables, <code>GH_TOKEN</code> and <code>TRAVIS_TOKEN</code> are more critical as they allow the Travis the proper credentials to commit back to Github and to issue a new build of the website for which the CV will be included. The get a GitHub token, go to your GitHub settings page, click on Applications on the left-hand panel and then "Generate new token", give the token a name and copy or write down the token somewhere safely.  </p>
 <p><img src="files/github-settings.png"></p>
 <p><strong>This will be the only time you can actually see the token</strong> so make sure you have it copied somewhere.  You can use the same token form multiple Travis jobs, but you have to know what it is and cannot reveal it again later.  Use this token to set the <code>GH_TOKEN</code> environment variable back on the Travis site.  Finally, you can get a <code>TRAVIS_TOKEN</code> through the Ruby <a href="http://blog.travis-ci.com/2013-01-14-new-client/">Travis command line interface</a>.  If you have Ruby installed you can install Travis like any Ruby <code>gem</code> with</p>
-<div class="code"><pre class="code literal-block">gem install travis
+<div class="code"><pre class="code literal-block">gem<span class="w"> </span>install<span class="w"> </span>travis
 </pre></div>
 
 <p>Then you can find your Travis access token with </p>
-<div class="code"><pre class="code literal-block">travis token
+<div class="code"><pre class="code literal-block">travis<span class="w"> </span>token
 </pre></div>
 
 <p>copy the result and add the final environment variable into your Travis settings page just like the others before.  </p>
@@ -773,7 +690,7 @@ MathJax.Hub.Config({
      styles: {'.MathJax_Display': {"margin": 0}}
  }
 });
-</script><footer id="footer"><p>Contents © 2022         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
+</script><footer id="footer"><p>Contents © 2023         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
             
         </footer>
 </div>

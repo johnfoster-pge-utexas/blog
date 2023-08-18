@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
-<title>pdf-chat-gpt | John T. Foster</title>
+<title>Sentiment analysis in your own PDF documents with ChatGPT | John T. Foster</title>
 <link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 <link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
@@ -22,9 +22,9 @@
 <!--[if lt IE 9]><script src="../../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><meta name="author" content="John T. Foster">
 <link rel="prev" href="../why-im-not-wearing-a-mask/" title="Why I'm not wearing a mask (Fall 2021)" type="text/html">
 <meta property="og:site_name" content="John T. Foster">
-<meta property="og:title" content="pdf-chat-gpt">
+<meta property="og:title" content="Sentiment analysis in your own PDF documents with ChatGPT">
 <meta property="og:url" content="https://johnfoster.pge.utexas.edu/blog/posts/pdf-chatgpt%20/">
-<meta property="og:description" content="Sentiment analysis in your own PDF documents with ChatGPT¶While preparing some documents for a forthcoming academic review, I was asked by my department chair to go through all of the student comments">
+<meta property="og:description" content="While preparing some documents for a forthcoming academic review, I was asked by my department chair to go through all of the student comments from every course I've taught in the last 6 years and fin">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2023-08-18T08:36:00-06:00">
 </head>
@@ -43,7 +43,7 @@
     
 
         </ul></section><section class="page-content"><div class="content" rel="main">
-<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="../pdf-chatgpt%20/" class="u-url">pdf-chat-gpt</a></h1>
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="../pdf-chatgpt%20/" class="u-url">Sentiment analysis in your own PDF documents with ChatGPT</a></h1>
 
         <div class="metadata">
             <p class="dateline"><a href="../pdf-chatgpt%20/" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2023-08-18T08:36:00-06:00" itemprop="datePublished" title="2023-08-18 08:36">2023-08-18 08:36</time></a></p>
@@ -65,8 +65,6 @@
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Sentiment-analysis-in-your-own-PDF-documents-with-ChatGPT">Sentiment analysis in your own PDF documents with ChatGPT<a class="anchor-link" href="../pdf-chatgpt%20/#Sentiment-analysis-in-your-own-PDF-documents-with-ChatGPT">¶</a>
-</h2>
 <p>While preparing some documents for a forthcoming academic review, I was asked by my department chair to go through all of the student comments from every course I've taught in the last 6 years and find a few "positive" comments that he could quote in his summary writeup.</p>
 <p>As I usually teach 3 courses per year, sometimes with cross-listings in multiple departments and/or undergrad/grad sections.  All in, this resulted in 32 PDF documents each with many student comments that I needed to draw from.  Doing it manually, would require opening each document, reading and/or compiling the comments and then evaluating and choosing the "most positive" comments. I decided to use ChatGPT with a text embedding to assit me in this task, and thought the code might be useful to others so I am sharing it below along with some comments and documentation.</p>
 <p>First we start with the package imports.  I'm heavily using <a href="https://python.langchain.com/docs/get_started/introduction.html">langchian</a> which provides generalized abstracts for using large language models (LLMs) and tooling to easily "chain together" tasks such as reading in text, creating a vectorstore of the text embedding to be passed to a LLM along with a prompt which a specific question or instruction.</p>
@@ -366,7 +364,7 @@
         <script>
         var disqus_shortname ="johntfoster",
             disqus_url="https://johnfoster.pge.utexas.edu/blog/posts/pdf-chatgpt%20/",
-        disqus_title="pdf-chat-gpt",
+        disqus_title="Sentiment analysis in your own PDF documents with ChatGPT",
         disqus_identifier="cache/posts/pdf-chat-gpt.html",
         disqus_config = function () {
             this.language = "en";

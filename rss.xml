@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Fri, 18 Aug 2023 19:53:54 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Sentiment analysis in your own PDF documents with ChatGPT</title><link>https://johnfoster.pge.utexas.edu/blog/posts/pdf-chatgpt%20/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div class="cell border-box-sizing text_cell rendered" id="cell-id=bd60d22f-6667-4cec-92ac-d826b388f164"&gt;&lt;div class="prompt input_prompt"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Fri, 18 Aug 2023 20:04:49 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Sentiment analysis in your own PDF documents with ChatGPT</title><link>https://johnfoster.pge.utexas.edu/blog/posts/pdf-chatgpt/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div class="cell border-box-sizing text_cell rendered" id="cell-id=bd60d22f-6667-4cec-92ac-d826b388f164"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;While preparing some documents for a forthcoming academic review, I was asked by my department chair to go through all of the student comments from every course I've taught in the last 6 years and find a few "positive" comments that he could quote in his summary writeup.&lt;/p&gt;
@@ -272,7 +272,7 @@
 &lt;p&gt;You should be able to adapt this code to your own use cases.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><guid>https://johnfoster.pge.utexas.edu/blog/posts/pdf-chatgpt%20/</guid><pubDate>Fri, 18 Aug 2023 14:36:00 GMT</pubDate></item><item><title>Why I'm not wearing a mask (Fall 2021)</title><link>https://johnfoster.pge.utexas.edu/blog/posts/why-im-not-wearing-a-mask/</link><dc:creator>John T. Foster</dc:creator><description>&lt;p&gt;Since I started this blog in 2014, it has been entirely technical.  Usually
+&lt;/div&gt;</description><guid>https://johnfoster.pge.utexas.edu/blog/posts/pdf-chatgpt/</guid><pubDate>Fri, 18 Aug 2023 14:36:00 GMT</pubDate></item><item><title>Why I'm not wearing a mask (Fall 2021)</title><link>https://johnfoster.pge.utexas.edu/blog/posts/why-im-not-wearing-a-mask/</link><dc:creator>John T. Foster</dc:creator><description>&lt;p&gt;Since I started this blog in 2014, it has been entirely technical.  Usually
 dedicated to examples that are intended to remind my future self and/or 
 students of interesting problem solutions through code.  However, as we return to
 in-person teaching in the Fall semester of 2021, under a &lt;a href="https://protect.utexas.edu/health-and-wellness/"&gt;strong
@@ -3753,9 +3753,9 @@ limitations under the License.&lt;/p&gt;
 &lt;div class="output"&gt;
 &lt;div class="output_area"&gt;
 &lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_javascript" id="77082332-cb4b-464a-83a1-e0e030c07276"&gt;
+&lt;div class="output_subarea output_javascript" id="b0ccd098-831f-476c-8a98-2ecc36870f3b"&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#77082332-cb4b-464a-83a1-e0e030c07276');
+var element = $('#b0ccd098-831f-476c-8a98-2ecc36870f3b');
 
 (function(root) {
   function now() {
@@ -4940,9 +4940,9 @@ var element = $('#77082332-cb4b-464a-83a1-e0e030c07276');
 &lt;/div&gt;
 &lt;div class="output_area"&gt;
 &lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_javascript" id="90c182ef-003a-4baa-8277-7d5dbe0184a0"&gt;
+&lt;div class="output_subarea output_javascript" id="919cbf7c-90b9-4ef3-b300-c720d828c545"&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#90c182ef-003a-4baa-8277-7d5dbe0184a0');
+var element = $('#919cbf7c-90b9-4ef3-b300-c720d828c545');
 
 if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
    if ((window.HoloViews === undefined) || (window.HoloViews instanceof HTMLElement)) {

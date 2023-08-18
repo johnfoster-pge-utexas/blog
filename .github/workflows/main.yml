@@ -10,6 +10,6 @@ jobs:
     - name: fix git
       shell: bash -l {0}
       run: |
-        git config --global --add safe.directory 
+        git config --global --add safe.directory /github/workspace
     - name: Build and Deploy Nikola
       uses: getnikola/nikola-action@v3

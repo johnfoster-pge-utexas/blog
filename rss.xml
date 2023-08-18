@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Fri, 18 Aug 2023 20:04:49 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Sentiment analysis in your own PDF documents with ChatGPT</title><link>https://johnfoster.pge.utexas.edu/blog/posts/pdf-chatgpt/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div class="cell border-box-sizing text_cell rendered" id="cell-id=bd60d22f-6667-4cec-92ac-d826b388f164"&gt;&lt;div class="prompt input_prompt"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Fri, 18 Aug 2023 20:19:48 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Sentiment analysis in your own PDF documents with ChatGPT</title><link>https://johnfoster.pge.utexas.edu/blog/posts/pdf-chatgpt/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div class="cell border-box-sizing text_cell rendered" id="cell-id=bd60d22f-6667-4cec-92ac-d826b388f164"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;While preparing some documents for a forthcoming academic review, I was asked by my department chair to go through all of the student comments from every course I've taught in the last 6 years and find a few "positive" comments that he could quote in his summary writeup.&lt;/p&gt;
@@ -51,7 +51,7 @@
 &lt;div class="cell border-box-sizing text_cell rendered" id="cell-id=d16b1428-9d4a-4996-871f-2514669f03cd"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Now we'll define a few helper functions to help us find PDFs in a given directory and turn them parse the text out of them.  The &lt;code&gt;get_pdf_text&lt;/code&gt; function below combines all the text from all the PDFs into a single text string.&lt;/p&gt;
+&lt;p&gt;Now we'll define a few helper functions to help us find PDFs in a given directory and then parse the text out of them.  The &lt;code&gt;get_pdf_text&lt;/code&gt; function below combines all the text from all the PDFs into a single text string.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -83,7 +83,7 @@
 &lt;div class="cell border-box-sizing text_cell rendered" id="cell-id=e077df84-5ede-4518-9c1a-8061acee52a4"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Next we'll use the &lt;code&gt;CharacterTextSpitter&lt;/code&gt; class from langchain to take the continuous string of text from all the PDFs and turn them into chuncks of texts which is needed to create a vectorstore text embedding.  Text ebeddings measure the relatedness of text strings.&lt;/p&gt;
+&lt;p&gt;Next we'll use the &lt;code&gt;CharacterTextSpitter&lt;/code&gt; class from langchain to take the continuous string of text from all the PDFs and turn them into chunks of texts which is needed to create a vectorstore text embedding.  Text ebeddings measure the relatedness of text strings.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -144,17 +144,20 @@
       &lt;span class="p"&gt;[&lt;/span&gt;
         &lt;span class="n"&gt;SystemMessage&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
             &lt;span class="n"&gt;content&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-                &lt;span class="s2"&gt;"You are an autoregressive language model that has been fine-tuned with "&lt;/span&gt;
-                &lt;span class="s2"&gt;"instruction-tuning and RLHF. You carefully provide accurate, factual, "&lt;/span&gt;
-                &lt;span class="s2"&gt;"thoughtful, nuanced answers, and are brilliant at reasoning. If you think "&lt;/span&gt;
-                &lt;span class="s2"&gt;"there might not be a correct answer, you say so. Since you are autoregressive, "&lt;/span&gt;
-                &lt;span class="s2"&gt;"each token you produce is another opportunity to use computation, therefore you "&lt;/span&gt;
-                &lt;span class="s2"&gt;"always spend a few sentences explaining background context, assumptions, and step-by-step "&lt;/span&gt;
-                &lt;span class="s2"&gt;"thinking BEFORE you try to answer a question. Your users are experts in AI and ethics, "&lt;/span&gt;
-                &lt;span class="s2"&gt;"so they already know you're a language model and your capabilities and limitations, so "&lt;/span&gt;
-                &lt;span class="s2"&gt;"don't remind them of that. They're familiar with ethical issues in general so you don't "&lt;/span&gt;
-                &lt;span class="s2"&gt;"need to remind them about those either. Don't be verbose in your answers, but do provide "&lt;/span&gt;
-                &lt;span class="s2"&gt;"details and examples where it might help the explanation."&lt;/span&gt;
+                &lt;span class="s2"&gt;"You are an autoregressive language model that has been fine-tuned"&lt;/span&gt;
+                &lt;span class="s2"&gt;"with instruction-tuning and RLHF. You carefully provide accurate,"&lt;/span&gt;
+                &lt;span class="s2"&gt;"factual, thoughtful, nuanced answers, and are brilliant at "&lt;/span&gt;
+                &lt;span class="s2"&gt;"reasoning. If you think there might not be a correct answer, you "&lt;/span&gt;
+                &lt;span class="s2"&gt;"say so. Since you are autoregressive, each token you produce is "&lt;/span&gt;
+                &lt;span class="s2"&gt;"another opportunity to use computation, therefore you always "&lt;/span&gt;
+                &lt;span class="s2"&gt;"spend a few sentences explaining background context, assumptions, &lt;/span&gt;
+                &lt;span class="s2"&gt;"and step-by-step thinking BEFORE you try to answer a question. "&lt;/span&gt;
+                &lt;span class="s2"&gt;"Your users are experts in AI and ethics, so they already know "&lt;/span&gt;
+                &lt;span class="s2"&gt;"you're a language model and your capabilities and limitations, so "&lt;/span&gt;
+                &lt;span class="s2"&gt;"don't remind them of that. They're familiar with ethical issues "&lt;/span&gt;
+                &lt;span class="s2"&gt;"in general so you don't need to remind them about those either. "&lt;/span&gt;
+                &lt;span class="s2"&gt;"Don't be verbose in your answers, but do provide details and "&lt;/span&gt;
+                &lt;span class="s2"&gt;"examples where it might help the explanation."&lt;/span&gt;
             &lt;span class="p"&gt;)&lt;/span&gt;
         &lt;span class="p"&gt;),&lt;/span&gt;
         &lt;span class="n"&gt;HumanMessagePromptTemplate&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;from_template&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;{text}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
@@ -229,10 +232,12 @@
 &lt;div class="prompt input_prompt"&gt;In [9]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;chat_chain&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"In the given text, there are many student comments preceeded with the "&lt;/span&gt;
-                        &lt;span class="s2"&gt;"word RESPONSE in capital letters. "&lt;/span&gt;
-                        &lt;span class="s2"&gt;"Choose 15 of the most positive and supportive student comments for the instructor and course. "&lt;/span&gt;
-                        &lt;span class="s2"&gt;"Give preference to the comments that call out Dr. Foster by name"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;chat_chain&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"In the given text, there are many student comments "&lt;/span&gt;
+                        &lt;span class="s2"&gt;"preceeded with the word RESPONSE in capital letters. "&lt;/span&gt;
+                        &lt;span class="s2"&gt;"Choose 15 of the most positive and supportive "&lt;/span&gt;
+                        &lt;span class="s2"&gt;"student comments for the instructor and course. "&lt;/span&gt;
+                        &lt;span class="s2"&gt;"Give preference to the comments that call out "&lt;/span&gt;
+                        &lt;span class="s2"&gt;"Dr. Foster by name"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;display&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Markdown&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
@@ -3753,9 +3758,9 @@ limitations under the License.&lt;/p&gt;
 &lt;div class="output"&gt;
 &lt;div class="output_area"&gt;
 &lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_javascript" id="b0ccd098-831f-476c-8a98-2ecc36870f3b"&gt;
+&lt;div class="output_subarea output_javascript" id="9f6f193b-4bac-46b5-bace-f36004f82f9e"&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#b0ccd098-831f-476c-8a98-2ecc36870f3b');
+var element = $('#9f6f193b-4bac-46b5-bace-f36004f82f9e');
 
 (function(root) {
   function now() {
@@ -4940,9 +4945,9 @@ var element = $('#b0ccd098-831f-476c-8a98-2ecc36870f3b');
 &lt;/div&gt;
 &lt;div class="output_area"&gt;
 &lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_javascript" id="919cbf7c-90b9-4ef3-b300-c720d828c545"&gt;
+&lt;div class="output_subarea output_javascript" id="67057085-0bc6-4b3c-8afa-eea67fbf89cc"&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#919cbf7c-90b9-4ef3-b300-c720d828c545');
+var element = $('#67057085-0bc6-4b3c-8afa-eea67fbf89cc');
 
 if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
    if ((window.HoloViews === undefined) || (window.HoloViews instanceof HTMLElement)) {

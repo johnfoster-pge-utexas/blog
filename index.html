@@ -111,7 +111,7 @@
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Now we'll define a few helper functions to help us find PDFs in a given directory and turn them parse the text out of them.  The <code>get_pdf_text</code> function below combines all the text from all the PDFs into a single text string.</p>
+<p>Now we'll define a few helper functions to help us find PDFs in a given directory and then parse the text out of them.  The <code>get_pdf_text</code> function below combines all the text from all the PDFs into a single text string.</p>
 </div>
 </div>
 </div>
@@ -145,7 +145,7 @@
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Next we'll use the <code>CharacterTextSpitter</code> class from langchain to take the continuous string of text from all the PDFs and turn them into chuncks of texts which is needed to create a vectorstore text embedding.  Text ebeddings measure the relatedness of text strings.</p>
+<p>Next we'll use the <code>CharacterTextSpitter</code> class from langchain to take the continuous string of text from all the PDFs and turn them into chunks of texts which is needed to create a vectorstore text embedding.  Text ebeddings measure the relatedness of text strings.</p>
 </div>
 </div>
 </div>
@@ -210,17 +210,20 @@
       <span class="p">[</span>
         <span class="n">SystemMessage</span><span class="p">(</span>
             <span class="n">content</span><span class="o">=</span><span class="p">(</span>
-                <span class="s2">"You are an autoregressive language model that has been fine-tuned with "</span>
-                <span class="s2">"instruction-tuning and RLHF. You carefully provide accurate, factual, "</span>
-                <span class="s2">"thoughtful, nuanced answers, and are brilliant at reasoning. If you think "</span>
-                <span class="s2">"there might not be a correct answer, you say so. Since you are autoregressive, "</span>
-                <span class="s2">"each token you produce is another opportunity to use computation, therefore you "</span>
-                <span class="s2">"always spend a few sentences explaining background context, assumptions, and step-by-step "</span>
-                <span class="s2">"thinking BEFORE you try to answer a question. Your users are experts in AI and ethics, "</span>
-                <span class="s2">"so they already know you're a language model and your capabilities and limitations, so "</span>
-                <span class="s2">"don't remind them of that. They're familiar with ethical issues in general so you don't "</span>
-                <span class="s2">"need to remind them about those either. Don't be verbose in your answers, but do provide "</span>
-                <span class="s2">"details and examples where it might help the explanation."</span>
+                <span class="s2">"You are an autoregressive language model that has been fine-tuned"</span>
+                <span class="s2">"with instruction-tuning and RLHF. You carefully provide accurate,"</span>
+                <span class="s2">"factual, thoughtful, nuanced answers, and are brilliant at "</span>
+                <span class="s2">"reasoning. If you think there might not be a correct answer, you "</span>
+                <span class="s2">"say so. Since you are autoregressive, each token you produce is "</span>
+                <span class="s2">"another opportunity to use computation, therefore you always "</span>
+                <span class="s2">"spend a few sentences explaining background context, assumptions, </span>
+                <span class="s2">"and step-by-step thinking BEFORE you try to answer a question. "</span>
+                <span class="s2">"Your users are experts in AI and ethics, so they already know "</span>
+                <span class="s2">"you're a language model and your capabilities and limitations, so "</span>
+                <span class="s2">"don't remind them of that. They're familiar with ethical issues "</span>
+                <span class="s2">"in general so you don't need to remind them about those either. "</span>
+                <span class="s2">"Don't be verbose in your answers, but do provide details and "</span>
+                <span class="s2">"examples where it might help the explanation."</span>
             <span class="p">)</span>
         <span class="p">),</span>
         <span class="n">HumanMessagePromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span><span class="s2">"</span><span class="si">{text}</span><span class="s2">"</span><span class="p">),</span>
@@ -301,10 +304,12 @@
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">chat_chain</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">"In the given text, there are many student comments preceeded with the "</span>
-                        <span class="s2">"word RESPONSE in capital letters. "</span>
-                        <span class="s2">"Choose 15 of the most positive and supportive student comments for the instructor and course. "</span>
-                        <span class="s2">"Give preference to the comments that call out Dr. Foster by name"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">chat_chain</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">"In the given text, there are many student comments "</span>
+                        <span class="s2">"preceeded with the word RESPONSE in capital letters. "</span>
+                        <span class="s2">"Choose 15 of the most positive and supportive "</span>
+                        <span class="s2">"student comments for the instructor and course. "</span>
+                        <span class="s2">"Give preference to the comments that call out "</span>
+                        <span class="s2">"Dr. Foster by name"</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -4037,9 +4042,9 @@ limitations under the License.</p>
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_subarea output_javascript" id="b0ccd098-831f-476c-8a98-2ecc36870f3b">
+<div class="output_subarea output_javascript" id="9f6f193b-4bac-46b5-bace-f36004f82f9e">
 <script type="text/javascript">
-var element = $('#b0ccd098-831f-476c-8a98-2ecc36870f3b');
+var element = $('#9f6f193b-4bac-46b5-bace-f36004f82f9e');
 
 (function(root) {
   function now() {
@@ -5224,9 +5229,9 @@ var element = $('#b0ccd098-831f-476c-8a98-2ecc36870f3b');
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_subarea output_javascript" id="919cbf7c-90b9-4ef3-b300-c720d828c545">
+<div class="output_subarea output_javascript" id="67057085-0bc6-4b3c-8afa-eea67fbf89cc">
 <script type="text/javascript">
-var element = $('#919cbf7c-90b9-4ef3-b300-c720d828c545');
+var element = $('#67057085-0bc6-4b3c-8afa-eea67fbf89cc');
 
 if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
    if ((window.HoloViews === undefined) || (window.HoloViews instanceof HTMLElement)) {

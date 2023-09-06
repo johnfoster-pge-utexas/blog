@@ -1,13 +1,14 @@
 <!-- 
 .. title: Why I'm not wearing a mask (Fall 2021)
 .. slug: why-im-not-wearing-a-mask
-.. date: 2021-08-25 08:37:11 UTC-05:00
+.. date: 2024-08-25 08:37:11 UTC-05:00
 .. tags: 
 .. link: 
 .. description: 
 .. type: text
 -->
 
+<!--2021-08-25 08:37:11 UTC-05:00-->
 
 Since I started this blog in 2014, it has been entirely technical.  Usually
 dedicated to examples that are intended to remind my future self and/or 

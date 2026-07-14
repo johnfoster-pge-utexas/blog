@@ -96,7 +96,7 @@ TRANSLATIONS_PATTERN = "{path}.{lang}.{ext}"
 # (the same way you would do with a (translatable) setting.)
 
 # Name of the theme to use.
-THEME = "zen-jinja"
+THEME = "ut-bootblog4"
 
 # Below this point, everything is optional
 
@@ -766,13 +766,13 @@ LOGGING_HANDLERS = {
 
 NAVIGATION_LINKS = {
         DEFAULT_LANG: (
-            ('/index.html', 'Home', 'fa fa-home'),
-            ('http://johnfoster.pge.utexas.edu', 'Professional Website', 'fa fa-user'),
-            ('https://github.com/johntfoster', 'My Github', 'fab fa-github'),
-            ('https://twitter.com/johntfoster', 'My Twitter', 'fab fa-twitter'),
-            ('/archive.html', 'Archives', 'fa fa-folder-open'),
-            ('/categories/index.html', 'Tags', 'fa fa-tags'),
-            ('/rss.xml', 'RSS', 'fa fa-rss'),
+            ('https://johnfoster.pge.utexas.edu/blog/', 'Blog'),
+            ('http://johnfoster.pge.utexas.edu', 'Professional Website'),
+            ('https://github.com/johntfoster', 'GitHub'),
+            ('https://twitter.com/johntfoster', 'Twitter'),
+            ('https://johnfoster.pge.utexas.edu/blog/archive.html', 'Archives'),
+            ('https://johnfoster.pge.utexas.edu/blog/categories/index.html', 'Tags'),
+            ('https://johnfoster.pge.utexas.edu/blog/rss.xml', 'RSS'),
         )
 }
 

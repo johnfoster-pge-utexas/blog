@@ -1,0 +1,11 @@
+[Theme]
+engine = mako
+parent = bootblog4
+author = John T. Foster
+author_url = https://johnfoster.pge.utexas.edu/
+license = MIT
+based_on = bootblog4
+tags = bootstrap, blog, ut
+
+[Family]
+family = ut-bootblog4

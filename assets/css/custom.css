@@ -1,0 +1,238 @@
+:root {
+    --ut-burnt-orange: #bf5700;
+    --ut-charcoal: #1f2328;
+    --ut-ink: #2b2b2b;
+    --ut-muted: #666e75;
+    --ut-line: #e6e1dc;
+    --ut-page: #ffffff;
+    --ut-soft: #f8f7f4;
+}
+
+html {
+    font-size: 18px;
+}
+
+body {
+    background: var(--ut-page);
+    color: var(--ut-ink);
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.68;
+}
+
+a {
+    color: var(--ut-burnt-orange);
+}
+
+a:hover,
+a:focus {
+    color: var(--ut-charcoal);
+    text-decoration-color: var(--ut-burnt-orange);
+}
+
+.blog-header {
+    border-bottom: 1px solid var(--ut-line);
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.25rem;
+}
+
+.blog-header-logo {
+    color: var(--ut-charcoal);
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 2.1rem;
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+.blog-header-logo:hover,
+.blog-header-logo:focus {
+    color: var(--ut-burnt-orange);
+    text-decoration: none;
+}
+
+.nav-scroller {
+    border-bottom: 3px solid var(--ut-burnt-orange);
+    box-shadow: none;
+    margin-bottom: 2.75rem;
+}
+
+.nav-scroller .nav {
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.nav-scroller .nav a,
+.nav-scroller .nav-link {
+    color: var(--ut-charcoal);
+    padding-bottom: 0.9rem;
+    padding-top: 0.9rem;
+}
+
+.nav-scroller .nav a:hover,
+.nav-scroller .nav-link:hover {
+    color: var(--ut-burnt-orange);
+    text-decoration: none;
+}
+
+.container {
+    max-width: 1120px;
+}
+
+.blog-main,
+.postpage {
+    max-width: 760px;
+}
+
+.post,
+.postpage,
+.h-entry {
+    margin-bottom: 3.5rem;
+}
+
+.post-title,
+.entry-title,
+.p-name,
+h1,
+h2,
+h3,
+h4 {
+    color: var(--ut-charcoal);
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    letter-spacing: 0;
+    line-height: 1.18;
+}
+
+.post-title,
+.entry-title,
+.p-name {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.post-title a,
+.entry-title a,
+.p-name a {
+    color: inherit;
+}
+
+.post-title a:hover,
+.entry-title a:hover,
+.p-name a:hover {
+    color: var(--ut-burnt-orange);
+    text-decoration: none;
+}
+
+.post-meta,
+.dateline,
+.metadata,
+.commentline {
+    color: var(--ut-muted);
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 0.86rem;
+}
+
+.post-text,
+.entry-content {
+    font-size: 1rem;
+}
+
+.post-text p,
+.entry-content p {
+    margin-bottom: 1.25rem;
+}
+
+.post-text h2,
+.entry-content h2 {
+    border-top: 1px solid var(--ut-line);
+    font-size: 1.45rem;
+    margin-top: 2.4rem;
+    padding-top: 1.25rem;
+}
+
+.post-text h3,
+.entry-content h3 {
+    font-size: 1.15rem;
+    margin-top: 2rem;
+}
+
+blockquote {
+    border-left: 4px solid var(--ut-burnt-orange);
+    color: var(--ut-charcoal);
+    font-size: 1rem;
+    margin: 1.75rem 0;
+    padding: 0.5rem 1.25rem;
+}
+
+pre,
+code {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+pre {
+    background: var(--ut-soft);
+    border: 1px solid var(--ut-line);
+    border-radius: 6px;
+    font-size: 0.84rem;
+    line-height: 1.55;
+    padding: 1rem;
+}
+
+code {
+    color: var(--ut-charcoal);
+}
+
+.blog-sidebar {
+    color: var(--ut-muted);
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 0.92rem;
+}
+
+.blog-sidebar h4,
+.sidebar-module h4 {
+    border-bottom: 2px solid var(--ut-burnt-orange);
+    color: var(--ut-charcoal);
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding-bottom: 0.45rem;
+    text-transform: uppercase;
+}
+
+.blog-footer {
+    background: var(--ut-soft);
+    border-top: 1px solid var(--ut-line);
+    color: var(--ut-muted);
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    margin-top: 4rem;
+}
+
+.btn,
+.pager li > a,
+.pager li > span {
+    border-radius: 4px;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+.btn-primary,
+.badge-primary {
+    background-color: var(--ut-burnt-orange);
+    border-color: var(--ut-burnt-orange);
+}
+
+@media (max-width: 767.98px) {
+    html {
+        font-size: 16px;
+    }
+
+    .blog-header-logo {
+        font-size: 1.65rem;
+    }
+
+    .post-title,
+    .entry-title,
+    .p-name {
+        font-size: 1.75rem;
+    }
+}

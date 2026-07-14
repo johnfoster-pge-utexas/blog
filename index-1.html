@@ -1,59 +1,112 @@
 <!DOCTYPE html>
-<html \ prefix="
-        og: http://ogp.me/ns# article: http://ogp.me/ns/article#
-    " vocab="http://ogp.me/ns" lang="en">
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="description" content="mechanics and the mechanics of coding">
-<meta name="viewport" content="width=device-width">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>John T. Foster (old posts, page 1) | John T. Foster</title>
-<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
-<link href="assets/css/rst_base.css" rel="stylesheet" type="text/css">
-<link href="assets/css/nikola_rst.css" rel="stylesheet" type="text/css">
+<link href="assets/css/rst.css" rel="stylesheet" type="text/css">
 <link href="assets/css/code.css" rel="stylesheet" type="text/css">
 <link href="assets/css/theme.css" rel="stylesheet" type="text/css">
+<link href="assets/css/bootblog.css" rel="stylesheet" type="text/css">
+<link href="assets/css/custom.css" rel="stylesheet" type="text/css">
 <link href="assets/css/ipython.min.css" rel="stylesheet" type="text/css">
 <link href="assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
 <meta name="theme-color" content="#5670d4">
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="rss.xml">
 <link rel="canonical" href="https://johnfoster.pge.utexas.edu/blog/index-1.html">
 <link rel="prev" href="." type="text/html">
-<!--[if lt IE 9]><script src="assets/js/html5shiv-printshiv.min.js"></script><![endif]-->
+<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]-->
 </head>
 <body>
-    <a href="#page-content" class="sr-only sr-only-focusable">Skip to main content</a>
-    
-    <section class="social"><ul>
-<li><a href="index.html" title="Home"><i class="fa fa-home"></i></a></li>
-            <li><a href="http://johnfoster.pge.utexas.edu" title="Professional Website"><i class="fa fa-user"></i></a></li>
-            <li><a href="https://github.com/johntfoster" title="My Github"><i class="fab fa-github"></i></a></li>
-            <li><a href="https://twitter.com/johntfoster" title="My Twitter"><i class="fab fa-twitter"></i></a></li>
-            <li><a href="archive.html" title="Archives"><i class="fa fa-folder-open"></i></a></li>
-            <li><a href="categories/index.html" title="Tags"><i class="fa fa-tags"></i></a></li>
-            <li><a href="rss.xml" title="RSS"><i class="fa fa-rss"></i></a></li>
-    
-    
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
 
-        </ul></section><section class="page-content"><div class="content" rel="main">
-    
-    
-<div class="postindex">
-    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/pythonnumpy-implementation-of-bspline-basis-functions/" class="u-url">Python/Numpy implementation of Bspline basis functions</a></h1>
-        <div class="metadata">
-            <p class="dateline"><a href="posts/pythonnumpy-implementation-of-bspline-basis-functions/" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2015-05-27T08:08:17-05:00" title="2015-05-27 08:08">2015-05-27 08:08</time></a></p>
-            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
-                John T. Foster
-            </span></p>
-                <p class="commentline"><i class="fa fa-comment"></i>         <a href="posts/pythonnumpy-implementation-of-bspline-basis-functions/#disqus_thread" data-disqus-identifier="cache/posts/pythonnumpy-implementation-of-bspline-basis-functions.html">Comments</a>
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href=".">
 
-
-        </p>
+            <span id="blog-title">John T. Foster</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav"></ul></nav>
 </div>
-    </header><div class="e-content entry-content">
-    <div class="cell border-box-sizing text_cell rendered">
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="https://johnfoster.pge.utexas.edu/blog/" class="nav-link">Blog</a>
+                </li>
+<li class="nav-item">
+<a href="http://johnfoster.pge.utexas.edu" class="nav-link">Professional Website</a>
+                </li>
+<li class="nav-item">
+<a href="https://github.com/johntfoster" class="nav-link">GitHub</a>
+                </li>
+<li class="nav-item">
+<a href="https://twitter.com/johntfoster" class="nav-link">Twitter</a>
+                </li>
+<li class="nav-item">
+<a href="https://johnfoster.pge.utexas.edu/blog/archive.html" class="nav-link">Archives</a>
+                </li>
+<li class="nav-item">
+<a href="https://johnfoster.pge.utexas.edu/blog/categories/index.html" class="nav-link">Tags</a>
+                </li>
+<li class="nav-item">
+<a href="https://johnfoster.pge.utexas.edu/blog/rss.xml" class="nav-link">RSS</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+    
+        
+
+    
+        
+    <div class="postindex">
+            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/pythonnumpy-implementation-of-bspline-basis-functions/" class="u-url">Python/Numpy implementation of Bspline basis functions</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        John T. Foster
+                    </span></p>
+            <p class="dateline">
+            <a href="posts/pythonnumpy-implementation-of-bspline-basis-functions/" rel="bookmark">
+            <time class="published dt-published" datetime="2015-05-27T08:08:17-05:00" itemprop="datePublished" title="2015-05-27 08:08">2015-05-27 08:08</time></a>
+            </p>
+                        <p class="commentline">
+    
+    <a href="posts/pythonnumpy-implementation-of-bspline-basis-functions/#disqus_thread" data-disqus-identifier="cache/posts/pythonnumpy-implementation-of-bspline-basis-functions.html">Comments</a>
+
+
+                </p>
+</div>
+            </header><div class="e-content entry-content">
+                    <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
@@ -193,20 +246,25 @@
 </div>
 </div>
 </div>
-    </div>
-    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/peridigm-without-building-via-Docker/" class="u-url">Run Peridigm (and other scientific HPC codes) without building via Docker</a></h1>
-        <div class="metadata">
-            <p class="dateline"><a href="posts/peridigm-without-building-via-Docker/" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2015-04-22T10:44:25-05:00" title="2015-04-22 10:44">2015-04-22 10:44</time></a></p>
-            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
-                John T. Foster
-            </span></p>
-                <p class="commentline"><i class="fa fa-comment"></i>         <a href="posts/peridigm-without-building-via-Docker/#disqus_thread" data-disqus-identifier="cache/posts/peridigm-witout-building-trilinos-with-docker.html">Comments</a>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/peridigm-without-building-via-Docker/" class="u-url">Run Peridigm (and other scientific HPC codes) without building via Docker</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        John T. Foster
+                    </span></p>
+            <p class="dateline">
+            <a href="posts/peridigm-without-building-via-Docker/" rel="bookmark">
+            <time class="published dt-published" datetime="2015-04-22T10:44:25-05:00" itemprop="datePublished" title="2015-04-22 10:44">2015-04-22 10:44</time></a>
+            </p>
+                        <p class="commentline">
+    
+    <a href="posts/peridigm-without-building-via-Docker/#disqus_thread" data-disqus-identifier="cache/posts/peridigm-witout-building-trilinos-with-docker.html">Comments</a>
 
 
-        </p>
+                </p>
 </div>
-    </header><div class="e-content entry-content">
-    <p><strong>UPDATE 6/1/2022:</strong> This post has been edited replacing the original docker
+            </header><div class="e-content entry-content">
+                    <p><strong>UPDATE 6/1/2022:</strong> This post has been edited replacing the original docker
 image location at <code>johntfoster/peridigm</code> with the current location at
 <code>peridigm/peridigm</code>.  Additionally, the discussion related to parallel
 computing can now be accomplished much easier by using <a href="https://docs.docker.com/compose/">docker-compose</a>. See the <a href="https://github.com/peridigm/peridigm/blob/master/doc/RunningSimulationsDocker.md">Running Simulations with Peridigm Docker Image</a> section of the Peridigm repository for more details.</p>
@@ -281,20 +339,25 @@ docker<span class="w"> </span>rm<span class="w"> </span>-v<span class="w"> </spa
 
 <p>please consult the documentation of the script for more info about the options using <code>./pdrun -h</code>.  There are really only a few detials in between what I've done here and being able to deploy this on a production HPC cluster.  The main difference would be that you would use a resource manager, e.g. <a href="http://slurm.schedmd.com/">SLURM</a> to schedule running the Docker containers.  You would also want to have both your mounted volume and a copy of the Docker image on a shared filesystem across all nodes of the cluster.  Did I mention you can <a href="https://docs.Docker.com/registry/deploying/">deploy your own private registry server?</a></p>
 <p>The last point I would like to make about Docker is that, while I demonstrated that end users can benefit by eliminating the entire build process and move right to running the simulation code, also developers could greatly benefit from using a common development image and requiring only support for the Docker image, as it can be quickly deployed and tested against all platforms.  How many times have your heard, even from experienced developers, after a commit fails in continuous integration, "It worked on my machine...".  Docker offers a solution to those problems and many others.</p>
-    </div>
-    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/cockrell-school-beamer-template/" class="u-url">A LaTeX Beamer template/theme for the Cockrell School of Engineering</a></h1>
-        <div class="metadata">
-            <p class="dateline"><a href="posts/cockrell-school-beamer-template/" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2015-04-12T21:44:25-05:00" title="2015-04-12 21:44">2015-04-12 21:44</time></a></p>
-            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
-                John T. Foster
-            </span></p>
-                <p class="commentline"><i class="fa fa-comment"></i>         <a href="posts/cockrell-school-beamer-template/#disqus_thread" data-disqus-identifier="cache/posts/cockrell-school-beamer-template.html">Comments</a>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/cockrell-school-beamer-template/" class="u-url">A LaTeX Beamer template/theme for the Cockrell School of Engineering</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        John T. Foster
+                    </span></p>
+            <p class="dateline">
+            <a href="posts/cockrell-school-beamer-template/" rel="bookmark">
+            <time class="published dt-published" datetime="2015-04-12T21:44:25-05:00" itemprop="datePublished" title="2015-04-12 21:44">2015-04-12 21:44</time></a>
+            </p>
+                        <p class="commentline">
+    
+    <a href="posts/cockrell-school-beamer-template/#disqus_thread" data-disqus-identifier="cache/posts/cockrell-school-beamer-template.html">Comments</a>
 
 
-        </p>
+                </p>
 </div>
-    </header><div class="e-content entry-content">
-    <p>This post is mainly aimed at my colleagues (and students) in the Cockrell School of Engineering at <a href="http://www.utexas.edu">The University of Texas at Austin</a>.  As you may have gathered from other posts on this blog, I am a huge fan of <a href="http://www.latex-project.org/">LaTeX</a> for typesetting documents.  Recently, I had to give a talk within the <a href="http://pge.utexas.edu">Department</a> and was asked polietly by our Communications Coordinator to use a provided MS PowerPoint template that conforms to the <a href="http://www.engr.utexas.edu/communications/visualguidelines">Visual Style Guide</a> of the <a href="http://engr.utexas.edu">Cockrell School of Engineering</a>. </p>
+            </header><div class="e-content entry-content">
+                    <p>This post is mainly aimed at my colleagues (and students) in the Cockrell School of Engineering at <a href="http://www.utexas.edu">The University of Texas at Austin</a>.  As you may have gathered from other posts on this blog, I am a huge fan of <a href="http://www.latex-project.org/">LaTeX</a> for typesetting documents.  Recently, I had to give a talk within the <a href="http://pge.utexas.edu">Department</a> and was asked polietly by our Communications Coordinator to use a provided MS PowerPoint template that conforms to the <a href="http://www.engr.utexas.edu/communications/visualguidelines">Visual Style Guide</a> of the <a href="http://engr.utexas.edu">Cockrell School of Engineering</a>. </p>
 <p>I have many reasons for disliking PowerPoint that I will not go into here, but I have avoided using it at all costs for several years now, and did not want to start now.  I also have an appreciation for branding and respect the desire to project a uniform brand from the Departments/School.  My solution was to create my own LaTeX Beamer presentation style that replicates the Cockrell School PowerPoint as close as possible.  I hacked it together relatively quickly for my talk which I delivered last week, but decided over the weekend to put together something a little more robust to share with my colleagues in the Cockrell School.  The style file accepts arguments to input different department names and has some nice features for using BibTeX citations within the presentation.</p>
 <p>The repository can be found cloned with <code>git</code> with the following command:</p>
 <div class="code"><pre class="code literal-block">git<span class="w"> </span>clone<span class="w"> </span>git@github.com:johntfoster/cockrell-school-latex-beamer-template
@@ -304,38 +367,48 @@ docker<span class="w"> </span>rm<span class="w"> </span>-v<span class="w"> </spa
 <p>You can also download a zip archive of the files : <a href="https://github.com/johntfoster/cockrell-school-latex-beamer-template/archive/master.zip">cockrell-school-latex-beamer-template-master.zip</a></p>
 <p>An example of the PDF output results are shown below:</p>
 <p><img src="files/presentation.gif" width="500"></p>
-    </div>
-    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/keep-texshop-from-stealing-focus/" class="u-url">Prevent TeXShop from stealing focus from an external editor</a></h1>
-        <div class="metadata">
-            <p class="dateline"><a href="posts/keep-texshop-from-stealing-focus/" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2015-04-08T21:44:25-05:00" title="2015-04-08 21:44">2015-04-08 21:44</time></a></p>
-            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
-                John T. Foster
-            </span></p>
-                <p class="commentline"><i class="fa fa-comment"></i>         <a href="posts/keep-texshop-from-stealing-focus/#disqus_thread" data-disqus-identifier="cache/posts/keep-texshop-from-stealing-focus.html">Comments</a>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/keep-texshop-from-stealing-focus/" class="u-url">Prevent TeXShop from stealing focus from an external editor</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        John T. Foster
+                    </span></p>
+            <p class="dateline">
+            <a href="posts/keep-texshop-from-stealing-focus/" rel="bookmark">
+            <time class="published dt-published" datetime="2015-04-08T21:44:25-05:00" itemprop="datePublished" title="2015-04-08 21:44">2015-04-08 21:44</time></a>
+            </p>
+                        <p class="commentline">
+    
+    <a href="posts/keep-texshop-from-stealing-focus/#disqus_thread" data-disqus-identifier="cache/posts/keep-texshop-from-stealing-focus.html">Comments</a>
 
 
-        </p>
+                </p>
 </div>
-    </header><div class="e-content entry-content">
-    <p>I use <a href="http://www.vim.org/">Vim</a> as my editor of choice for nearly all text editing activities including writing LaTeX documents.  My usual workflow is to use a split window setup with <code>tmux</code> and run <code>latexmk -pvc</code> on my LaTeX file in one split-pane while editing the source file in the other split-pane.  If your not familiar with <code>latexmk</code> it is a Perl script that, in a smart way, using minimal number of compile runs, keeps your LaTeX document output up-to-date with the correct cross-references, citations, etc.  The <code>-pvc</code> option keeps it running in the background and recompiles with a detected change in <em>any</em> of the project files.  I then use <a href="http://pages.uoregon.edu/koch/texshop/">TeXShop</a> as a PDF viewer because it has the nice ability to detect changes to the PDF output and autoupdate.  Mac OS X's built-in Preview will do this as well, but you must click the window to enable the refresh.  However, by default, TeXShop will steal focus from the editor window.  This is annoying causing me to click or Command-Tab back to the Terminal to continue typing.  I found a fix in a <a href="http://tex.stackexchange.com/questions/43057/macosx-pdf-viewer-automatic-reload-on-file-modification">comment on Stack Exchange</a>.  If you type</p>
+            </header><div class="e-content entry-content">
+                    <p>I use <a href="http://www.vim.org/">Vim</a> as my editor of choice for nearly all text editing activities including writing LaTeX documents.  My usual workflow is to use a split window setup with <code>tmux</code> and run <code>latexmk -pvc</code> on my LaTeX file in one split-pane while editing the source file in the other split-pane.  If your not familiar with <code>latexmk</code> it is a Perl script that, in a smart way, using minimal number of compile runs, keeps your LaTeX document output up-to-date with the correct cross-references, citations, etc.  The <code>-pvc</code> option keeps it running in the background and recompiles with a detected change in <em>any</em> of the project files.  I then use <a href="http://pages.uoregon.edu/koch/texshop/">TeXShop</a> as a PDF viewer because it has the nice ability to detect changes to the PDF output and autoupdate.  Mac OS X's built-in Preview will do this as well, but you must click the window to enable the refresh.  However, by default, TeXShop will steal focus from the editor window.  This is annoying causing me to click or Command-Tab back to the Terminal to continue typing.  I found a fix in a <a href="http://tex.stackexchange.com/questions/43057/macosx-pdf-viewer-automatic-reload-on-file-modification">comment on Stack Exchange</a>.  If you type</p>
 <div class="code"><pre class="code literal-block">defaults<span class="w"> </span>write<span class="w"> </span>TeXShop<span class="w"> </span>BringPdfFrontOnAutomaticUpdate<span class="w"> </span>NO
 </pre></div>
 
 <p>in the Terminal window this will disable the focus-stealing behavior and leave the window in the background so that it doesn't disrupt continuous editing.</p>
-    </div>
-    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/using-exoduspy-to-extract-data-from-fea-database/" class="u-url">Using Exodus.py to extract data from FEA database</a></h1>
-        <div class="metadata">
-            <p class="dateline"><a href="posts/using-exoduspy-to-extract-data-from-fea-database/" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2015-02-16T10:41:59-06:00" title="2015-02-16 10:41">2015-02-16 10:41</time></a></p>
-            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
-                John T. Foster
-            </span></p>
-                <p class="commentline"><i class="fa fa-comment"></i>         <a href="posts/using-exoduspy-to-extract-data-from-fea-database/#disqus_thread" data-disqus-identifier="cache/posts/using-exoduspy-to-extract-data-from-fea-database.html">Comments</a>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/using-exoduspy-to-extract-data-from-fea-database/" class="u-url">Using Exodus.py to extract data from FEA database</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        John T. Foster
+                    </span></p>
+            <p class="dateline">
+            <a href="posts/using-exoduspy-to-extract-data-from-fea-database/" rel="bookmark">
+            <time class="published dt-published" datetime="2015-02-16T10:41:59-06:00" itemprop="datePublished" title="2015-02-16 10:41">2015-02-16 10:41</time></a>
+            </p>
+                        <p class="commentline">
+    
+    <a href="posts/using-exoduspy-to-extract-data-from-fea-database/#disqus_thread" data-disqus-identifier="cache/posts/using-exoduspy-to-extract-data-from-fea-database.html">Comments</a>
 
 
-        </p>
+                </p>
 </div>
-    </header><div class="e-content entry-content">
-    <div class="cell border-box-sizing text_cell rendered">
+            </header><div class="e-content entry-content">
+                    <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
@@ -564,20 +637,25 @@ rm<span class="w"> </span>/usr/local/trilinos/inc
 </div>
 </div>
 </div>
-    </div>
-    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/discrete-error-and-convergence/" class="u-url">Discrete error and convergence</a></h1>
-        <div class="metadata">
-            <p class="dateline"><a href="posts/discrete-error-and-convergence/" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2015-02-10T15:09:54-06:00" title="2015-02-10 15:09">2015-02-10 15:09</time></a></p>
-            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
-                John T. Foster
-            </span></p>
-                <p class="commentline"><i class="fa fa-comment"></i>         <a href="posts/discrete-error-and-convergence/#disqus_thread" data-disqus-identifier="cache/posts/discrete-error-and-convergence.html">Comments</a>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/discrete-error-and-convergence/" class="u-url">Discrete error and convergence</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        John T. Foster
+                    </span></p>
+            <p class="dateline">
+            <a href="posts/discrete-error-and-convergence/" rel="bookmark">
+            <time class="published dt-published" datetime="2015-02-10T15:09:54-06:00" itemprop="datePublished" title="2015-02-10 15:09">2015-02-10 15:09</time></a>
+            </p>
+                        <p class="commentline">
+    
+    <a href="posts/discrete-error-and-convergence/#disqus_thread" data-disqus-identifier="cache/posts/discrete-error-and-convergence.html">Comments</a>
 
 
-        </p>
+                </p>
 </div>
-    </header><div class="e-content entry-content">
-    <div class="cell border-box-sizing text_cell rendered">
+            </header><div class="e-content entry-content">
+                    <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
@@ -725,20 +803,25 @@ $$</p>
 </div>
 </div>
 </div>
-    </div>
-    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/managing-a-professional-website/" class="u-url">Managing a professional website with Nikola, LaTeX, Github and Travis CI</a></h1>
-        <div class="metadata">
-            <p class="dateline"><a href="posts/managing-a-professional-website/" rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-10-09T22:34:25-05:00" title="2014-10-09 22:34">2014-10-09 22:34</time></a></p>
-            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
-                John T. Foster
-            </span></p>
-                <p class="commentline"><i class="fa fa-comment"></i>         <a href="posts/managing-a-professional-website/#disqus_thread" data-disqus-identifier="cache/posts/managing-a-professional-website.html">Comments</a>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/managing-a-professional-website/" class="u-url">Managing a professional website with Nikola, LaTeX, Github and Travis CI</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        John T. Foster
+                    </span></p>
+            <p class="dateline">
+            <a href="posts/managing-a-professional-website/" rel="bookmark">
+            <time class="published dt-published" datetime="2014-10-09T22:34:25-05:00" itemprop="datePublished" title="2014-10-09 22:34">2014-10-09 22:34</time></a>
+            </p>
+                        <p class="commentline">
+    
+    <a href="posts/managing-a-professional-website/#disqus_thread" data-disqus-identifier="cache/posts/managing-a-professional-website.html">Comments</a>
 
 
-        </p>
+                </p>
 </div>
-    </header><div class="e-content entry-content">
-    <p>As an academic, ensuring that others are aware of and can easily access recent research results, papers, and other professional communications is an important part of the "branding" we are tasked with as quasi-<em>business managers</em> in running our research programs.  Most of us keep an up-to-date Curriculum Vita (CV) for purposes of annual performance reviews, proposal submissions, etc.  I maintain my own CV judiciously, updating it in near real-time after any new paper is published, talk is delivered, or award is given.  </p>
+            </header><div class="e-content entry-content">
+                    <p>As an academic, ensuring that others are aware of and can easily access recent research results, papers, and other professional communications is an important part of the "branding" we are tasked with as quasi-<em>business managers</em> in running our research programs.  Most of us keep an up-to-date Curriculum Vita (CV) for purposes of annual performance reviews, proposal submissions, etc.  I maintain my own CV judiciously, updating it in near real-time after any new paper is published, talk is delivered, or award is given.  </p>
 <p>For several years, I have maintained my CV using the <a href="http://www.latex-project.org/">LaTeX</a> typesetting system.  I prefer the elegant typesetting of LaTeX, but mostly I prefer to keep my published papers stored in a <a href="http://www.bibtex.org/">BibTeX</a> database and use the citations not only in my CV, but also in journal articles, and other forms of communication.  Maintaining only one BibTeX database with all my papers reduces reproduction of work from paper-to-paper.  I also learned at some point that I could use the <code>htlatex</code> utility distributed with <a href="https://www.tug.org/texlive/">TeXLive</a> to convert my LaTeX CV into HTML for posting on the web.  </p>
 <p>I have recently designed a <a href="http://johnfoster.pge.utexas.edu">professional website</a> to introduce myself, advertise my research, and include professional information and resources, one of them being my <a href="http://johnfoster.pge.utexas.edu/cv/">CV</a>.  After being a <a href="http://www.wordpress.com">Wordpress</a> user for many years, for this website I switched to the great static blog/website generator <a href="http://getnikola.com/">Nikola</a>. I love the ability to edit plain text files in <a href="http://www.vim.org">Vim</a> using Markdown, ReST, or even a mix of Markdown, LaTeX, and HTML through <a href="http://johnmacfarlane.net/pandoc/">pandoc</a> integration.  The icing-on-the-cake is the ability to create blog posts with the nascent <a href="http://www.ipython.org">IPython Notebook</a>.  Nikola also has built-in support for deploying to <a href="https://pages.github.com/">GitHub Pages</a>, which while it's not difficult to home-roll a deployment scheme, this additional feature is nice for beginners using GitHub Pages.</p>
 <p>Because I update my CV much more frequently than I would need to update the website in general, and have for sometime utilized <code>git</code> as a version control tool, I decided to push the <a href="https://github.com/johntfoster/CV">CV repository</a> to <a href="https://github.com">GitHub</a> and see if I could devise a scheme to automate the workflow of keeping not only my CV up-to-date, but also regenerating my professional website automatically upon a <code>git push</code> to the CV repository.  I found this to be pretty straightforward with the help of <a href="https://travis-ci.org/">Travis CI</a>.  If your not familiar with Travis, it is a <em>continuous integration</em> system, typically used in software testing.  It integrates seamlessly with GitHub, such that upon any <code>git push</code> to GitHub, Travis will <code>pull</code> a current version of the repository and run a set of commands specified in a <code>travis.yml</code> file.  In summary, here is my workflow for keeping everything updated:</p>
@@ -825,14 +908,14 @@ git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </
 <p>which produces <a href="http://johnfoster.pge.utexas.edu/cv/">this page</a> when compiled by Nikola.</p>
 <p>The last part of the <code>.travis.yml</code> is very similar to what was described previously for the CV, only now we push to a branch <code>gh-pages</code> because  we actually want GitHub to serve the website.  Details on using GitHub pages can be found <a href="https://pages.github.com/">here</a>.  The entire <code>.travis.yml</code> file is shown below.</p>
 <script src="http://gist-it.sudarmuthu.com/https://github.com/johnfoster-pge-utexas/johnfoster-pge-utexas.github.io/blob/master/.travis.yml?footer=minimal"></script><p>After this file is run successfully by Travis, the website will be served on GitHub.  My site can be seen <a href="http://johnfoster.pge.utexas.edu/">here</a>.  The entire process from pushing a change on the CV, to the professional website being completely rebuilt and updated usually takes around 10-15 minutes.  Again, if there were ever a need to have an instant update, there is always the option to push the changes by hand.  Please feel free to use any or all of the tips/code presented in your own workflow.</p>
-    </div>
-    </article>
+                </div>
+            </article>
 </div>
-        <nav class="postindexpager"><ul class="pager">
-<li class="previous">
-                <a href="." rel="prev">Newer posts</a>
-            </li>
-        </ul></nav><script>var disqus_shortname="johntfoster";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+    
+        <ul class="pager postindexpager clearfix">
+<li class="previous"><a href="." rel="prev">Newer posts</a></li>
+        </ul>
+<script>var disqus_shortname="johntfoster";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
 MathJax.Hub.Config({
  tex2jax: {
      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
@@ -843,19 +926,19 @@ MathJax.Hub.Config({
      styles: {'.MathJax_Display': {"margin": 0}}
  }
 });
-</script><footer id="footer"><p>Contents © 2026         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
-            
-        </footer>
+</script><!--End of body content--><footer id="footer">
+            Contents © 2026         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></footer>
 </div>
-    </section><script src="assets/js/baguetteBox.min.js"></script><script src="assets/js/moment-with-locales.min.js"></script><!-- fancy dates --><script>
-    moment.locale("en");
-    fancydates(2, "YYYY-MM-DD HH:mm");
-    </script><!-- end fancy dates --><script>
+</div>
+
+
+            <script src="assets/js/jquery.min.js"></script><script src="assets/js/popper.min.js"></script><script src="assets/js/bootstrap.min.js"></script><script src="assets/js/baguetteBox.min.js"></script><script src="assets/js/luxon.min.js"></script><script src="assets/js/fancydates.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
     baguetteBox.run('div#content', {
         ignoreClass: 'islink',
-        captions: function(element) {
-            return element.getElementsByTagName('img')[0].alt;
-    }});
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
     </script><script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

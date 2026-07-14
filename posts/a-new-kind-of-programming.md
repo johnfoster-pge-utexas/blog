@@ -9,8 +9,6 @@
 .. type: text
 -->
 
-# A new kind of programming
-
 For decades, when we taught programming, we began with a reassuringly concrete picture of computation. A program was a sequence of instructions. An `if` statement asked whether something was true or false and then followed one branch or another. A `for` loop executed a known block of work a known number of times. A `while` loop continued until some condition changed. These ideas were, and still are, powerful because they separate the structure of thought from the details of a particular programming language.
 
 But the programming environment around us is changing quickly. We now have computational agents that can read files, inspect context, make judgments, call tools, write code, revise their own plan, and come back later to continue a task. These agents do not remove the need for programming fundamentals. In fact, they make those fundamentals more important. What changes is where the fundamental concepts show up.

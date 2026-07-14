@@ -1,5 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 06 Sep 2023 15:33:08 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Sentiment analysis in your own PDF documents with ChatGPT</title><link>https://johnfoster.pge.utexas.edu/blog/posts/pdf-chatgpt/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div class="cell border-box-sizing text_cell rendered" id="cell-id=bd60d22f-6667-4cec-92ac-d826b388f164"&gt;&lt;div class="prompt input_prompt"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 14 Jul 2026 16:29:12 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>A new kind of programming</title><link>https://johnfoster.pge.utexas.edu/blog/posts/a-new-kind-of-programming/</link><dc:creator>John T. Foster</dc:creator><description>&lt;h2&gt;A new kind of programming&lt;/h2&gt;
+&lt;p&gt;For decades, when we taught programming, we began with a reassuringly concrete picture of computation. A program was a sequence of instructions. An &lt;code&gt;if&lt;/code&gt; statement asked whether something was true or false and then followed one branch or another. A &lt;code&gt;for&lt;/code&gt; loop executed a known block of work a known number of times. A &lt;code&gt;while&lt;/code&gt; loop continued until some condition changed. These ideas were, and still are, powerful because they separate the structure of thought from the details of a particular programming language.&lt;/p&gt;
+&lt;p&gt;But the programming environment around us is changing quickly. We now have computational agents that can read files, inspect context, make judgments, call tools, write code, revise their own plan, and come back later to continue a task. These agents do not remove the need for programming fundamentals. In fact, they make those fundamentals more important. What changes is where the fundamental concepts show up.&lt;/p&gt;
+&lt;p&gt;An &lt;code&gt;if&lt;/code&gt; statement no longer has to mean only:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;pressure&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;fracture_pressure&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;reduce_timestep&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;continue_simulation&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;That is still programming. It is precise, deterministic, and often exactly what we want. But in an agentic workflow, the decision point may look more like this:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;If this request is about manuscript notation, read main.tex and defs.tex.
+If it is about implementation, read the MOOSE traceability file.
+If it is about validation, read the validation matrix.
+Then proceed with only the context needed for the task.
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The underlying idea is the same: evaluate a condition and choose a path. The difference is that the condition may not be a single Boolean expression. It may be a judgment about intent, scope, risk, or relevance. The action may not be one function call, but a controlled expansion of context. The branch may decide which files to read, which tools to use, which checks to run, or which expert workflow to activate.&lt;/p&gt;
+&lt;p&gt;This is not merely a convenience. It is becoming one of the central problems in programming with large language models: context management. An agent can be surprisingly capable when it has the right information in front of it, and surprisingly confused when it has too much irrelevant information mixed with the important parts. Traditional programs manage memory and control flow. Agentic programs must also manage attention.&lt;/p&gt;
+&lt;p&gt;In one of our current research repositories on multicomponent reactive flow, for example, we have started encoding project knowledge in files that are meant to be read by agents: &lt;code&gt;AGENTS.md&lt;/code&gt;, decision trees, checklists, framework notes, validation matrices, and runbooks. These are not just documentation in the old sense. They are part of the execution environment. They tell an agent what to inspect first, how to classify a task, when to ask for clarification, what source of truth controls a decision, and how to validate a change before calling it done.&lt;/p&gt;
+&lt;p&gt;That makes an agent instruction file feel very much like a higher-level control-flow structure. A decision tree is an &lt;code&gt;if&lt;/code&gt; statement written for a system that can interpret language. A checklist is a guard against skipping necessary state. A runbook is a structured exception handler. A validation matrix is a set of assertions about what must be true before we trust the result.&lt;/p&gt;
+&lt;p&gt;The analogy extends to loops. In introductory programming, we might write:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;assignment&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;assignments&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;grade&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;assignment&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;or:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="n"&gt;converged&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;update_solution&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;These examples teach the key idea that some work is repeated under a rule. In agentic systems, repetition may not live inside a single running process. It may be scheduled:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;Every morning, check the calendar, weather, and urgent messages.
+Every five minutes, inspect the status of a long-running simulation.
+Every day, summarize new repository activity and flag anything that needs attention.
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;A cron job or scheduled agent task is, conceptually, a loop with a clock attached. It repeatedly wakes an agent, gives it a bounded job, and lets it decide what to do with the current state of the world. A &lt;code&gt;while&lt;/code&gt; loop appears when the agent keeps checking until a condition is satisfied:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;While the simulation is still running, check the logs every five minutes.
+When it finishes, summarize the result and remove the scheduled check.
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;That last step matters. The loop has its own termination condition. Once the task is complete, the agent removes the recurring job and the cycle ends. This is not identical to a &lt;code&gt;while&lt;/code&gt; loop in Python or C, but pedagogically it is the same idea: repeat work until the condition that justified the repetition is no longer true.&lt;/p&gt;
+&lt;p&gt;This suggests a useful shift in how we teach programming. We should still teach syntax. Students still need to know what an &lt;code&gt;if&lt;/code&gt; statement, a &lt;code&gt;for&lt;/code&gt; loop, a function, a variable, and a data structure look like in an actual language. But syntax should not be mistaken for the concept. The concept behind an &lt;code&gt;if&lt;/code&gt; statement is a decision point. The concept behind a loop is repeated work under a rule. The concept behind a function is a named unit of reusable behavior. The concept behind a module is a boundary around related knowledge and capability.&lt;/p&gt;
+&lt;p&gt;Once students understand those ideas in simple code, we can show them how the same ideas appear in agentic systems:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A branching statement becomes an instruction that routes the agent to the right context.&lt;/li&gt;
+&lt;li&gt;A loop becomes a scheduled task, a monitoring process, or a repeated evaluation until completion.&lt;/li&gt;
+&lt;li&gt;A function becomes a tool the agent can call with a clear contract.&lt;/li&gt;
+&lt;li&gt;A module becomes a directory of prompts, schemas, examples, tests, and source files that define a capability.&lt;/li&gt;
+&lt;li&gt;A test becomes not only an assertion about code, but evidence that the agent's work preserved the intended behavior.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This matters for educators because our students are likely to write less code from a blank screen and more code in collaboration with machines. They will still need to reason clearly. They will still need to decompose problems, define interfaces, recognize edge cases, and verify results. But they will also need to learn how to shape the environment in which an agent works. They will need to decide what context belongs in the prompt, what belongs in a file, what should be retrieved only when needed, and what should never be placed in context at all.&lt;/p&gt;
+&lt;p&gt;In that sense, prompt engineering is too narrow a phrase. The more durable skill is context engineering: designing the information, tools, constraints, and feedback loops that allow an agent to work reliably. A good agent workflow is not just a clever prompt. It is a small operating system for a task. It has routing rules, sources of truth, permissions, validation steps, memory, and cleanup.&lt;/p&gt;
+&lt;p&gt;There is an important caution here. We should not teach students that agents are magic decision makers. When a conventional &lt;code&gt;if&lt;/code&gt; statement evaluates &lt;code&gt;x &amp;gt; 0&lt;/code&gt;, we know exactly what is being tested. When an agent decides whether a request is about notation, implementation, or validation, that decision is probabilistic and interpretive. It can be wrong. Therefore agentic control flow needs stronger guardrails than ordinary control flow. We need explicit sources of truth, narrow task scopes, checklists, tests, and human review for consequential actions.&lt;/p&gt;
+&lt;p&gt;But that caution is not a reason to ignore the shift. It is a reason to teach it well. If we pretend programming is only the syntax of a single language, we will prepare students for a world that is already passing away. If we teach the deeper computational ideas, then show how those ideas reappear in agentic workflows, students can carry their understanding forward.&lt;/p&gt;
+&lt;p&gt;The future programming course might begin exactly as it does now:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;condition&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;do_this&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;do_that&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Then it might ask:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;If the task is ambiguous, identify what information would change the answer.
+If the task is well-scoped, read only the files needed to complete it.
+If the task changes user-visible behavior, run the relevant tests before reporting success.
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The first example teaches syntax. The second teaches judgment. Both are programming.&lt;/p&gt;
+&lt;p&gt;Likewise, we might begin with:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Then move to:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;Every hour, check whether the experiment has produced new output.
+If new output exists, summarize it and update the lab notebook.
+If the experiment is complete, stop checking.
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Again, the concept is repetition under a rule. The implementation has changed because the computational substrate has changed. The program is no longer only a process running in memory. It may be a set of files, tools, scheduled jobs, agent instructions, and review steps distributed across time.&lt;/p&gt;
+&lt;p&gt;I do not think this makes traditional programming obsolete. Quite the opposite. The more powerful our tools become, the more important it is to understand the structures underneath them. We should keep teaching &lt;code&gt;if&lt;/code&gt; statements and loops, but we should teach them as instances of broader ideas: decision, repetition, abstraction, state, verification, and termination.&lt;/p&gt;
+&lt;p&gt;Programming with agents is still programming. It is just programming at a different level of abstraction, where the objects being controlled are not only numbers and strings, but context, attention, tools, and time. If we want students to be effective in that world, we should start showing them the connection now.&lt;/p&gt;</description><category>agents</category><category>artificial intelligence</category><category>education</category><category>programming</category><guid>https://johnfoster.pge.utexas.edu/blog/posts/a-new-kind-of-programming/</guid><pubDate>Tue, 14 Jul 2026 16:00:00 GMT</pubDate></item><item><title>Why I'm not wearing a mask (Fall 2021)</title><link>https://johnfoster.pge.utexas.edu/blog/posts/why-im-not-wearing-a-mask/</link><dc:creator>John T. Foster</dc:creator><description>&lt;p&gt;Since I started this blog in 2014, it has been entirely technical.  Usually
+dedicated to examples that are intended to remind my future self and/or 
+students of interesting problem solutions through code.  However, as we return to
+in-person teaching in the Fall semester of 2021, under a &lt;a href="https://protect.utexas.edu/health-and-wellness/"&gt;strong
+recommendation&lt;/a&gt; to wear masks,
+I feel compelled to explain to my students why I won't be wearing one.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;This won't be a commentary giving my opinion on the effectiveness of masks, nor
+a suggestion on whether any other individual should or should not wear one.
+This is simply documenting how I arrived at my decision to not wear a mask.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Before any vaccine was available to me, I caught and recovered from COVID-19.
+I confirmed that I have antibodies through a laboratory test in June of 2021.
+A summary of the results are shown below and the full report can be downloaded
+&lt;a href="https://johnfoster.pge.utexas.edu/blog/files/covid-antibody-results-redacted.pdf" target="_blank"&gt;here&lt;/a&gt;.  &lt;/p&gt;
+&lt;p&gt;&lt;img alt="image" src="https://johnfoster.pge.utexas.edu/blog/files/covid-antibody-report.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;This test is for antibodies against the receptor-binding-domain (RBD) of the 
+SARS-CoV-2 spike protein (S-protein) which are known to &lt;a href="https://www.nature.com/articles/s41586-021-03207-w"&gt;wane over time&lt;/a&gt;; however, 
+in response to recovery from infection the immune system will also produce 
+other antibodies (e.g. &lt;a href="https://www.nature.com/articles/s41598-021-83108-0"&gt;N-protein&lt;/a&gt;), &lt;a href="https://www.nature.com/articles/s41586-020-2550-z"&gt;T-cells&lt;/a&gt;, B memory cells, etc. The number of RBD-specific memory B cells has been shown to &lt;a href="https://www.nature.com/articles/s41586-021-03207-w"&gt;remain unchanged after
+SARS-CoV-2 infection and have a resistance to RBD mutations (i.e. variants)&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;There are plenty of evidence-based findings that show that natural immunity is
+very robust.  In &lt;a href="https://www.medrxiv.org/content/10.1101/2021.06.01.21258176v3"&gt;this
+article&lt;/a&gt; by
+researchers at the Cleveland Clinic Health System, they follow over 50k
+employees and report  &lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;COVID-19 did not occur in anyone over the five months of the study among 2579 individuals previously infected with COVID-19, including 1359 who did not take the vaccine.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.nejm.org/doi/full/10.1056/NEJMoa2034545?query=recirc_mostViewed_railB_article"&gt;This report&lt;/a&gt; following &amp;gt;12,500 staff at the Oxford University 
+Hospitals in the United Kingdom of which 1265 had positive antibody tests observed only 2 reinfections and they where both asymptomatic.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.israelnationalnews.com/News/News.aspx/309762"&gt;A recent Israel
+study&lt;/a&gt; reported that of 835,792 Israelis known 
+to have recovered from COVID-19, there where only 72 known instances of
+reinfection (0.0086%) compared with over 3000 breakthrough infections of the
+5,193,499 vaccinated (0.0578%) at the time of the report.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Finally, this last paper is not as statistically significant, but I think it’s interesting given the uniformity of the observation group. The paper &lt;a href="https://wwwnc.cdc.gov/eid/article/27/10/21-1427_article"&gt;Breakthrough Infections of SARS-CoV-2 Gamma Variant in Fully Vaccinated Gold Miners, French Guiana, 2021&lt;/a&gt; with the main results summarized in &lt;a href="https://wwwnc.cdc.gov/eid/article/27/10/21-1427-t1"&gt;this table&lt;/a&gt; describes a COVID outbreak among 44 gold miners, all men of roughly the same age and overall health status. Of the 44, 25 had been “fully vaccinated” and 9 had 1 dose — all Pfizer vaccines. Of the 25 fully vaccinated, 15 (!) had breakthrough infections. Of the 9 that had 1 dose, 6 had breakthrough infections. There were 6 that had recovered from COVID previously — 3 with 1 dose and 3 not vaccinated. Of those 6, none of them caught COVID in the outbreak.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;So it appears that I should be immune, but for how long? There was this very recent paper in Nature, &lt;a href="https://www.nature.com/articles/s41586-021-03647-4"&gt;SARS-CoV-2 infection induces long-lived bone marrow plasma cells in humans&lt;/a&gt; that was then covered in this news article &lt;a href="https://www.nature.com/articles/d41586-021-01442-9"&gt;Had COVID? You’ll probably make antibodies for a lifetime&lt;/a&gt; that suggests a very long time, maybe forever.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Of course, these results should not be surprising, it's extremely rare to be
+infected twice by the same virus in a lifetime.  &lt;a href="https://www.nature.com/articles/s41586-020-2550-z"&gt;The same paper linked above
+&lt;/a&gt; demonstrates  &lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;long-lasting T cells are reactive to the N protein of SARS-CoV 17 years after the outbreak of SARS in 2003; these T cells displayed robust cross-reactivity to the N protein of SARS-CoV-2.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Perhaps most interesting, &lt;a href="https://www.nature.com/articles/nature07231"&gt;this paper from 2008&lt;/a&gt; demonstrates neutralizing
+antibody responses in 32 people (all of the participants)  who had survived the
+1918 H1N1 flu pandemic as children -- 90 years later!&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Given these findings (and there are more, &lt;a href="https://www.medrxiv.org/content/10.1101/2021.06.01.21258176v3"&gt;cf. Ref 6-8&lt;/a&gt;, and &lt;a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3838993"&gt;here&lt;/a&gt;, &lt;a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3838993"&gt;here&lt;/a&gt;, &lt;a href="https://doi.org/10.1016/j.xcrm.2021.100354"&gt;here&lt;/a&gt;, &lt;a href="https://www.biorxiv.org/content/10.1101/2021.07.14.452381v1"&gt;here&lt;/a&gt;, &lt;a href="https://www.biorxiv.org/content/10.1101/2021.05.12.443888v1"&gt;here&lt;/a&gt;, &lt;a href="https://www.medrxiv.org/content/10.1101/2021.08.19.21262111v1"&gt;here&lt;/a&gt;, &lt;a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8209951/pdf/RMV-9999-e2260.pdf"&gt;here&lt;/a&gt;, &lt;a href="https://doi.org/10.1016/j.eclinm.2021.100861"&gt;here&lt;/a&gt;, &lt;a href="https://www.medrxiv.org/content/10.1101/2021.04.20.21255670v1"&gt;here&lt;/a&gt;, &lt;a href="https://www.medrxiv.org/content/10.1101/2021.05.11.21256578v1"&gt;here&lt;/a&gt;, &lt;a href="https://rupress.org/jem/article/218/5/e20202617/211835/Highly-functional-virus-specific-cellular-immune"&gt;here&lt;/a&gt;, &lt;a href="https://www.nature.com/articles/s41467-021-24377-1?utm_source=other&amp;amp;utm_medium=other&amp;amp;utm_content=null&amp;amp;utm_campaign=JRCN_1_LW01_CN_natureOA_article_paid_XMOL"&gt;here&lt;/a&gt;, &lt;a href="https://www.biorxiv.org/content/10.1101/2021.07.29.454333v1"&gt;here&lt;/a&gt;, &lt;a href="https://www.biorxiv.org/content/10.1101/2021.03.22.436441v1"&gt;here&lt;/a&gt;), I concluded that my immunity to
+SARS-CoV-2 is strong and long-lived.  However, there is a personal anecdote to share as well.  In early
+August 2021, my wife visited a friend in Florida and 48 hours after her return
+she fell ill and tested positive for COVID-19.  Two days after that her
+daughter, my step-daughter who lives with us, also became ill with COVID-19.  Because 
+I already had plenty of exposure to both of them in the house by
+the time we knew they were infected, I made no effort to quarantine myself from
+them and did what I could to make them comfortable.  My wife's case was fairly
+mild with most of the symptoms subsiding after 5 days, my step-daughters case
+was very mild and she was completely recovered in 36 hours.  After 8 days everyone 
+was recovered with negative tests.  I did not experience any symptoms or have any reason to
+believe I was infected during this time.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Given all the information above, I do not believe there is any medical reason
+for me to wear a mask while teaching at this time.  For all practical purposes, you cannot
+catch a virus from which you are immune, and you certainly can't transmit a virus you don't have.
+I believe it's easier for the students
+to comprehend what I'm saying without a mask on, it's easier for me to 
+project my voice without, and it's certainly more comfortable.  I do plan to
+continue to monitor my antibody levels and may change my mind in the future.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;UPDATE 11/10/2021&lt;/strong&gt;: I had a second antibody test on 9/2/2021 and it showed
+that I my antibody levels remain strong, well above the threshold.  The full report 
+is available &lt;a href="https://johnfoster.pge.utexas.edu/blog/files/covid-antibody-results-redacted-2.pdf" target="_blank"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Additionally, since writing this, there have been many more journal articles
+written on natural immunity that continue to demonstrate it is very robust.  &lt;a href="https://brownstone.org/articles/79-research-studies-affirm-naturally-acquired-immunity-to-covid-19-documented-linked-and-quoted/"&gt;This
+website&lt;/a&gt; has been keeping a continuously updated list of references that, at the time of this update,
+is now up to 122 papers.&lt;/p&gt;</description><guid>https://johnfoster.pge.utexas.edu/blog/posts/why-im-not-wearing-a-mask/</guid><pubDate>Sun, 25 Aug 2024 13:37:11 GMT</pubDate></item><item><title>Sentiment analysis in your own PDF documents with ChatGPT</title><link>https://johnfoster.pge.utexas.edu/blog/posts/pdf-chatgpt/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div class="cell border-box-sizing text_cell rendered" id="cell-id=bd60d22f-6667-4cec-92ac-d826b388f164"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;While preparing some documents for a forthcoming academic review, I was asked by my department chair to go through all of the student comments from every course I've taught in the last 6 years and find a few "positive" comments that he could quote in his summary writeup.&lt;/p&gt;
@@ -13,18 +182,18 @@
 &lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;os&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;PyPDF2&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;PdfReader&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;langchain.text_splitter&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;CharacterTextSplitter&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;langchain.embeddings&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;OpenAIEmbeddings&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;langchain.vectorstores&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;FAISS&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;langchain.memory&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;ConversationBufferMemory&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;langchain.chains&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;ConversationalRetrievalChain&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;langchain.chat_models&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;ChatOpenAI&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;langchain.prompts&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;ChatPromptTemplate&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;langchain.prompts.chat&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;SystemMessage&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;HumanMessagePromptTemplate&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;os&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;PyPDF2&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;PdfReader&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;langchain.text_splitter&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;CharacterTextSplitter&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;langchain.embeddings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;OpenAIEmbeddings&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;langchain.vectorstores&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;FAISS&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;langchain.memory&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;ConversationBufferMemory&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;langchain.chains&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;ConversationalRetrievalChain&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;langchain.chat_models&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;ChatOpenAI&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;langchain.prompts&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;ChatPromptTemplate&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;langchain.prompts.chat&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;SystemMessage&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;HumanMessagePromptTemplate&lt;/span&gt;
 
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;IPython.display&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;display&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Markdown&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;IPython.display&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;display&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Markdown&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -60,7 +229,7 @@
 &lt;div class="prompt input_prompt"&gt;In [3]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;find_pdf_files&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;directory_path&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;find_pdf_files&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;directory_path&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;pdf_files&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
     &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dirs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;files&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;walk&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;directory_path&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
         &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;file&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;files&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
@@ -68,7 +237,7 @@
                 &lt;span class="n"&gt;pdf_files&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;file&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;pdf_files&lt;/span&gt;
 
-&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_pdf_text&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdf_files&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;get_pdf_text&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdf_files&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;text&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;
     &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;pdf&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;pdf_files&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
         &lt;span class="n"&gt;pdf_reader&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;PdfReader&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdf&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -92,7 +261,7 @@
 &lt;div class="prompt input_prompt"&gt;In [4]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_text_chunks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;raw_text&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;get_text_chunks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;raw_text&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;text_splitter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;CharacterTextSplitter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
         &lt;span class="n"&gt;separator&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
         &lt;span class="n"&gt;chunk_size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;2000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -118,7 +287,7 @@
 &lt;div class="prompt input_prompt"&gt;In [5]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_vectorstore&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;chunks&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;get_vectorstore&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;chunks&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;embeddings&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;OpenAIEmbeddings&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
     &lt;span class="n"&gt;vectorstore&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;FAISS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;from_texts&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;texts&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;chunks&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;embedding&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;embeddings&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;vectorstore&lt;/span&gt;
@@ -139,7 +308,7 @@
 &lt;div class="prompt input_prompt"&gt;In [6]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_conversation_chain&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;vectorstore&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;get_conversation_chain&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;vectorstore&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;template&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ChatPromptTemplate&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;from_messages&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
       &lt;span class="p"&gt;[&lt;/span&gt;
         &lt;span class="n"&gt;SystemMessage&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
@@ -191,7 +360,7 @@
 &lt;div class="prompt input_prompt"&gt;In [7]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;create_chat_from_pdfs&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;directory&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;create_chat_from_pdfs&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;directory&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;pdfs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;find_pdf_files&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;directory&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="n"&gt;raw_text&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_pdf_text&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdfs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="n"&gt;chunks&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_text_chunks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;raw_text&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -294,24 +463,24 @@
 &lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pd&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;seaborn&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;sns&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;matplotlib&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;cm&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;matplotlib&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;colors&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;scipy.optimize&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;curve_fit&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;sklearn.cluster&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;KMeans&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;sklearn.neighbors&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;KNeighborsClassifier&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;sklearn.model_selection&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;GridSearchCV&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;KFold&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;sklearn.decomposition&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;PCA&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;sklearn.preprocessing&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;PolynomialFeatures&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;MaxAbsScaler&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;pandas&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;pd&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;seaborn&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;sns&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;numpy&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;np&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;plt&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;matplotlib&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;cm&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;matplotlib&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;colors&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;scipy.optimize&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;curve_fit&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;sklearn.cluster&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;KMeans&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;sklearn.neighbors&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;KNeighborsClassifier&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;sklearn.model_selection&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;GridSearchCV&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;KFold&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;sklearn.decomposition&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;PCA&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;sklearn.preprocessing&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;PolynomialFeatures&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;MaxAbsScaler&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
                                    &lt;span class="n"&gt;MinMaxScaler&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;StandardScaler&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;RobustScaler&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;sklearn.linear_model&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;LinearRegression&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ElasticNet&lt;/span&gt; 
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;sklearn.tree&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;DecisionTreeRegressor&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;sklearn.ensemble&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;BaggingRegressor&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;sklearn.pipeline&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Pipeline&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;sklearn.metrics&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;mean_absolute_percentage_error&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;sklearn.linear_model&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;LinearRegression&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ElasticNet&lt;/span&gt; 
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;sklearn.tree&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;DecisionTreeRegressor&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;sklearn.ensemble&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;BaggingRegressor&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;sklearn.pipeline&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Pipeline&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;sklearn.metrics&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;mean_absolute_percentage_error&lt;/span&gt;
 &lt;span class="n"&gt;sns&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rc&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;'text.usetex'&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
@@ -2128,7 +2297,7 @@ $$&lt;/p&gt;
 &lt;div class="prompt input_prompt"&gt;In [30]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;goodness_score&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y_realizations&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;goodness_score&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y_realizations&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     
     &lt;span class="n"&gt;goodness_score_array&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
     &lt;span class="c1"&gt;# Define upper/lower boundary of "within-percentile" ranges&lt;/span&gt;
@@ -2157,7 +2326,7 @@ $$&lt;/p&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;abs&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;goodness_score_&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
     
-&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;scorer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;estimator&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;scorer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;estimator&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;mape&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;mean_absolute_percentage_error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;[:,&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;estimator&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;predict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;)[:,&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
     
     &lt;span class="n"&gt;pipe&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;estimator&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
@@ -2352,7 +2521,7 @@ $$&lt;/p&gt;
 &lt;div class="prompt input_prompt"&gt;In [36]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;score&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;create_accuracy_plot_and_return_mse&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;score&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;create_accuracy_plot_and_return_mse&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
                    &lt;span class="n"&gt;create_realizations_plots&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
                    &lt;span class="n"&gt;create_goodness_plot_and_return_goodness_score&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
@@ -2459,7 +2628,7 @@ $$&lt;/p&gt;
 &lt;div class="prompt input_prompt"&gt;In [39]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;IPython.display&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Image&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;IPython.display&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Image&lt;/span&gt;
 &lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'results_table.png'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;width&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;500&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
@@ -2523,16 +2692,16 @@ $$&lt;/p&gt;
 &lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;functools&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;partial&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;partialmethod&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;functools&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;partial&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;partialmethod&lt;/span&gt;
 
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;numpy&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;np&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;plt&lt;/span&gt;
 
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;jax&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;jit&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;vmap&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value_and_grad&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;flatten_util&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;jax.numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;jnp&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;jax.scipy.optimize&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;jax.ops&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;jax.config&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;config&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;jax&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;jit&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;vmap&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value_and_grad&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;flatten_util&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;jax.numpy&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;jnp&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;jax.scipy.optimize&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;jax.ops&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;jax.config&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;config&lt;/span&gt;
 &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;update&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"jax_enable_x64"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
@@ -2544,10 +2713,10 @@ $$&lt;/p&gt;
 &lt;div class="prompt input_prompt"&gt;In [2]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;FEAProblem&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nc"&gt;FEAProblem&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
 
 
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nodes&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mobility&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;left_bc&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;1.0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;right_bc&lt;/span&gt;&lt;span class="o"&gt;=-&lt;/span&gt;&lt;span class="mf"&gt;1.0&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nodes&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mobility&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;left_bc&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;1.0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;right_bc&lt;/span&gt;&lt;span class="o"&gt;=-&lt;/span&gt;&lt;span class="mf"&gt;1.0&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
 &lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="sd"&gt;"""FEAProblem class&lt;/span&gt;
 &lt;span class="sd"&gt;           &lt;/span&gt;
 &lt;span class="sd"&gt;        Args:&lt;/span&gt;
@@ -2570,7 +2739,7 @@ $$&lt;/p&gt;
         &lt;span class="k"&gt;return&lt;/span&gt;
 
 
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;setup_element_matrices&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;setup_element_matrices&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
 &lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="sd"&gt;"""Integrates the element stiffness matrices for linear basis functions&lt;/span&gt;
 &lt;span class="sd"&gt;           with 2 points Guass integration&lt;/span&gt;
 &lt;span class="sd"&gt;        """&lt;/span&gt;
@@ -2612,7 +2781,7 @@ $$&lt;/p&gt;
 
 
     &lt;span class="nd"&gt;@partial&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;jit&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;static_argnums&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,))&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;residual&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;residual&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
 &lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="sd"&gt;"""Compute the FE residual vector&lt;/span&gt;
 &lt;span class="sd"&gt;        &lt;/span&gt;
 &lt;span class="sd"&gt;        Args:&lt;/span&gt;
@@ -2644,7 +2813,7 @@ $$&lt;/p&gt;
 
 
     &lt;span class="nd"&gt;@partial&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;jit&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;static_argnums&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,))&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;loss&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;loss&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
 &lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="sd"&gt;"""Compute the loss function, i.e. the &lt;/span&gt;
 &lt;span class="sd"&gt;           l2 norm of the residual vector.&lt;/span&gt;
 &lt;span class="sd"&gt;           &lt;/span&gt;
@@ -2658,7 +2827,7 @@ $$&lt;/p&gt;
 
 
     &lt;span class="nd"&gt;@partial&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;jit&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;static_argnums&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,))&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;newton_step&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;newton_step&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
 &lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="sd"&gt;"""Compute one step of a Newton-Raphson iteration, uses&lt;/span&gt;
 &lt;span class="sd"&gt;           JAX to compute the exact Jacobian via automatic differentiation&lt;/span&gt;
 &lt;span class="sd"&gt;           &lt;/span&gt;
@@ -2684,7 +2853,7 @@ $$&lt;/p&gt;
 
 
     &lt;span class="nd"&gt;@partial&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;jit&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;static_argnums&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,))&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;solve&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tolerance&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;1.0e-4&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;solve&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tolerance&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;1.0e-4&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
 &lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="sd"&gt;""" Solve via Newton-Raphson iteration &lt;/span&gt;
 &lt;span class="sd"&gt;        &lt;/span&gt;
 &lt;span class="sd"&gt;        Args:&lt;/span&gt;
@@ -2792,9 +2961,9 @@ $$&lt;/p&gt;
 &lt;div class="prompt input_prompt"&gt;In [5]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;jax.experimental&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;stax&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;jax.experimental.stax&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Dense&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Tanh&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;jax.nn.initializers&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;glorot_normal&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;normal&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;jax.experimental&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;stax&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;jax.experimental.stax&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Dense&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Tanh&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;jax.nn.initializers&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;glorot_normal&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;normal&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -2805,9 +2974,9 @@ $$&lt;/p&gt;
 &lt;div class="prompt input_prompt"&gt;In [6]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;InverseProblem&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;FEAProblem&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nc"&gt;InverseProblem&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;FEAProblem&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
    
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nodes&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mobility&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;stax&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;serial&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Dense&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt; 
+    &lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nodes&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mobility&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;stax&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;serial&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Dense&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt; 
                  &lt;span class="n"&gt;mobility_left_bc&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.001&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mobility_right_bc&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;1.001&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
 &lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="sd"&gt;"""Class to solve for (i.e. learn) the constitutive model of &lt;/span&gt;
 &lt;span class="sd"&gt;           the steady-state pressure diffusivity equation using a &lt;/span&gt;
@@ -2838,7 +3007,7 @@ $$&lt;/p&gt;
         &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;initial_net_params_flat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unravel_pytree&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;flatten_util&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ravel_pytree&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;net_params&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     
     &lt;span class="nd"&gt;@partial&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;jit&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;static_argnums&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,))&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;residual&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;u&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;residual&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;u&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
 &lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="sd"&gt;"""Compute the FE residual vector &lt;/span&gt;
 &lt;span class="sd"&gt;        &lt;/span&gt;
 &lt;span class="sd"&gt;        Args:&lt;/span&gt;
@@ -2865,7 +3034,7 @@ $$&lt;/p&gt;
         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;super&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;residual&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     
     &lt;span class="nd"&gt;@partial&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;jit&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;static_argnums&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,))&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;loss&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;u&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;loss&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;u&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
 &lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="sd"&gt;"""Compute the squared error of the FE residual vector &lt;/span&gt;
 &lt;span class="sd"&gt;           along with the mobility at the end points&lt;/span&gt;
 &lt;span class="sd"&gt;           &lt;/span&gt;
@@ -2895,7 +3064,7 @@ $$&lt;/p&gt;
         &lt;span class="c1"&gt;# Return FE + mobility squared error&lt;/span&gt;
         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;jnp&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linalg&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;norm&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;residual&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;mobility_squared_error&lt;/span&gt;
     
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;fit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;fit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
 &lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="sd"&gt;"""Fit the parameters of the neurual network representing the mobility&lt;/span&gt;
 &lt;span class="sd"&gt;           function&lt;/span&gt;
 &lt;span class="sd"&gt;           &lt;/span&gt;
@@ -2918,13 +3087,13 @@ $$&lt;/p&gt;
             
         &lt;span class="k"&gt;return&lt;/span&gt;
         
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;_predict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;params&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;_predict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;params&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
 &lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="sd"&gt;"""Used internal to the class only - evaluates the nn function &lt;/span&gt;
 &lt;span class="sd"&gt;           at x with the given parameters&lt;/span&gt;
 &lt;span class="sd"&gt;        """&lt;/span&gt;
         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;vmap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;partial&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;net_apply&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;params&lt;/span&gt;&lt;span class="p"&gt;))(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;flatten&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
     
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;predict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;predict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
 &lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="sd"&gt;"""Evaluates the nn function at x with the fit parameters&lt;/span&gt;
 &lt;span class="sd"&gt;        &lt;/span&gt;
 &lt;span class="sd"&gt;        Args:&lt;/span&gt;
@@ -3137,7 +3306,7 @@ limitations under the License.&lt;/p&gt;
 &lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;numpy&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;np&lt;/span&gt;
 &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
@@ -3512,15 +3681,15 @@ limitations under the License.&lt;/p&gt;
 &lt;div class="prompt input_prompt"&gt;In [36]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;ipywidgets&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;interact&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;seaborn&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;sns&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;sns&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;ipywidgets&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;interact&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;seaborn&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;sns&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;sns&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;plt&lt;/span&gt;
 &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="k"&gt;matplotlib&lt;/span&gt; inline
 
 &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linspace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pi&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
 &lt;span class="nd"&gt;@interact&lt;/span&gt;
-&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;sine_plot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)):&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;sine_plot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)):&lt;/span&gt;
     &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;plot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sin&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
     &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ylim&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -3531,8 +3700,13 @@ limitations under the License.&lt;/p&gt;
 &lt;div class="output"&gt;
 &lt;div class="output_area"&gt;
 &lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_text output_subarea"&gt;
-&lt;pre&gt;interactive(children=(IntSlider(value=5, description='a', max=10), Output()), _dom_classes=('widget-interact',…&lt;/pre&gt;
+&lt;div class="output_subarea output_widget_view" id="01228f8f-f797-4a7a-8575-d35bde013700"&gt;
+&lt;script type="text/javascript"&gt;
+var element = $('#01228f8f-f797-4a7a-8575-d35bde013700');
+&lt;/script&gt;
+&lt;script type="application/vnd.jupyter.widget-view+json"&gt;
+{"model_id": "6d64da96f6a94f49aa47edfc01811375", "version_major": 2, "version_minor": 0}
+&lt;/script&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -3553,7 +3727,7 @@ limitations under the License.&lt;/p&gt;
 &lt;div class="prompt input_prompt"&gt;In [14]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;IPython.display&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;IFrame&lt;/span&gt;    
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;IPython.display&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;IFrame&lt;/span&gt;    
 &lt;span class="n"&gt;IFrame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'https://docs.scipy.org/doc/numpy/reference/generated/numpy.linspace.html'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;width&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;800&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;height&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;400&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
@@ -3630,20 +3804,20 @@ limitations under the License.&lt;/p&gt;
 &lt;div class="prompt input_prompt"&gt;In [16]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;param&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;panel&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pn&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pd&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;scipy&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;stats&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;param&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;panel&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;pn&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;pandas&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;pd&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;scipy&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;stats&lt;/span&gt;
 &lt;span class="n"&gt;pn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;extension&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;CurveFit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;param&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Parameterized&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nc"&gt;CurveFit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;param&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Parameterized&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
 
     &lt;span class="n"&gt;dataset&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;param&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;FileSelector&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'./*.csv*'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;label&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"Choose a file"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     
     &lt;span class="n"&gt;fit_curve&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;param&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Boolean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;label&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"Fit Curve"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     
     &lt;span class="nd"&gt;@param&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;depends&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'dataset'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s1"&gt;'fit_curve'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;watch&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;view&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;view&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
         
         &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dataset&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
@@ -3673,9 +3847,9 @@ limitations under the License.&lt;/p&gt;
 &lt;div class="output"&gt;
 &lt;div class="output_area"&gt;
 &lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_javascript" id="415caa05-81a6-453a-9097-8277d4b5e86c"&gt;
+&lt;div class="output_subarea output_javascript" id="362655fc-e2d8-443a-b913-f75bd6f5d76f"&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#415caa05-81a6-453a-9097-8277d4b5e86c');
+var element = $('#362655fc-e2d8-443a-b913-f75bd6f5d76f');
 
 (function(root) {
   function now() {
@@ -4860,9 +5034,9 @@ var element = $('#415caa05-81a6-453a-9097-8277d4b5e86c');
 &lt;/div&gt;
 &lt;div class="output_area"&gt;
 &lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_javascript" id="0517d198-837b-4504-8302-159d0bcc66b3"&gt;
+&lt;div class="output_subarea output_javascript" id="4204e2bb-2d22-43c4-8e65-f4816b51b882"&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#0517d198-837b-4504-8302-159d0bcc66b3');
+var element = $('#4204e2bb-2d22-43c4-8e65-f4816b51b882');
 
 if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
    if ((window.HoloViews === undefined) || (window.HoloViews instanceof HTMLElement)) {
@@ -5176,7 +5350,7 @@ if ((comm_msg != null) &amp;&amp; (Object.keys(comm_msg.content).length &gt; 0))
 &lt;div class="prompt input_prompt"&gt;In [17]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;add_one&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;add_one&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;array_plus_one&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
     &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
         &lt;span class="n"&gt;array_plus_one&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
@@ -5230,7 +5404,7 @@ if ((comm_msg != null) &amp;&amp; (Object.keys(comm_msg.content).length &gt; 0))
 &lt;div class="prompt input_prompt"&gt;In [19]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;add_one_comprehension&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;add_one_comprehension&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;array_plus_one&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;array_plus_one&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -5279,10 +5453,10 @@ if ((comm_msg != null) &amp;&amp; (Object.keys(comm_msg.content).length &gt; 0))
 &lt;div class="prompt input_prompt"&gt;In [21]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;numba&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;jit&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;numba&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;jit&lt;/span&gt;
 
 &lt;span class="nd"&gt;@jit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;nopython&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;add_one_numba&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;add_one_numba&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;array_plus_one&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;array_plus_one&lt;/span&gt;
 
@@ -5334,7 +5508,7 @@ if ((comm_msg != null) &amp;&amp; (Object.keys(comm_msg.content).length &gt; 0))
 &lt;div class="prompt input_prompt"&gt;In [23]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;add_one_numpy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;add_one_numpy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;array&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
@@ -5383,7 +5557,7 @@ if ((comm_msg != null) &amp;&amp; (Object.keys(comm_msg.content).length &gt; 0))
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
 &lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nd"&gt;@jit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;nopython&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;parallel&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;add_one_numpy_numba_parallel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;add_one_numpy_numba_parallel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;array&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
@@ -5628,8 +5802,8 @@ if ((comm_msg != null) &amp;&amp; (Object.keys(comm_msg.content).length &gt; 0))
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
 &lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%file&lt;/span&gt; omp_add_one_builder.py
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;os&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;cffi&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;FFI&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;os&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;cffi&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;FFI&lt;/span&gt;
 &lt;span class="n"&gt;ffibuilder&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;FFI&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 
 &lt;span class="n"&gt;ffibuilder&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_source&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"omp_add_one"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -5711,8 +5885,8 @@ if ((comm_msg != null) &amp;&amp; (Object.keys(comm_msg.content).length &gt; 0))
 &lt;div class="prompt input_prompt"&gt;In [35]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;omp_add_one&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;ffi&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;omp_add_one&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;lib&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;omp&lt;/span&gt;
+&lt;div class="highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;omp_add_one&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;ffi&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;omp_add_one&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;lib&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;omp&lt;/span&gt;
 
 &lt;span class="n"&gt;N&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1000000&lt;/span&gt;
 
@@ -5785,8 +5959,8 @@ if ((comm_msg != null) &amp;&amp; (Object.keys(comm_msg.content).length &gt; 0))
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;should do the trick.  This is all we need to have installed to read from an Exodus database.  The simple 2D finite element mesh I will be using in the following example can be downloaded &lt;a href="https://johnfoster.pge.utexas.edu/blog/posts/extracting-exodus-information-with-netcdf-python/s_curve.g"&gt;here&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;First we'll import the netCDF4 module and of course Numpy.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;netCDF4&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;netCDF4&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;numpy&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;np&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;To open the Exodus file for reading we use the following command.&lt;/p&gt;
 &lt;/div&gt;
@@ -6053,10 +6227,10 @@ filling off
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
 &lt;div class="highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="k"&gt;matplotlib&lt;/span&gt; inline
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.patches&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Polygon&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.collections&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;PatchCollection&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;matplotlib.patches&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Polygon&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;matplotlib.collections&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;PatchCollection&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;plt&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;matplotlib&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -6122,629 +6296,4 @@ filling off
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>exodus</category><category>hdf5</category><category>netcdf</category><category>Numpy</category><category>Python</category><guid>https://johnfoster.pge.utexas.edu/blog/posts/extracting-exodus-information-with-netcdf-python/</guid><pubDate>Mon, 20 Jul 2015 20:37:39 GMT</pubDate></item><item><title>Interactive C++ for HPC</title><link>https://johnfoster.pge.utexas.edu/blog/posts/interactive-c%2B%2B-for-hpc/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;I recently discovered &lt;a href="https://root.cern.ch/drupal/content/cling"&gt;cling&lt;/a&gt; after I saw this Tweet&lt;/p&gt;
-&lt;blockquote class="twitter-tweet" lang="en"&gt;&lt;p dir="ltr" lang="en"&gt;I made a C++ kernel for Jupyter for some reason: &lt;a href="https://t.co/7ApuZyeR0r"&gt;https://t.co/7ApuZyeR0r&lt;/a&gt;&lt;/p&gt;— Min RK (@minrk) &lt;a href="https://twitter.com/minrk/status/600762804161933312"&gt;May 19, 2015&lt;/a&gt;&lt;/blockquote&gt;
-&lt;script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"&gt;&lt;/script&gt;
-&lt;p&gt;From the cling website, "Cling is an interactive C++ interpreter, built on the top of LLVM and Clang libraries. Its advantages over the standard interpreters are that it has command line prompt and uses just-in-time (JIT) compiler for compilation."  As I write (or mostly teach through dual-coding with students) quite a bit of C++ and have already been utilizing the &lt;a href="http://ipython.org/"&gt;IPython&lt;/a&gt;/&lt;a href="https://jupyter.org/"&gt;Jupyter&lt;/a&gt; notebook as a teaching tool for sometime, I was immediately interested in using &lt;a href="https://github.com/minrk"&gt;MinRK&lt;/a&gt;'s &lt;a href="https://github.com/minrk/clingkernel"&gt;clingkernel&lt;/a&gt; for this purpose as well as exploring and testing out my own ideas.  As I learned more about cling, I found most of the examples to be very trivial and those that inluded the calling/loading of external functions typically only utilized the functions from the standard library.  I was eager to give it try on something a little more complex, and because most of the code we write in my group is heavily dependent on &lt;a href="http://trilinos.org/"&gt;Trilinos&lt;/a&gt;, I thought I would attempt to solve a simple linear algebra system of the form&lt;/p&gt;
-&lt;p&gt;$$
-A \vec{x} = \vec{b}
-$$&lt;/p&gt;
-&lt;p&gt;using &lt;a href="http://trilinos.org/packages/epetra/"&gt;AztecOO&lt;/a&gt; solvers with &lt;a href="http://trilinos.org/packages/aztecoo/"&gt;Epetra&lt;/a&gt; datastructures from Trilinos (at least AztecOO and Epetra).  This is an adaptation of the example code provided in Figure 1 of the &lt;a href="http://trilinos.org/oldsite/packages/aztecoo/AztecOOUserGuide.pdf"&gt;AztecOO User's guide&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Of course, to reproduce the code below, you will need to &lt;a href="https://github.com/vgvassilev/cling"&gt;install cling&lt;/a&gt; and Trilinos.  Additionally, if you want to use MinRK's &lt;a href="https://github.com/minrk/clingkernel"&gt;clingkernel&lt;/a&gt; you need to install the &lt;a href="https://github.com/jupyter/notebook#jupyter-notebook"&gt;Jupyter notebook&lt;/a&gt; from the &lt;code&gt;master&lt;/code&gt; branch, and install the kernel.  With that, you should be able to &lt;a href="http://johntfoster.github.io/posts/interactive-c++-for-hpc.ipynb"&gt;download this notebook&lt;/a&gt; and execute it with few modifications.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Cling provides a few metaprocessing commands to perform actions that you would normal provide as arguments to the build system, such as providing locations for include files, loading shared libraries, etc.  The documentation for the metaprocessing commands are&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;.x test.cpp – load a file (if the file defines void test() it will be executed)
-.L libname – load a libary or file
-.x filename.cxx – loads filename and calls void filename() if defined
-.I path – adds an include path
-.printAST – shows the abstract syntax tree after each processed entity
-.q – exit cling
-.help – display a brief description
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;We'll start by loading the location of the installed header files in my Trilinos build (here I only built AztecOO and Epetra in serial to keep it simple).  Cling utilizes the Clang compiler which is pretty picky, so I had to edit the header files in a few locations where &lt;code&gt;#include&lt;/code&gt; statments where provided with angle brackets &lt;code&gt;&amp;lt; &amp;gt;&lt;/code&gt; for local includes, where the compiler wanted double quotes.  In other words, I had to change&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;#include &amp;lt;foo.h&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;to&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;#include "foo.h"
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;in a few of the Trilinos headers.  So the metaprocessing command to tell the system where the header files are:&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="input_area"&gt;
-&lt;div class="highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;I&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;trilinos&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;serial&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="output_wrapper"&gt;
-&lt;div class="output"&gt;
-&lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
-&lt;pre&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;And now we provide the include statememts.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [2]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="input_area"&gt;
-&lt;div class="highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#include&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cpf"&gt;"AztecOO.h"&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="output_wrapper"&gt;
-&lt;div class="output"&gt;
-&lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
-&lt;pre&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [3]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="input_area"&gt;
-&lt;div class="highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#include&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cpf"&gt;"AztecOO_Version.h"&lt;/span&gt;
-&lt;span class="cp"&gt;#include&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cpf"&gt;"Epetra_SerialComm.h"&lt;/span&gt;
-&lt;span class="cp"&gt;#include&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cpf"&gt;"Epetra_Map.h"&lt;/span&gt;
-&lt;span class="cp"&gt;#include&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cpf"&gt;"Epetra_Vector.h"&lt;/span&gt;
-&lt;span class="cp"&gt;#include&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cpf"&gt;"Epetra_CrsMatrix.h"&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="output_wrapper"&gt;
-&lt;div class="output"&gt;
-&lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
-&lt;pre&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Now the metaprocessing to load the shared libraries.  Since I'm on a Mac, I had to define the environment variable&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;export&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;DYLD_LIBRARY_PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/usr/local/trilinos-serial/lib:&lt;span class="nv"&gt;$DYLD_LIBRARY_PATH&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;before launching the notebook/cling so the system knows where to find the libraries at runtime.  On a Linux machine, this variable would be &lt;code&gt;LD_LIBRARY_PATH&lt;/code&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [4]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="input_area"&gt;
-&lt;div class="highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;L&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;libepetra&lt;/span&gt;
-&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;L&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;libaztecOO&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="output_wrapper"&gt;
-&lt;div class="output"&gt;
-&lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
-&lt;pre&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Now we start in with the actual Epetra/AztecOO code.  Since it's not apparent to me whether it's possible for &lt;code&gt;cling&lt;/code&gt; to support &lt;a href="http://www.open-mpi.org/"&gt;MPI&lt;/a&gt; processes, we'll just provide a serial implementation.  We start with some code that instantiates the Epetra serial communicator and provides some information about the version of Trilinos we are using.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [5]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="input_area"&gt;
-&lt;div class="highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Epetra_SerialComm&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Comm&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="w"&gt;  &lt;/span&gt;
-&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;NumMyElements&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1000&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Comm&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;MyPID&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;AztecOO_Version&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Comm&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="output_wrapper"&gt;
-&lt;div class="output"&gt;
-&lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
-&lt;pre&gt;
-AztecOO in Trilinos 12.1 (Dev)
-
-
-Epetra::Comm::Processor 0 of 1 total processors.
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Notice the immediate output to screen.  Remember this is C++!&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Now we construct a Map that puts same number of equations on each processor.  Of course, we only have one processor here, but the code is generic and could also be run in parallel if multiple processors were available.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [6]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="input_area"&gt;
-&lt;div class="highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Epetra_Map&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;Map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;-1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;NumMyElements&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Comm&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;NumGlobalElements&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Map&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;NumGlobalElements&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="output_wrapper"&gt;
-&lt;div class="output"&gt;
-&lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
-&lt;pre&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Now we instantiate the column-row sparse matrix $A$&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [7]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="input_area"&gt;
-&lt;div class="highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Epetra_CrsMatrix&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;A&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Copy&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Map&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="output_wrapper"&gt;
-&lt;div class="output"&gt;
-&lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
-&lt;pre&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Here we fill $A$ to be a finite-difference like operator.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [8]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="input_area"&gt;
-&lt;div class="highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kt"&gt;double&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;negOne&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;-1.0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="kt"&gt;double&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;posTwo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;2.0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;NumMyElements&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;GlobalRow&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GRID&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;RowLess1&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;GlobalRow&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;RowPlus1&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;GlobalRow&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;RowLess1&lt;/span&gt;&lt;span class="o"&gt;!=&lt;/span&gt;&lt;span class="mi"&gt;-1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;InsertGlobalValues&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;GlobalRow&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;negOne&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;RowLess1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;RowPlus1&lt;/span&gt;&lt;span class="o"&gt;!=&lt;/span&gt;&lt;span class="n"&gt;NumGlobalElements&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;InsertGlobalValues&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;GlobalRow&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;negOne&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;RowPlus1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;InsertGlobalValues&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;GlobalRow&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;posTwo&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;GlobalRow&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="p"&gt;};&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="output_wrapper"&gt;
-&lt;div class="output"&gt;
-&lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
-&lt;pre&gt;?   
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Now we call the &lt;code&gt;FillComplete()&lt;/code&gt; method to optimize storage of the matrix.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [9]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="input_area"&gt;
-&lt;div class="highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;FillComplete&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="output_wrapper"&gt;
-&lt;div class="output"&gt;
-&lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
-&lt;pre&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Here we instantiate $\vec{x}$ and the right-hand-side vector $\vec{b}$.  Also, we fill $\vec{b}$ with random numbers for our solution.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [10]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="input_area"&gt;
-&lt;div class="highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Epetra_Vector&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;x&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Map&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="n"&gt;Epetra_Vector&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;b&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Map&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-
-&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Random&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="output_wrapper"&gt;
-&lt;div class="output"&gt;
-&lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
-&lt;pre&gt;
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Now we instantiate the &lt;code&gt;Epetra_Problem&lt;/code&gt; and the Aztec solver from that instance.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [11]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="input_area"&gt;
-&lt;div class="highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Epetra_LinearProblem&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;problem&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-
-&lt;span class="n"&gt;AztecOO&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;solver&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;problem&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="output_wrapper"&gt;
-&lt;div class="output"&gt;
-&lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
-&lt;pre&gt;
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Next is the actual solution step.  A GMRES solver is used for 10 iterations.  This won't be enough for convergence of the solver, but this is just for demonstration purposes and I would like to keep the output short.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [12]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="input_area"&gt;
-&lt;div class="highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;solver&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SetAztecOption&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;AZ_precond&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;AZ_Jacobi&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="n"&gt;solver&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Iterate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;1.0E-2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-
-&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"Solver performed "&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;solver&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;NumIters&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;" iterations."&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"Norm of true residual = "&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;solver&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;TrueResidual&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="output_wrapper"&gt;
-&lt;div class="output"&gt;
-&lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
-&lt;pre&gt;
-		*******************************************************
-		***** Problem: Epetra::CrsMatrix
-		***** Preconditioned GMRES solution
-		***** 1 step block Jacobi
-		***** No scaling
-		*******************************************************
-
-                iter:    0           residual = 1.000000e+00
-                iter:    1           residual = 5.832906e-01
-                iter:    2           residual = 4.547092e-01
-                iter:    3           residual = 3.831399e-01
-                iter:    4           residual = 3.366700e-01
-                iter:    5           residual = 3.043737e-01
-                iter:    6           residual = 2.789514e-01
-                iter:    7           residual = 2.592427e-01
-                iter:    8           residual = 2.449521e-01
-                iter:    9           residual = 2.328859e-01
-                iter:   10           residual = 2.223153e-01
-
-
-	***************************************************************
-
-	Warning: maximum number of iterations exceeded
-	without convergence
-
-	Solver:			gmres
-	number of iterations:	10
-
-	Recursive residual =  3.9447e+00
-
-	Calculated Norms				Requested Norm
-	--------------------------------------------	--------------
-
-	||r||_2 / ||r0||_2:		2.223153e-01	1.000000e-02
-
-	***************************************************************
-
-
-
-		Solution time: 0.000680 (sec.)
-		total iterations: 10
-
-Solver performed 10 iterations.
-Norm of true residual = 3.94466
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;To demonstrate that is worked, we'll print out the first 10 values of the solution vector $\vec{x}$.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [13]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="input_area"&gt;
-&lt;div class="highlight hl-c++"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="output_wrapper"&gt;
-&lt;div class="output"&gt;
-&lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
-&lt;pre&gt;-0.288916
--0.723977
--0.641509
-0.309992
-0.815517
-0.904473
-0.0381509
--0.675333
--1.5226
--3.14536
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;It's pretty amazing to be able to do interactive C++ developement.  If we could get this to work in parallel, it would be a leap forward in the ability to do introspective high-performance scientific computing.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description><category>AztecOO</category><category>C++</category><category>cling</category><category>Epetra</category><category>Trilinos</category><guid>https://johnfoster.pge.utexas.edu/blog/posts/interactive-c%2B%2B-for-hpc/</guid><pubDate>Mon, 08 Jun 2015 16:00:18 GMT</pubDate></item><item><title>Python/Numpy implementation of Bspline basis functions</title><link>https://johnfoster.pge.utexas.edu/blog/posts/pythonnumpy-implementation-of-bspline-basis-functions/</link><dc:creator>John T. Foster</dc:creator><description>&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;I was recently helping a student with some preliminary concepts in isogemetric analysis (IGA) and after taking a look at his pure Python implementation of the Cox - de Boor algorithm for computing B-Spline basis functions, I decided to look around for a Numpy implementation that could possibly be a little faster.  While I found a few &lt;a href="https://github.com/scipy/scipy/blob/v0.15.1/scipy/signal/bsplines.py#L122"&gt;B-spline implementations&lt;/a&gt; in Python, I thought I might be able to sqeeze out a little more performance through &lt;a href="http://en.wikipedia.org/wiki/Array_programming"&gt;vectorization&lt;/a&gt; and &lt;a href="http://en.wikipedia.org/wiki/Memoization"&gt;memoization&lt;/a&gt; while maintaining readablity of the code.  I think I have something that accomplishes that, in the context of how basis functions are needed and used in IGA.  The main portion of the code is here:&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;script src="http://gist-it.sudarmuthu.com/https://github.com/johntfoster/bspline/blob/master/bspline.py?slice=47:107&amp;amp;footer=minimal"&gt;&lt;/script&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;The full repository can be found/forked here: &lt;a href="https://github.com/johntfoster/bspline"&gt;johntfoster/bspline&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;An example use case is shown below.  This reproduces Fig. 2.6 in &lt;a href="http://www.amazon.com/Isogeometric-Analysis-Toward-Integration-CAD/dp/0470748737/ref=sr_1_1?ie=UTF8&amp;amp;qid=1432735651&amp;amp;sr=8-1&amp;amp;keywords=isogeometric+analysis+toward+integration+of+cad+and+fea"&gt;Isogeometric Analysis: Towards the integration of CAD and FEA&lt;/a&gt; by Contrell, Hughes, and Bazilevs.  With &lt;a href="https://github.com/johntfoster/bspline/blob/master/bspline.py"&gt;bspline.py&lt;/a&gt; in the working directory:&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;bspline&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Bspline&lt;/span&gt;
-
-&lt;span class="n"&gt;knot_vector&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-&lt;span class="n"&gt;basis&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Bspline&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;knot_vector&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="k"&gt;matplotlib&lt;/span&gt; inline
-&lt;span class="n"&gt;basis&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;plot&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="output_wrapper"&gt;
-&lt;div class="output"&gt;
-&lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_png output_subarea"&gt;
-&lt;img alt="No description has been provided for this image" src="data:image/png;base64,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"&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;As mentioned above the recursive function that computes the basis has been memoized such that it caches repeated evaluations of the function.  This has a large impact on the evaluation speed.  We can use &lt;a href="https://jupyter.org/"&gt;Jupyter&lt;/a&gt;'s &lt;code&gt;%%timeit&lt;/code&gt; magic function to investigate this.  I've hidden the raw evaluation functions through Python's name mangaling, therefore the following function is not intended for general API usage, but for testing purposes, let's evalute the basis functions defined by the knot vector and basis order given above using the non-memoized code:&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [2]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
-&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linspace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [3]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%time&lt;/span&gt;it 
-&lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;basis&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_Bspline__basis&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;basis&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="output_wrapper"&gt;
-&lt;div class="output"&gt;
-&lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
-&lt;pre&gt;1 loops, best of 3: 192 ms per loop
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Now let's time the memoized code&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [4]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="input_area"&gt;
-&lt;div class="highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%time&lt;/span&gt;it 
-&lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;basis&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="output_wrapper"&gt;
-&lt;div class="output"&gt;
-&lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
-&lt;pre&gt;100 loops, best of 3: 2.36 ms per loop
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;A speedup of roughly two orders of magnitude!&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description><category>Cox-de Boor</category><category>IGA</category><category>Isogeometric Analysis</category><category>Memoization</category><category>Memoize</category><category>Numpy</category><category>Python</category><category>Recursion</category><guid>https://johnfoster.pge.utexas.edu/blog/posts/pythonnumpy-implementation-of-bspline-basis-functions/</guid><pubDate>Wed, 27 May 2015 13:08:17 GMT</pubDate></item></channel></rss>
+&lt;/div&gt;</description><category>exodus</category><category>hdf5</category><category>netcdf</category><category>Numpy</category><category>Python</category><guid>https://johnfoster.pge.utexas.edu/blog/posts/extracting-exodus-information-with-netcdf-python/</guid><pubDate>Mon, 20 Jul 2015 20:37:39 GMT</pubDate></item></channel></rss>

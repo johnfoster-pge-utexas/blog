@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html \ prefix="
+        og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+    " vocab="http://ogp.me/ns" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Teaching programming concepts in an age where agents can make contextual decisions, manage information, and carry out recurring work.">
+<meta name="viewport" content="width=device-width">
+<title>A new kind of programming | John T. Foster</title>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst_base.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://johnfoster.pge.utexas.edu/blog/posts/a-new-kind-of-programming/">
+<!--[if lt IE 9]><script src="../../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><meta name="author" content="John T. Foster">
+<link rel="prev" href="../why-im-not-wearing-a-mask/" title="Why I'm not wearing a mask (Fall 2021)" type="text/html">
+<meta property="og:site_name" content="John T. Foster">
+<meta property="og:title" content="A new kind of programming">
+<meta property="og:url" content="https://johnfoster.pge.utexas.edu/blog/posts/a-new-kind-of-programming/">
+<meta property="og:description" content="Teaching programming concepts in an age where agents can make contextual decisions, manage information, and carry out recurring work.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-07-14T11:00:00-05:00">
+<meta property="article:tag" content="agents">
+<meta property="article:tag" content="artificial intelligence">
+<meta property="article:tag" content="education">
+<meta property="article:tag" content="programming">
+</head>
+<body>
+    <a href="#page-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    
+    <section class="social"><ul>
+<li><a href="../../index.html" title="Home"><i class="fa fa-home"></i></a></li>
+            <li><a href="http://johnfoster.pge.utexas.edu" title="Professional Website"><i class="fa fa-user"></i></a></li>
+            <li><a href="https://github.com/johntfoster" title="My Github"><i class="fab fa-github"></i></a></li>
+            <li><a href="https://twitter.com/johntfoster" title="My Twitter"><i class="fab fa-twitter"></i></a></li>
+            <li><a href="../../archive.html" title="Archives"><i class="fa fa-folder-open"></i></a></li>
+            <li><a href="../../categories/index.html" title="Tags"><i class="fa fa-tags"></i></a></li>
+            <li><a href="../../rss.xml" title="RSS"><i class="fa fa-rss"></i></a></li>
+    
+    
+
+        </ul></section><section class="page-content"><div class="content" rel="main">
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">A new kind of programming</a></h1>
+
+        <div class="metadata">
+            <p class="dateline"><a href="." rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2026-07-14T11:00:00-05:00" itemprop="datePublished" title="2026-07-14 11:00">2026-07-14 11:00</time></a></p>
+            <p class="byline author vcard"> <i class="fa fa-user"></i> <span class="byline-name fn" itemprop="author">
+                    John T. Foster
+            </span></p>
+                <p class="commentline"><i class="far fa-comment"></i>        <a href="#disqus_thread" data-disqus-identifier="cache/posts/a-new-kind-of-programming.html">Comments</a>
+
+
+                    </p>
+<p class="sourceline"><a href="index.md" class="sourcelink"><i class="fa fa-file-code"></i> Source</a></p>
+
+            
+                <div class="tags">
+<h3 class="metadata-title">
+<i class="fa fa-tags"></i> Tags:</h3>
+        <ul itemprop="keywords" class="tags-ul">
+<li><a class="tag p-category" href="../../categories/agents/" rel="tag">agents</a></li>
+            <li><a class="tag p-category" href="../../categories/artificial-intelligence/" rel="tag">artificial intelligence</a></li>
+            <li><a class="tag p-category" href="../../categories/education/" rel="tag">education</a></li>
+            <li><a class="tag p-category" href="../../categories/programming/" rel="tag">programming</a></li>
+        </ul>
+</div>
+
+        </div>
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <h2>A new kind of programming</h2>
+<p>For decades, when we taught programming, we began with a reassuringly concrete picture of computation. A program was a sequence of instructions. An <code>if</code> statement asked whether something was true or false and then followed one branch or another. A <code>for</code> loop executed a known block of work a known number of times. A <code>while</code> loop continued until some condition changed. These ideas were, and still are, powerful because they separate the structure of thought from the details of a particular programming language.</p>
+<p>But the programming environment around us is changing quickly. We now have computational agents that can read files, inspect context, make judgments, call tools, write code, revise their own plan, and come back later to continue a task. These agents do not remove the need for programming fundamentals. In fact, they make those fundamentals more important. What changes is where the fundamental concepts show up.</p>
+<p>An <code>if</code> statement no longer has to mean only:</p>
+<div class="code"><pre class="code literal-block"><span class="k">if</span> <span class="n">pressure</span> <span class="o">&gt;</span> <span class="n">fracture_pressure</span><span class="p">:</span>
+    <span class="n">reduce_timestep</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">continue_simulation</span><span class="p">()</span>
+</pre></div>
+
+<p>That is still programming. It is precise, deterministic, and often exactly what we want. But in an agentic workflow, the decision point may look more like this:</p>
+<div class="code"><pre class="code literal-block">If this request is about manuscript notation, read main.tex and defs.tex.
+If it is about implementation, read the MOOSE traceability file.
+If it is about validation, read the validation matrix.
+Then proceed with only the context needed for the task.
+</pre></div>
+
+<p>The underlying idea is the same: evaluate a condition and choose a path. The difference is that the condition may not be a single Boolean expression. It may be a judgment about intent, scope, risk, or relevance. The action may not be one function call, but a controlled expansion of context. The branch may decide which files to read, which tools to use, which checks to run, or which expert workflow to activate.</p>
+<p>This is not merely a convenience. It is becoming one of the central problems in programming with large language models: context management. An agent can be surprisingly capable when it has the right information in front of it, and surprisingly confused when it has too much irrelevant information mixed with the important parts. Traditional programs manage memory and control flow. Agentic programs must also manage attention.</p>
+<p>In one of our current research repositories on multicomponent reactive flow, for example, we have started encoding project knowledge in files that are meant to be read by agents: <code>AGENTS.md</code>, decision trees, checklists, framework notes, validation matrices, and runbooks. These are not just documentation in the old sense. They are part of the execution environment. They tell an agent what to inspect first, how to classify a task, when to ask for clarification, what source of truth controls a decision, and how to validate a change before calling it done.</p>
+<p>That makes an agent instruction file feel very much like a higher-level control-flow structure. A decision tree is an <code>if</code> statement written for a system that can interpret language. A checklist is a guard against skipping necessary state. A runbook is a structured exception handler. A validation matrix is a set of assertions about what must be true before we trust the result.</p>
+<p>The analogy extends to loops. In introductory programming, we might write:</p>
+<div class="code"><pre class="code literal-block"><span class="k">for</span> <span class="n">assignment</span> <span class="ow">in</span> <span class="n">assignments</span><span class="p">:</span>
+    <span class="n">grade</span><span class="p">(</span><span class="n">assignment</span><span class="p">)</span>
+</pre></div>
+
+<p>or:</p>
+<div class="code"><pre class="code literal-block"><span class="k">while</span> <span class="ow">not</span> <span class="n">converged</span><span class="p">:</span>
+    <span class="n">update_solution</span><span class="p">()</span>
+</pre></div>
+
+<p>These examples teach the key idea that some work is repeated under a rule. In agentic systems, repetition may not live inside a single running process. It may be scheduled:</p>
+<div class="code"><pre class="code literal-block">Every morning, check the calendar, weather, and urgent messages.
+Every five minutes, inspect the status of a long-running simulation.
+Every day, summarize new repository activity and flag anything that needs attention.
+</pre></div>
+
+<p>A cron job or scheduled agent task is, conceptually, a loop with a clock attached. It repeatedly wakes an agent, gives it a bounded job, and lets it decide what to do with the current state of the world. A <code>while</code> loop appears when the agent keeps checking until a condition is satisfied:</p>
+<div class="code"><pre class="code literal-block">While the simulation is still running, check the logs every five minutes.
+When it finishes, summarize the result and remove the scheduled check.
+</pre></div>
+
+<p>That last step matters. The loop has its own termination condition. Once the task is complete, the agent removes the recurring job and the cycle ends. This is not identical to a <code>while</code> loop in Python or C, but pedagogically it is the same idea: repeat work until the condition that justified the repetition is no longer true.</p>
+<p>This suggests a useful shift in how we teach programming. We should still teach syntax. Students still need to know what an <code>if</code> statement, a <code>for</code> loop, a function, a variable, and a data structure look like in an actual language. But syntax should not be mistaken for the concept. The concept behind an <code>if</code> statement is a decision point. The concept behind a loop is repeated work under a rule. The concept behind a function is a named unit of reusable behavior. The concept behind a module is a boundary around related knowledge and capability.</p>
+<p>Once students understand those ideas in simple code, we can show them how the same ideas appear in agentic systems:</p>
+<ul>
+<li>A branching statement becomes an instruction that routes the agent to the right context.</li>
+<li>A loop becomes a scheduled task, a monitoring process, or a repeated evaluation until completion.</li>
+<li>A function becomes a tool the agent can call with a clear contract.</li>
+<li>A module becomes a directory of prompts, schemas, examples, tests, and source files that define a capability.</li>
+<li>A test becomes not only an assertion about code, but evidence that the agent's work preserved the intended behavior.</li>
+</ul>
+<p>This matters for educators because our students are likely to write less code from a blank screen and more code in collaboration with machines. They will still need to reason clearly. They will still need to decompose problems, define interfaces, recognize edge cases, and verify results. But they will also need to learn how to shape the environment in which an agent works. They will need to decide what context belongs in the prompt, what belongs in a file, what should be retrieved only when needed, and what should never be placed in context at all.</p>
+<p>In that sense, prompt engineering is too narrow a phrase. The more durable skill is context engineering: designing the information, tools, constraints, and feedback loops that allow an agent to work reliably. A good agent workflow is not just a clever prompt. It is a small operating system for a task. It has routing rules, sources of truth, permissions, validation steps, memory, and cleanup.</p>
+<p>There is an important caution here. We should not teach students that agents are magic decision makers. When a conventional <code>if</code> statement evaluates <code>x &gt; 0</code>, we know exactly what is being tested. When an agent decides whether a request is about notation, implementation, or validation, that decision is probabilistic and interpretive. It can be wrong. Therefore agentic control flow needs stronger guardrails than ordinary control flow. We need explicit sources of truth, narrow task scopes, checklists, tests, and human review for consequential actions.</p>
+<p>But that caution is not a reason to ignore the shift. It is a reason to teach it well. If we pretend programming is only the syntax of a single language, we will prepare students for a world that is already passing away. If we teach the deeper computational ideas, then show how those ideas reappear in agentic workflows, students can carry their understanding forward.</p>
+<p>The future programming course might begin exactly as it does now:</p>
+<div class="code"><pre class="code literal-block"><span class="k">if</span> <span class="n">condition</span><span class="p">:</span>
+    <span class="n">do_this</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">do_that</span><span class="p">()</span>
+</pre></div>
+
+<p>Then it might ask:</p>
+<div class="code"><pre class="code literal-block">If the task is ambiguous, identify what information would change the answer.
+If the task is well-scoped, read only the files needed to complete it.
+If the task changes user-visible behavior, run the relevant tests before reporting success.
+</pre></div>
+
+<p>The first example teaches syntax. The second teaches judgment. Both are programming.</p>
+<p>Likewise, we might begin with:</p>
+<div class="code"><pre class="code literal-block"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+
+<p>Then move to:</p>
+<div class="code"><pre class="code literal-block">Every hour, check whether the experiment has produced new output.
+If new output exists, summarize it and update the lab notebook.
+If the experiment is complete, stop checking.
+</pre></div>
+
+<p>Again, the concept is repetition under a rule. The implementation has changed because the computational substrate has changed. The program is no longer only a process running in memory. It may be a set of files, tools, scheduled jobs, agent instructions, and review steps distributed across time.</p>
+<p>I do not think this makes traditional programming obsolete. Quite the opposite. The more powerful our tools become, the more important it is to understand the structures underneath them. We should keep teaching <code>if</code> statements and loops, but we should teach them as instances of broader ideas: decision, repetition, abstraction, state, verification, and termination.</p>
+<p>Programming with agents is still programming. It is just programming at a different level of abstraction, where the objects being controlled are not only numbers and strings, but context, attention, tools, and time. If we want students to be effective in that world, we should start showing them the connection now.</p>
+    </div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../why-im-not-wearing-a-mask/" rel="prev" title="Why I'm not wearing a mask (Fall 2021)">Previous post</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+                    <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="johntfoster",
+            disqus_url="https://johnfoster.pge.utexas.edu/blog/posts/a-new-kind-of-programming/",
+        disqus_title="A new kind of programming",
+        disqus_identifier="cache/posts/a-new-kind-of-programming.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section></article><script>var disqus_shortname="johntfoster";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>Contents © 2026         <a href="mailto:johntfosterjr@gmail.com">John T. Foster</a>      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png"></a><br></p>
+            
+        </footer>
+</div>
+    </section><script src="../../assets/js/baguetteBox.min.js"></script><script src="../../assets/js/moment-with-locales.min.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(2, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+   ga('create', 'UA-25324596-7', 'auto');
+   ga('send', 'pageview');
+</script>
+</body>
+</html>

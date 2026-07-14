@@ -96,7 +96,7 @@ a:focus {
 
 .post-title,
 .entry-title,
-.p-name,
+h1.p-name,
 h1,
 h2,
 h3,
@@ -109,7 +109,7 @@ h4 {
 
 .post-title,
 .entry-title,
-.p-name {
+h1.p-name {
     font-size: 2.25rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
@@ -117,13 +117,13 @@ h4 {
 
 .post-title a,
 .entry-title a,
-.p-name a {
+h1.p-name a {
     color: inherit;
 }
 
 .post-title a:hover,
 .entry-title a:hover,
-.p-name a:hover {
+h1.p-name a:hover {
     color: var(--ut-burnt-orange);
     text-decoration: none;
 }
@@ -262,7 +262,7 @@ code {
 
     .post-title,
     .entry-title,
-    .p-name {
+    h1.p-name {
         font-size: 1.75rem;
     }
 }

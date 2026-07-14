@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 14 Jul 2026 16:51:05 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>A new kind of programming</title><link>https://johnfoster.pge.utexas.edu/blog/posts/a-new-kind-of-programming/</link><dc:creator>John T. Foster</dc:creator><description>&lt;p&gt;For decades, when we taught programming, we began with a reassuringly concrete picture of computation. A program was a sequence of instructions. An &lt;code&gt;if&lt;/code&gt; statement asked whether something was true or false and then followed one branch or another. A &lt;code&gt;for&lt;/code&gt; loop executed a known block of work a known number of times. A &lt;code&gt;while&lt;/code&gt; loop continued until some condition changed. These ideas were, and still are, powerful because they separate the structure of thought from the details of a particular programming language.&lt;/p&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>John T. Foster</title><link>https://johnfoster.pge.utexas.edu/blog/</link><description>mechanics and the mechanics of coding</description><atom:link href="https://johnfoster.pge.utexas.edu/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 14 Jul 2026 16:57:36 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>A new kind of programming</title><link>https://johnfoster.pge.utexas.edu/blog/posts/a-new-kind-of-programming/</link><dc:creator>John T. Foster</dc:creator><description>&lt;p&gt;For decades, when we taught programming, we began with a reassuringly concrete picture of computation. A program was a sequence of instructions. An &lt;code&gt;if&lt;/code&gt; statement asked whether something was true or false and then followed one branch or another. A &lt;code&gt;for&lt;/code&gt; loop executed a known block of work a known number of times. A &lt;code&gt;while&lt;/code&gt; loop continued until some condition changed. These ideas were, and still are, powerful because they separate the structure of thought from the details of a particular programming language.&lt;/p&gt;
 &lt;p&gt;But the programming environment around us is changing quickly. We now have computational agents that can read files, inspect context, make judgments, call tools, write code, revise their own plan, and come back later to continue a task. These agents do not remove the need for programming fundamentals. In fact, they make those fundamentals more important. What changes is where the fundamental concepts show up.&lt;/p&gt;
 &lt;p&gt;An &lt;code&gt;if&lt;/code&gt; statement no longer has to mean only:&lt;/p&gt;
 &lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;pressure&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;fracture_pressure&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
@@ -3613,9 +3613,9 @@ limitations under the License.&lt;/p&gt;
 &lt;div class="output"&gt;
 &lt;div class="output_area"&gt;
 &lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_widget_view" id="61d404ca-c715-47ce-b66b-2aa22dafd398"&gt;
+&lt;div class="output_subarea output_widget_view" id="83c86d6c-0c91-48e3-85c9-ecf7ca6f5072"&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#61d404ca-c715-47ce-b66b-2aa22dafd398');
+var element = $('#83c86d6c-0c91-48e3-85c9-ecf7ca6f5072');
 &lt;/script&gt;
 &lt;script type="application/vnd.jupyter.widget-view+json"&gt;
 {"model_id": "6d64da96f6a94f49aa47edfc01811375", "version_major": 2, "version_minor": 0}
@@ -3760,9 +3760,9 @@ var element = $('#61d404ca-c715-47ce-b66b-2aa22dafd398');
 &lt;div class="output"&gt;
 &lt;div class="output_area"&gt;
 &lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_javascript" id="2856057e-ef2b-494d-94a5-b3087a5feb00"&gt;
+&lt;div class="output_subarea output_javascript" id="ad500a75-33fe-4194-8aec-6a1c95147c82"&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#2856057e-ef2b-494d-94a5-b3087a5feb00');
+var element = $('#ad500a75-33fe-4194-8aec-6a1c95147c82');
 
 (function(root) {
   function now() {
@@ -4947,9 +4947,9 @@ var element = $('#2856057e-ef2b-494d-94a5-b3087a5feb00');
 &lt;/div&gt;
 &lt;div class="output_area"&gt;
 &lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_javascript" id="f44c9a63-05f6-4d36-9718-1383a1f60d0c"&gt;
+&lt;div class="output_subarea output_javascript" id="97218d41-d2d4-4946-9718-db050034256b"&gt;
 &lt;script type="text/javascript"&gt;
-var element = $('#f44c9a63-05f6-4d36-9718-1383a1f60d0c');
+var element = $('#97218d41-d2d4-4946-9718-db050034256b');
 
 if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
    if ((window.HoloViews === undefined) || (window.HoloViews instanceof HTMLElement)) {

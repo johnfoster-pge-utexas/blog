@@ -38,8 +38,8 @@ a:focus {
 .blog-header-logo {
     color: var(--ut-charcoal);
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-    font-size: 2.1rem;
-    font-weight: 700;
+    font-size: 1.45rem;
+    font-weight: 600;
     letter-spacing: 0;
 }
 
@@ -80,9 +80,12 @@ a:focus {
     max-width: 1120px;
 }
 
-.blog-main,
-.postpage {
+.blog-main {
     max-width: 760px;
+}
+
+.postpage {
+    max-width: 960px;
 }
 
 .post,
@@ -227,7 +230,7 @@ code {
     }
 
     .blog-header-logo {
-        font-size: 1.65rem;
+        font-size: 1.25rem;
     }
 
     .post-title,

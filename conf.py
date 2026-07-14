@@ -769,7 +769,7 @@ NAVIGATION_LINKS = {
             ('https://johnfoster.pge.utexas.edu/blog/', 'Blog'),
             ('http://johnfoster.pge.utexas.edu', 'Professional Website'),
             ('https://github.com/johntfoster', 'GitHub'),
-            ('https://twitter.com/johntfoster', 'Twitter'),
+            ('https://twitter.com/johntfoster', 'X'),
             ('https://johnfoster.pge.utexas.edu/blog/archive.html', 'Archives'),
             ('https://johnfoster.pge.utexas.edu/blog/categories/index.html', 'Tags'),
             ('https://johnfoster.pge.utexas.edu/blog/rss.xml', 'RSS'),
